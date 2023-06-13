@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "resolveJsonModule": true,
+    "module": "commonjs",
+    "target": "es2015",
+    "jsx": "react",
+    "sourceMap": true,
+    "allowJs": true,
+    "experimentalDecorators": true,
+
+    "paths": {
+      "src/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}
