@@ -11,7 +11,7 @@ export default function WelcomeScreen({
 
   return (
     <View style={styles.container}>
-      <Text>Welcome{`\n`}Start from here...</Text>
+      <Text onPress={() => navigation.navigate("LoginScreen")}>Welcome{`\n`}Start from here...</Text>
     </View>
   );
 }

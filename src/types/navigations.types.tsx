@@ -35,6 +35,7 @@ export type LaunchStackParamList = {
 
 export type AuthStackParamList = {
   LoginScreen: undefined;
+  ForgotPasswordScreen: undefined;
   CreateAccountScreen: undefined;
 }
 
