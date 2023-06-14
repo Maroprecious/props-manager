@@ -45,7 +45,7 @@ export default function LoginScreen({
         marginTop: fontsConstants.h(-115),
         paddingTop: fontsConstants.h(50),
         paddingBottom: fontsConstants.h(20),
-        paddingHorizontal: fontsConstants.w(30),
+        paddingHorizontal: globalConstants.mainViewHorizontalPadding,
         borderTopLeftRadius: fontsConstants.h(40),
         borderTopRightRadius: fontsConstants.h(40),
         justifyContent: "flex-end"
@@ -65,9 +65,11 @@ export default function LoginScreen({
         </Text>
         <DefaultInput
           placeholder="Enter email or mobile number"
+          keyboardType="email-address"
         />
         <DefaultInput
           placeholder="Enter password"
+          secureTextEntry
         />
         <DefaultButton
           title={`Login`}

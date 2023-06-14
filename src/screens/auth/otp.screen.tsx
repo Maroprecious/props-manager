@@ -8,12 +8,17 @@ import { RootStackScreenProps } from "src/types/navigations.types";
 import colorsConstants from "src/constants/colors.constants";
 import OtpInput from "src/components/inputs/otpinputs.components";
 import AppThemeContext from "src/contexts/Theme.context";
+import globalConstants from "src/constants/global.constants";
 
 export default function OTPScreen({
   navigation,
   route
 }: RootStackScreenProps<"OTPScreen">) {
   const theme = useContext(AppThemeContext);
+
+  const doConfirmOTP = async () => {
+    navigation.navigate("ResetPasswordScreen")
+  }
 
   return (
     <SafeAreaView
@@ -48,6 +53,7 @@ export default function OTPScreen({
         />
         <DefaultButton
           title={`Confirm`}
+          onPress={doConfirmOTP}
         />
         <DefaultButton
           title={`Cancel`}
@@ -72,6 +78,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: fontsConstants.h(50),
-    paddingHorizontal: fontsConstants.w(30),
+    paddingHorizontal: globalConstants.mainViewHorizontalPadding
   },
 });
