@@ -1,9 +1,9 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Input, InputProps } from "react-native-elements"
 import colorsConstants from "src/constants/colors.constants"
 import fontsConstants from "src/constants/fonts.constants"
 import globalConstants from "src/constants/global.constants"
-import useColorScheme from "src/hooks/useColorScheme"
+import AppThemeContext from "src/contexts/Theme.context"
 
 export const DefaultInput = ({
   inputHeight = globalConstants.componentHeight,
@@ -12,7 +12,7 @@ export const DefaultInput = ({
   inputHeight?: number
 } & InputProps) => {
 
-  const theme = useColorScheme();
+  const theme = useContext(AppThemeContext);
 
   return (
     <Input

@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, ImageBackground, View as RNView, TouchableOpacity } from "react-native";
 import { View, Text, ScrollView } from "src/components/Themed";
 import { Image } from 'react-native-elements';
@@ -7,14 +7,14 @@ import { DefaultButton } from "src/components/buttons/buttons.components";
 import { DefaultInput } from "src/components/inputs/inputs.components";
 import fontsConstants from "src/constants/fonts.constants";
 import globalConstants from "src/constants/global.constants";
-import useColorScheme from "src/hooks/useColorScheme";
 import { RootStackScreenProps } from "src/types/navigations.types";
+import AppThemeContext from "src/contexts/Theme.context";
 
 export default function LoginScreen({
   navigation,
   route
 }: RootStackScreenProps<"LoginScreen">) {
-  const theme = useColorScheme();
+  const theme = useContext(AppThemeContext);
 
   return (
     <ScrollView

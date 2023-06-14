@@ -3,21 +3,17 @@ import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
 import { View, Text, SafeAreaView } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
-import { DefaultInput } from "src/components/inputs/inputs.components";
 import fontsConstants from "src/constants/fonts.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import colorsConstants from "src/constants/colors.constants";
+import OtpInput from "src/components/inputs/otpinputs.components";
 import AppThemeContext from "src/contexts/Theme.context";
 
-export default function ForgotPasswordScreen({
+export default function OTPScreen({
   navigation,
   route
-}: RootStackScreenProps<"ForgotPasswordScreen">) {
+}: RootStackScreenProps<"OTPScreen">) {
   const theme = useContext(AppThemeContext);
-
-  const doGetRetPin = async () => {
-    navigation.navigate("OTPScreen")
-  }
 
   return (
     <SafeAreaView
@@ -41,14 +37,17 @@ export default function ForgotPasswordScreen({
           marginBottom: fontsConstants.h(50),
           textAlign: "center"
         }}>
-          {`Please enter your email address. You will\nreceive a password reset PIN`}
+          {`Please enter the password reset PIN\nsent to your email ID`}
         </Text>
-        <DefaultInput
-          placeholder="Enter email ID"
+        <OtpInput
+          value="2501"
+          boxCount={4}
+          containerStyle={{
+            marginBottom: fontsConstants.h(20)
+          }}
         />
         <DefaultButton
-          title={`Send Reset PIN`}
-          onPress={doGetRetPin}
+          title={`Confirm`}
         />
         <DefaultButton
           title={`Cancel`}

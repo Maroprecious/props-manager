@@ -37,6 +37,7 @@ export type AuthStackParamList = {
   LoginScreen: undefined;
   ForgotPasswordScreen: undefined;
   CreateAccountScreen: undefined;
+  OTPScreen: undefined;
 }
 
 export type RootTabParamList = {

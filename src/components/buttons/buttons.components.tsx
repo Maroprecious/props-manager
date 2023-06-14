@@ -1,12 +1,12 @@
 import { useNavigation } from "@react-navigation/native"
-import React from "react"
+import React, { useContext } from "react"
 import { ImageSourcePropType, ImageStyle, StyleProp, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import { Image } from 'react-native-elements'
 import { Button, ButtonProps } from "react-native-elements"
 import colorsConstants from "src/constants/colors.constants"
 import fontsConstants from "src/constants/fonts.constants"
 import globalConstants from "src/constants/global.constants"
-import useColorScheme from "src/hooks/useColorScheme"
+import AppThemeContext from "src/contexts/Theme.context"
 
 export const DefaultButton = ({
   buttonHeight = globalConstants.componentHeight,
@@ -59,7 +59,8 @@ export const HeaderBackButton = ({
   containerStyle?: StyleProp<ViewStyle>;
 }) => {
   const navigation = useNavigation();
-  const theme = useColorScheme();
+  const theme = useContext(AppThemeContext);
+
   return (
     <TouchableOpacity
       activeOpacity={globalConstants.activeOpacity}

@@ -1,11 +1,13 @@
 const tintColorLight = '#2f95dc';
 const tintColorDark = '#fff';
 const colorPrimary = '#0041A0';
+const colorWhite = "#ffffff";
 const criticalRed = "#DD3352";
 
 export default {
   colorPrimary,
   criticalRed,
+  colorWhite,
   light: {
     text: '#000',
     background: '#fff',
