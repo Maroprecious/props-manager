@@ -6,6 +6,7 @@ import LoginScreen from "src/screens/auth/login.screen";
 import CreateAccountScreen from "src/screens/auth/createaccount.screen";
 import ForgotPasswordScreen from "src/screens/auth/forgotpassword.screen";
 import OTPScreen from "src/screens/auth/otp.screen";
+import ResetPasswordScreen from "src/screens/auth/resetpassword.screen";
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -73,6 +74,13 @@ const WelcomeAppRputes = [
   }, {
     name: "OTPScreen",
     component: OTPScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "ResetPasswordScreen",
+    component: ResetPasswordScreen,
     options: {
       headerShown: false,
     },

@@ -8,6 +8,7 @@ import fontsConstants from "src/constants/fonts.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import colorsConstants from "src/constants/colors.constants";
 import AppThemeContext from "src/contexts/Theme.context";
+import globalConstants from "src/constants/global.constants";
 
 export default function ForgotPasswordScreen({
   navigation,
@@ -45,6 +46,7 @@ export default function ForgotPasswordScreen({
         </Text>
         <DefaultInput
           placeholder="Enter email ID"
+          keyboardType="email-address"
         />
         <DefaultButton
           title={`Send Reset PIN`}
@@ -73,6 +75,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: fontsConstants.h(50),
-    paddingHorizontal: fontsConstants.w(30),
+    paddingHorizontal: globalConstants.mainViewHorizontalPadding
   },
 });
