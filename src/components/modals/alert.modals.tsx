@@ -73,15 +73,17 @@ export const AlertModal = ({
             <Text>{body}</Text>
           ) : body}
         </RNView>
-        <DefaultButton
-          title={buttonTitle}
-          onPress={onButtonPress ? () => onButtonPress() : () => {
-            modalRef?.current?.close();
-          }}
-          containerStyle={{
-            marginTop: fontsConstants.h(260)
-          }}
-        />
+        {withButton ? (
+          <DefaultButton
+            title={buttonTitle}
+            onPress={onButtonPress ? () => onButtonPress() : () => {
+              modalRef?.current?.close();
+            }}
+            containerStyle={{
+              marginTop: fontsConstants.h(260)
+            }}
+          />
+        ) : null}
       </RNView>
     </Modalize>
   ) 
