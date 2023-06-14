@@ -2,18 +2,24 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import useCachedResources from "./src/hooks/useCachedResources";
-import useColorScheme from "./src/hooks/useColorScheme";
+import useColorScheme, { useAppTheme } from "./src/hooks/useColorScheme";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { LogBox } from "react-native";
 import React from "react";
 import Navigation from "src/navigations";
+import AppThemeContext from "src/contexts/Theme.context";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+  const [appTheme, setAppTheme] = useState<any>(null);
 
+  useEffect(() => {
+    useAppTheme().then((theme) => setAppTheme(theme)).catch((e) => console.log(e))
+  }, [])
+  
   useEffect(() => {
     LogBox.ignoreLogs([
       'VirtualizedLists should never be nested',
@@ -32,10 +38,12 @@ export default function App() {
           flex: 1
         }}
       >
-      <SafeAreaProvider>
-        <StatusBar />
-        <Navigation colorScheme={colorScheme} />
-      </SafeAreaProvider>
+      <AppThemeContext.Provider value={appTheme || colorScheme}>
+        <SafeAreaProvider>
+          <StatusBar />
+          <Navigation colorScheme={colorScheme} />
+        </SafeAreaProvider>
+      </AppThemeContext.Provider>
     </GestureHandlerRootView>
   );
 }

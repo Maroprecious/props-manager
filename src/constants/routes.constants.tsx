@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import WelcomeScreen from "src/screens/launch/welcome.screen";
 import LoginScreen from "src/screens/auth/login.screen";
 import CreateAccountScreen from "src/screens/auth/createaccount.screen";
+import ForgotPasswordScreen from "src/screens/auth/forgotpassword.screen";
+import OTPScreen from "src/screens/auth/otp.screen";
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -57,6 +59,20 @@ const WelcomeAppRputes = [
   }, {
     name: "CreateAccountScreen",
     component: CreateAccountScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "ForgotPasswordScreen",
+    component: ForgotPasswordScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "OTPScreen",
+    component: OTPScreen,
     options: {
       headerShown: false,
     },
