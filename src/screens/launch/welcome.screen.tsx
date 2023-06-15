@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import useColorScheme from "src/hooks/useColorScheme";
+import AppThemeContext from "src/contexts/Theme.context";
 import { RootStackScreenProps } from "src/types/navigations.types";
 
 export default function WelcomeScreen({
   navigation,
   route
 }: RootStackScreenProps<"WelcomeScreen">) {
-  const theme = useColorScheme();
+  const theme = useContext(AppThemeContext);
 
   return (
     <View style={styles.container}>

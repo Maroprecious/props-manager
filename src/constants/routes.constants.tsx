@@ -1,40 +1,20 @@
-import React from "react";
-import { RenderProps, RootStackParamList } from "src/types/navigations.types";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import WelcomeScreen from "src/screens/launch/welcome.screen";
 import LoginScreen from "src/screens/auth/login.screen";
 import CreateAccountScreen from "src/screens/auth/createaccount.screen";
 import ForgotPasswordScreen from "src/screens/auth/forgotpassword.screen";
 import OTPScreen from "src/screens/auth/otp.screen";
 import ResetPasswordScreen from "src/screens/auth/resetpassword.screen";
+import { BottomTabNavigator } from "src/navigations/BottomTabNavigator";
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
-export function renderScreen({
-  name,
-  component,
-  options = {},
-  initialParams = {},
-}: RenderProps) {
-  return (
-    <Stack.Screen
-      name={name}
-      key={name}
-      options={options}
-      component={component}
-      initialParams={initialParams}
-    />
-  );
-}
 
 export const UserAppRoutes = [
   {
     name: "App",
-    component: <></>,
+    component: BottomTabNavigator,
     options: {
       headerShown: false,
     },
@@ -88,15 +68,10 @@ const WelcomeAppRputes = [
   },
 ];
 
-const AppRoutes = (isAuthenticated: boolean) => {
-  if (isAuthenticated)
-    return UserAppRoutes.map((route: any) => {
-      return renderScreen(route);
-    });
-  else
-    return WelcomeAppRputes.map((route: any) => {
-      return renderScreen(route);
-    });
+const AppRoutes = () => {
+  const user = {id: "null"};
+  const routes = user?.id === null || user?.id === undefined ? WelcomeAppRputes : UserAppRoutes;
+  return routes;
 };
 
 export default AppRoutes;

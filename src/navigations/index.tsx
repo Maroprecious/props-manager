@@ -15,7 +15,7 @@ import * as React from "react";
 import { ColorSchemeName } from "react-native";
 
 import LinkingConfiguration from "./LinkingConfiguration";
-import { RootStackParamList } from "src/types/navigations.types";
+import { RenderProps, RootStackParamList } from "src/types/navigations.types";
 import AppRoutes from "src/constants/routes.constants";
 
 export default function Navigation({
@@ -40,12 +40,30 @@ export default function Navigation({
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+export function renderScreen({
+  name,
+  component,
+  options = {},
+  initialParams = {},
+}: RenderProps) {
+  return (
+    <Stack.Screen
+      name={name}
+      key={name}
+      options={options}
+      component={component}
+      initialParams={initialParams}
+    />
+  );
+}
+function RootNavigator({initialRouteName="WelcomeScreen"}: {initialRouteName?: any}) {
   return (
     <Stack.Navigator
-      initialRouteName="WelcomeScreen"
+      initialRouteName={initialRouteName}
     >
-      {AppRoutes(false)}
+      {AppRoutes().map((route: any) => {
+        return renderScreen(route);
+      })}
     </Stack.Navigator>
   );
 }

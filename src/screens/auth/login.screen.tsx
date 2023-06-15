@@ -16,6 +16,10 @@ export default function LoginScreen({
 }: RootStackScreenProps<"LoginScreen">) {
   const theme = useContext(AppThemeContext);
 
+  const doLogin = async () => {
+    navigation.navigate("App")
+  }
+
   return (
     <ScrollView
       style={styles.container}
@@ -73,6 +77,7 @@ export default function LoginScreen({
         />
         <DefaultButton
           title={`Login`}
+          onPress={doLogin}
         />
         <RNView style={{
           flexDirection: "row",
