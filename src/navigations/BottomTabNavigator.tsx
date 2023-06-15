@@ -114,7 +114,7 @@ export function BottomTabNavigator() {
                 color={focused ? colorsConstants.colorPrimary : colorsConstants[theme].tabIconDefault}
               />
               <Text style={[styles.tabBarLabelStyle, {
-                color: focused ? colorsConstants.colorPrimary : colorsConstants[theme].tabLabelDefault
+                color: focused ? colorsConstants.colorPrimary : colorsConstants[theme].tabLabelDefault,
               }]}>
                 {`Home`}
               </Text>
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     width: fontsConstants.w(50),
     height: Platform.OS === "android" ? 
       fontsConstants.h(55)
-      : fontsConstants.h(40),
+      : fontsConstants.h(45),
     marginBottom: fontsConstants.h(-10),
     borderTopRightRadius: fontsConstants.h(12),
     borderTopLeftRadius: fontsConstants.h(12),
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
   },
   tabBarLabelStyle: {
     marginTop: fontsConstants.h(3),
-    // fontFamily: fontsConstants.Epilogue_Medium,
+    fontFamily: fontsConstants.Lora_Bold,
     fontSize: fontsConstants.h(10),
     marginBottom: fontsConstants.h(20),
   }

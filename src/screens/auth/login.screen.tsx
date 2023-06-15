@@ -9,6 +9,8 @@ import fontsConstants from "src/constants/fonts.constants";
 import globalConstants from "src/constants/global.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
+import colorsConstants from "src/constants/colors.constants";
+import { ScreenTitle } from "./components/screentitle.component";
 
 export default function LoginScreen({
   navigation,
@@ -47,26 +49,20 @@ export default function LoginScreen({
       </ImageBackground> 
       <View style={{
         marginTop: fontsConstants.h(-115),
-        paddingTop: fontsConstants.h(50),
+        paddingTop: fontsConstants.h(36),
         paddingBottom: fontsConstants.h(20),
         paddingHorizontal: globalConstants.mainViewHorizontalPadding,
         borderTopLeftRadius: fontsConstants.h(40),
         borderTopRightRadius: fontsConstants.h(40),
         justifyContent: "flex-end"
       }}>
-        <Text style={{
-          fontSize: fontsConstants.h(24),
-          textAlign: "center"
-        }}>
-          {`Welcome`}
-        </Text>
-        <Text style={{
-          fontSize: fontsConstants.h(12),
-          marginBottom: fontsConstants.h(10),
-          textAlign: "center"
-        }}>
-          {`Login to your account`}
-        </Text>
+        <ScreenTitle
+          title={`Welcome`}
+          intro={`Login to your account`}
+          containerStyle={{
+            marginBottom: fontsConstants.h(-30)
+          }}
+        />
         <DefaultInput
           placeholder="Enter email or mobile number"
           keyboardType="email-address"
@@ -91,7 +87,8 @@ export default function LoginScreen({
           <Text style={styles.linkTextStyle}>
               {`Don't have an account? `}
               <Text style={{
-                textDecorationLine: "underline"
+                textDecorationLine: "underline",
+                fontFamily: fontsConstants.American_Typewriter_Bold
               }}>Sign Up</Text>
             </Text>
           </TouchableOpacity>
@@ -103,7 +100,8 @@ export default function LoginScreen({
             <Text style={styles.linkTextStyle}>
               {`Forgot `}
               <Text style={{
-                textDecorationLine: "underline"
+                textDecorationLine: "underline",
+                fontFamily: fontsConstants.American_Typewriter_Bold
               }}>password?</Text>
             </Text>
           </TouchableOpacity>
@@ -111,7 +109,9 @@ export default function LoginScreen({
         <Text style={{
           marginTop: fontsConstants.h(20),
           textAlign: "center",
-          color: "#949496"
+          color: "#949496",
+          fontFamily: fontsConstants.Lora_Regular,
+          fontSize: fontsConstants.h(14)
         }}>{`Login with social account`}</Text>
         <RNView style={{
           flexDirection: "row",
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   linkTextStyle: {
+    fontFamily: fontsConstants.American_Typewriter_Regular,
     fontSize: fontsConstants.h(12)
   },
   socialButtonContainerStyle: {
@@ -172,6 +173,7 @@ const styles = StyleSheet.create({
   },
   socailButtonTitleStyle: {
     fontSize: fontsConstants.h(14),
+    fontFamily: fontsConstants.SF_Pro_Rounded_Medium,
     color: "#1A1A1A"
   },
   socialButtonIcon: {

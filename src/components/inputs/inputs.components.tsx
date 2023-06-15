@@ -18,6 +18,7 @@ export const DefaultInput = ({
     <Input
       placeholderTextColor={colorsConstants[theme].inputPlaceHolderColor}
       inputStyle={{
+        fontFamily: fontsConstants.American_Typewriter_Regular,
         paddingHorizontal: fontsConstants.w(20),
         fontSize: fontsConstants.h(14)
       }}

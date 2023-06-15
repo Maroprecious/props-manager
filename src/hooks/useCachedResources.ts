@@ -15,7 +15,21 @@ export default function useCachedResources() {
         // Load fonts
         await Font.loadAsync({
           ...FontAwesome.font,
-          "space-mono": require("../../src/assets/fonts/SpaceMono-Regular.ttf"),
+          "space-mono": require("../assets/fonts/SpaceMono-Regular.ttf"),
+          "FontsFree-Net-american-typewriter": require("../assets/fonts/FontsFree-Net-american-typewriter.ttf"),
+          "American-Typewriter-Bold": require("../assets/fonts/American-Typewriter-Bold.ttf"),
+          "Inter-Bold": require("../assets/fonts/Inter-Bold.ttf"),
+          "Inter-Medium": require("../assets/fonts/Inter-Medium.ttf"),
+          "Inter-Regular": require("../assets/fonts/Inter-Regular.ttf"),
+          "Inter-SemiBold": require("../assets/fonts/Inter-SemiBold.ttf"),
+          "Lato-Bold": require("../assets/fonts/Lato-Bold.ttf"),
+          "Lato-Regular": require("../assets/fonts/Lato-Regular.ttf"),
+          "Lora-Bold": require("../assets/fonts/Lora-Bold.ttf"),
+          "Lora-Medium": require("../assets/fonts/Lora-Medium.ttf"),
+          "Lora-Regular": require("../assets/fonts/Lora-Regular.ttf"),
+          "Lora-SemiBold": require("../assets/fonts/Lora-SemiBold.ttf"),
+          "FontsFree-Net-SF-Pro-Rounded-Medium": require("../assets/fonts/FontsFree-Net-SF-Pro-Rounded-Medium.ttf"),
+          "Raleway-Regular": require("../assets/fonts/Raleway-Regular.ttf"),
         });
         // await new Promise(resolve => setTimeout(resolve, 5000));
       } catch (e) {
