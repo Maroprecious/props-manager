@@ -25,6 +25,7 @@ export const DefaultButton = ({
   return (
     <Button
       titleStyle={[{
+        fontFamily: fontsConstants.American_Typewriter_Bold,
         fontSize: fontsConstants.h(20)
       }, titleStyle]}
       type={type}

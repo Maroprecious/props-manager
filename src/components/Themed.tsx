@@ -3,7 +3,7 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import {
   Text as DefaultText,
   View as DefaultView,
@@ -14,14 +14,13 @@ import {
 import {SafeAreaView as DefaultSafeAreaView, SafeAreaViewProps as DefaultSafeAreaViewProps} from 'react-native-safe-area-context';
 import colorsConstants from "src/constants/colors.constants";
 import fontsConstants from "src/constants/fonts.constants";
-
-import useColorScheme from "src/hooks/useColorScheme";
+import AppThemeContext from "src/contexts/Theme.context";
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof colorsConstants.light & keyof typeof colorsConstants.dark
 ) {
-  const theme = useColorScheme();
+  const theme = useContext(AppThemeContext);
   const colorFromProps = props[theme];
 
   if (colorFromProps) {
@@ -48,7 +47,7 @@ export function Text(props: TextProps) {
   return (
     <DefaultText
       style={[
-        { color, lineHeight: fontsConstants.h(20) },
+        { color },
         style,
       ]}
       {...otherProps}

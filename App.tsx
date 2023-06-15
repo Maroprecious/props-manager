@@ -12,6 +12,7 @@ import Navigation from "src/navigations";
 import AppThemeContext from "src/contexts/Theme.context";
 
 export default function App() {
+  // const [loaded, error] = useFonts(cachedFonts);
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   const [appTheme, setAppTheme] = useState<any>(null);

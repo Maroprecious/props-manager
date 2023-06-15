@@ -14,8 +14,12 @@ declare global {
   }
 }
 
-export type RootStackParamList = LaunchStackParamList & AuthStackParamList & TabsParamList & {
+export type RootStackParamList = LaunchStackParamList & AuthStackParamList & RootTabParamList & {
   App: NavigatorScreenParams<RootTabParamList> | undefined;
+  HomeTabScreen: undefined;
+  PaymentsTabScreen: undefined;
+  PortfolioTabScreen: undefined;
+  MoreTabScreen: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -42,7 +46,10 @@ export type AuthStackParamList = {
 }
 
 export type RootTabParamList = {
-  HomeTab: undefined;
+  HomeTabNavigator: undefined;
+  PaymentsTabNavigator: undefined;
+  PortfolioTabNavigator: undefined;
+  MoreTabNavigator: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
@@ -59,7 +66,6 @@ export type RenderProps = {
 
 
 export type TabsParamList = {
-  HomeTabNavigator: undefined;
 }
 
 export type TabScreensParamList = {

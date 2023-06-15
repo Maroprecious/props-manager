@@ -9,6 +9,7 @@ import colorsConstants from "src/constants/colors.constants";
 import OtpInput from "src/components/inputs/otpinputs.components";
 import AppThemeContext from "src/contexts/Theme.context";
 import globalConstants from "src/constants/global.constants";
+import { ScreenTitle } from "./components/screentitle.component";
 
 export default function OTPScreen({
   navigation,
@@ -31,19 +32,10 @@ export default function OTPScreen({
       <View style={{
         paddingTop: fontsConstants.h(50)
       }}>
-        <Text style={{
-          fontSize: fontsConstants.h(24),
-          textAlign: "center"
-        }}>
-          {`Forgot Password`}
-        </Text>
-        <Text style={{
-          fontSize: fontsConstants.h(12),
-          marginBottom: fontsConstants.h(50),
-          textAlign: "center"
-        }}>
-          {`Please enter the password reset PIN\nsent to your email ID`}
-        </Text>
+        <ScreenTitle
+          title={`Reset Password`}
+          intro={`Please enter the password reset PIN\nsent to your email ID`}
+        />
         <OtpInput
           value="2501"
           boxCount={4}

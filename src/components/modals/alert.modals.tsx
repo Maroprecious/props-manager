@@ -1,5 +1,5 @@
 import React, { JSXElementConstructor, ReactElement, useContext } from "react"
-import { View as RNView } from 'react-native'
+import { View as RNView, StyleProp, ViewStyle } from 'react-native'
 import { Text } from 'src/components/Themed'
 import { Image } from 'react-native-elements'
 import { Modalize } from "react-native-modalize"
@@ -11,20 +11,28 @@ import fontsConstants from "src/constants/fonts.constants";
 
 export const AlertModal = ({
   title = "Alert",
+  cancelButtonTitle = "Cancel",
   body,
   type = "success",
   modalRef,
   withButton = true,
+  withCancelButton = true,
   buttonTitle = 'Close',
-  onButtonPress
+  onButtonPress,
+  onCancelButtonPress,
+  cancelButtonContainerStyle = {}
 } : {
   modalRef?: any;
   withButton?: boolean;
+  withCancelButton?: boolean;
   buttonTitle?: string;
   onButtonPress?: Function;
+  onCancelButtonPress?: Function;
   title: string;
+  cancelButtonTitle?: string;
   type?: "success" | "error" | "info" | "warning"
   body?: string | ReactElement<{}, string | JSXElementConstructor<any>>;
+  cancelButtonContainerStyle?: StyleProp<ViewStyle>;
 }) => {
   const theme = useContext(AppThemeContext);
 
@@ -52,7 +60,8 @@ export const AlertModal = ({
           alignItems: "center"
         }}>
           <Text style={{
-            fontSize: fontsConstants.h(30)
+            fontSize: fontsConstants.h(30),
+            fontFamily: fontsConstants.Lora_Bold
           }}>
             {title}
           </Text>
@@ -65,12 +74,15 @@ export const AlertModal = ({
             style={{
               marginTop: fontsConstants.h(72),
               marginBottom: fontsConstants.h(27),
-              height: fontsConstants.h(117),
-              width: fontsConstants.h(117)
+              height: fontsConstants.h(100),
+              width: fontsConstants.h(100)
             }}
           />
           {typeof body === "string" ? (
-            <Text>{body}</Text>
+            <Text style={{
+              fontFamily: fontsConstants.Raleway_Regular,
+              fontSize: fontsConstants.h(14)
+            }}>{body}</Text>
           ) : body}
         </RNView>
         {withButton ? (
@@ -80,8 +92,26 @@ export const AlertModal = ({
               modalRef?.current?.close();
             }}
             containerStyle={{
-              marginTop: fontsConstants.h(260)
+              marginTop: withCancelButton ? fontsConstants.h(170) : fontsConstants.h(250)
             }}
+          />
+        ) : null}
+        {withCancelButton ? (
+          <DefaultButton
+            title={cancelButtonTitle}
+            type="outline"
+            onPress={onCancelButtonPress ? () => onCancelButtonPress() : () => {
+              modalRef?.current?.close();
+            }}
+            titleStyle={[{
+              color: colorsConstants.criticalRed
+            }]}
+            buttonStyle={[{
+              borderColor: colorsConstants.criticalRed,
+            }]}
+            containerStyle={[{
+              marginTop: fontsConstants.h(20),
+            }, cancelButtonContainerStyle]}
           />
         ) : null}
       </RNView>

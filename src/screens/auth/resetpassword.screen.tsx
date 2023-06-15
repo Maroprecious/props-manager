@@ -10,6 +10,8 @@ import AppThemeContext from "src/contexts/Theme.context";
 import { Modalize } from "react-native-modalize";
 import { AlertModal } from "src/components/modals/alert.modals";
 import globalConstants from "src/constants/global.constants";
+import { ScreenTitle } from "./components/screentitle.component";
+import colorsConstants from "src/constants/colors.constants";
 
 export default function ResetPasswordScreen({
   navigation,
@@ -32,19 +34,10 @@ export default function ResetPasswordScreen({
       <View style={{
         paddingTop: fontsConstants.h(50)
       }}>
-        <Text style={{
-          fontSize: fontsConstants.h(24),
-          textAlign: "center"
-        }}>
-          {`Enter New Password`}
-        </Text>
-        <Text style={{
-          fontSize: fontsConstants.h(12),
-          marginBottom: fontsConstants.h(40),
-          textAlign: "center"
-        }}>
-          {`Kindly enter new password`}
-        </Text>
+        <ScreenTitle
+          title={`Enter New Password`}
+          intro={`Kindly enter new password`}
+        />
         <DefaultInput
           placeholder="Enter new password"
           secureTextEntry
@@ -65,12 +58,15 @@ export default function ResetPasswordScreen({
           <>
             <Text style={{
               textAlign: "center",
-              fontSize: fontsConstants.h(25)
+              fontFamily: fontsConstants.Raleway_Regular,
+              fontSize: fontsConstants.h(25),
+              color: colorsConstants[theme].screenLabel
             }}>
               {`You have successfully\nsetup your new\npassword.`}            
             </Text>
             <Text style={{
               fontSize: fontsConstants.h(16),
+              fontFamily: fontsConstants.Raleway_Regular,
               marginTop: fontsConstants.h(9),
               textAlign: 'center'
             }}>

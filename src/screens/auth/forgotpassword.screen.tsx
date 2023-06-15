@@ -9,6 +9,7 @@ import { RootStackScreenProps } from "src/types/navigations.types";
 import colorsConstants from "src/constants/colors.constants";
 import AppThemeContext from "src/contexts/Theme.context";
 import globalConstants from "src/constants/global.constants";
+import { ScreenTitle } from "./components/screentitle.component";
 
 export default function ForgotPasswordScreen({
   navigation,
@@ -29,21 +30,14 @@ export default function ForgotPasswordScreen({
       />
       <HeaderBackButton/>
       <View style={{
-        paddingTop: fontsConstants.h(50)
+        paddingTop: fontsConstants.h(24)
       }}>
-        <Text style={{
-          fontSize: fontsConstants.h(24),
-          textAlign: "center"
-        }}>
-          {`Forgot Password`}
-        </Text>
-        <Text style={{
-          fontSize: fontsConstants.h(12),
-          marginBottom: fontsConstants.h(50),
-          textAlign: "center"
-        }}>
-          {`Please enter your email address. You will\nreceive a password reset PIN`}
-        </Text>
+        <ScreenTitle
+          title={`Forgot Password`}
+          intro={`Please enter your email address. You will\nreceive a password reset PIN`}
+          containerStyle={{
+          }}
+        />
         <DefaultInput
           placeholder="Enter email ID"
           keyboardType="email-address"
