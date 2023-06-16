@@ -8,6 +8,7 @@ import AppThemeContext from "src/contexts/Theme.context";
 import { DefaultButton } from "../buttons/buttons.components";
 import globalConstants from "src/constants/global.constants";
 import fontsConstants from "src/constants/fonts.constants";
+import { Keyboard } from "react-native"
 
 export const AlertModal = ({
   title = "Alert",
@@ -16,7 +17,7 @@ export const AlertModal = ({
   type = "success",
   modalRef,
   withButton = true,
-  withCancelButton = true,
+  withCancelButton = false,
   buttonTitle = 'Close',
   onButtonPress,
   onCancelButtonPress,
@@ -42,6 +43,9 @@ export const AlertModal = ({
       // withReactModal
       adjustToContentHeight={true}
       withHandle={false}
+      onOpen={() => {
+        Keyboard.dismiss()
+      }}
       modalStyle={{
         minHeight: "100%",
         borderTopLeftRadius: 0,

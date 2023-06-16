@@ -69,7 +69,7 @@ const WelcomeAppRputes = [
 ];
 
 const AppRoutes = () => {
-  const user = {id: "null"};
+  const user = {id: null};
   const routes = user?.id === null || user?.id === undefined ? WelcomeAppRputes : UserAppRoutes;
   return routes;
 };

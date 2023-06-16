@@ -83,7 +83,9 @@ export default function LoginScreen({
         }}>
           <TouchableOpacity style={{
 
-          }} activeOpacity={globalConstants.activeOpacity}>
+          }} activeOpacity={globalConstants.activeOpacity}
+            onPress={() => navigation.navigate("CreateAccountScreen")}
+          >
           <Text style={styles.linkTextStyle}>
               {`Don't have an account? `}
               <Text style={{
@@ -131,8 +133,12 @@ export default function LoginScreen({
             titleStyle={styles.socailButtonTitleStyle}
             buttonHeight={fontsConstants.h(50)}
             buttonStyle={[styles.socialButtonContainerStyle, {
-              marginRight: fontsConstants.w(7)
             }]}
+            containerStyle={{
+              borderRadius: fontsConstants.h(10),
+              marginRight: fontsConstants.w(7)
+            }}
+            raised
           />
           <DefaultButton
             title={`Facebook`}
@@ -149,8 +155,12 @@ export default function LoginScreen({
             titleStyle={styles.socailButtonTitleStyle}
             buttonHeight={fontsConstants.h(50)}
             buttonStyle={[styles.socialButtonContainerStyle, {
-              marginLeft: fontsConstants.w(7)
             }]}
+            containerStyle={{
+              borderRadius: fontsConstants.h(10),
+              marginLeft: fontsConstants.w(7)
+            }}
+            raised
           />
         </RNView>
       </View>
@@ -167,7 +177,7 @@ const styles = StyleSheet.create({
     fontSize: fontsConstants.h(12)
   },
   socialButtonContainerStyle: {
-    width: fontsConstants.w(130),
+    width: fontsConstants.w(150),
     borderRadius: fontsConstants.h(10),
     backgroundColor: "#F3F4F5" 
   },

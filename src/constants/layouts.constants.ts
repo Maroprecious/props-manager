@@ -13,5 +13,6 @@ export default {
   tabBarHeight: Platform.OS === "android" ? 
     fontsConstants.h(76) :
     fontsConstants.h(80),
-  activeOpacity: 0.6
+  activeOpacity: 0.6,
+  mainViewHorizontalPadding: fontsConstants.w(30),
 };
