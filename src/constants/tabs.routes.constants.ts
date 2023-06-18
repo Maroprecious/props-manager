@@ -1,4 +1,5 @@
 import HomeTabScreen from "src/screens/hometab";
+import MoreTabScreen from "src/screens/motetab";
 import { RenderProps } from "src/types/navigations.types";
 
 export const HomeTabRoutes: Array<RenderProps> = [{
@@ -29,8 +30,8 @@ export const PortfolioTabRoutes: Array<RenderProps> = [{
 }];
 
 export const MoreTabRoutes: Array<RenderProps> = [{
-  name: "HomeTabScreen",
-  component: HomeTabScreen,
+  name: "MoreTabScreen",
+  component: MoreTabScreen,
   options: {
     headerShown: false,
   },

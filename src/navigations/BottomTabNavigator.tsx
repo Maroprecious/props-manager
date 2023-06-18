@@ -149,7 +149,7 @@ export function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="PortfolioTabNavigator"
-        component={MoreTabNavigator}
+        component={PaymentsTabNavigator}
         options={{
           title: 'Portfolio',
           headerShown: false,
@@ -174,7 +174,7 @@ export function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="MoreTabNavigator"
-        component={PaymentsTabNavigator}
+        component={MoreTabNavigator}
         options={{
           headerShown: false,
           title: 'More',
