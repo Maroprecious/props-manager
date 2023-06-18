@@ -18,6 +18,8 @@ const Lora_Medium = 'Lora-Medium';
 const Lora_Regular = 'Lora-Regular';
 const Lora_SemiBold = 'Lora-SemiBold';
 const Raleway_Regular = 'Raleway-Regular';
+const Roboto_Light = "Roboto-Light";
+const Roboto_Black = "Roboto-Black";
 
 function normalize(size: number): number {
     return Math.round(DEVICE_SCALE * size);
@@ -41,5 +43,7 @@ export default {
     Lora_Medium,
     Lora_Regular,
     Lora_SemiBold,
-    Raleway_Regular
+    Raleway_Regular,
+    Roboto_Light,
+    Roboto_Black
 }

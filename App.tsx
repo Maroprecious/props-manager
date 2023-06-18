@@ -10,6 +10,7 @@ import { LogBox } from "react-native";
 import React from "react";
 import Navigation from "src/navigations";
 import AppThemeContext from "src/contexts/Theme.context";
+import { ConfirmModal } from "src/components/modals/confirm.modals";
 
 export default function App() {
   // const [loaded, error] = useFonts(cachedFonts);
@@ -43,6 +44,9 @@ export default function App() {
         <SafeAreaProvider>
           <StatusBar />
           <Navigation colorScheme={colorScheme} />
+          <ConfirmModal
+            
+          />
         </SafeAreaProvider>
       </AppThemeContext.Provider>
     </GestureHandlerRootView>

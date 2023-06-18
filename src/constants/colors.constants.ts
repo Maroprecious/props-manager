@@ -8,6 +8,8 @@ export default {
   colorPrimary,
   criticalRed,
   colorWhite,
+  avatarBg: "#EAEAEA",
+  radioBoxActive: "#BFD602",
   light: {
     text: '#000',
     background: '#fff',
@@ -36,6 +38,9 @@ export default {
     darkText: '#030303',
     textBlack2: '#242A37',
     lighterBlue: '#2972E6',
+    borderLine: "rgba(0, 0, 0, 0.25)",
+    cardBg: "#fff",
+    modalBg: "#030303"
   },
   dark: {
     text: '#fff',
@@ -48,5 +53,9 @@ export default {
     inputPlaceHolderColor: 'rgba(240, 240, 240, 0.2)',
     screenLabel: "rgba(255, 255, 255, 0.8)",
     screenIntro: "rgba(255, 255, 255, 0.6)",
+    borderLine: "rgba(255, 255, 255, 0.25)",
+    darkText: '#fefefe',
+    cardBg: "#121212",
+    modalBg: "#030303"
   },
 };

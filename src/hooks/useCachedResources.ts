@@ -30,6 +30,8 @@ export default function useCachedResources() {
           "Lora-SemiBold": require("../assets/fonts/Lora-SemiBold.ttf"),
           "FontsFree-Net-SF-Pro-Rounded-Medium": require("../assets/fonts/FontsFree-Net-SF-Pro-Rounded-Medium.ttf"),
           "Raleway-Regular": require("../assets/fonts/Raleway-Regular.ttf"),
+          "Roboto-Light": require("../assets/fonts/Roboto-Light.ttf"),
+          "Roboto-Black": require("../assets/fonts/Roboto-Black.ttf"),
         });
         // await new Promise(resolve => setTimeout(resolve, 5000));
       } catch (e) {
