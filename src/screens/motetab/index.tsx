@@ -157,7 +157,7 @@ export default function MoreTabScreen({
                 break;
             
               default:
-                // navigation.navigate(menu.screen)
+                navigation.navigate("NotificationsScreen")
                 break;
             }
           }}

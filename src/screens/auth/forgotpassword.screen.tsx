@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
-import { View, Text, SafeAreaView } from "src/components/Themed";
+import { View, SafeAreaView } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import { DefaultInput } from "src/components/inputs/inputs.components";
 import fontsConstants from "src/constants/fonts.constants";
@@ -30,7 +30,7 @@ export default function ForgotPasswordScreen({
       />
       <HeaderBackButton/>
       <View style={{
-        paddingTop: fontsConstants.h(24)
+        paddingTop: fontsConstants.h(12)
       }}>
         <ScreenTitle
           title={`Forgot Password`}
@@ -68,7 +68,7 @@ export default function ForgotPasswordScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: fontsConstants.h(50),
+    paddingTop: fontsConstants.h(40),
     paddingHorizontal: globalConstants.mainViewHorizontalPadding
   },
 });

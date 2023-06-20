@@ -80,12 +80,12 @@ export const HeaderBackButton = ({
     >
       <Image
         style={[
-          { width: fontsConstants.h(24), height: fontsConstants.h(16), resizeMode: "contain" },
+          { width: fontsConstants.h(25), height: fontsConstants.h(25)},
           style,
         ]}
         source={ iconSource ? iconSource :
           theme === "dark"
-            ? require("src/assets/images/icons/arrrow-back-dark.png")
+            ? require("src/assets/images/icons/arrrow-back-light.png")
             : require("src/assets/images/icons/arrrow-back-dark.png")
         }
       />

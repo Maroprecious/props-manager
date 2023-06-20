@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useContext, useRef } from "react";
 import { StyleSheet } from "react-native";
 import { View, Text, SafeAreaView } from "src/components/Themed";
-import { DefaultButton } from "src/components/buttons/buttons.components";
+import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import { DefaultInput } from "src/components/inputs/inputs.components";
 import fontsConstants from "src/constants/fonts.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
@@ -31,8 +31,9 @@ export default function ResetPasswordScreen({
       <StatusBar
         translucent={true}
       />
+      <HeaderBackButton/>
       <View style={{
-        paddingTop: fontsConstants.h(50)
+        paddingTop: fontsConstants.h(12)
       }}>
         <ScreenTitle
           title={`Enter New Password`}
@@ -83,7 +84,7 @@ export default function ResetPasswordScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: fontsConstants.h(50),
+    paddingTop: fontsConstants.h(40),
     paddingHorizontal: globalConstants.mainViewHorizontalPadding
   },
 });

@@ -3,11 +3,13 @@ const tintColorDark = '#fff';
 const colorPrimary = '#0041A0';
 const colorWhite = "#ffffff";
 const criticalRed = "#EB212D";
+const colorSuccess = "#079B2F";
 
 export default {
   colorPrimary,
   criticalRed,
   colorWhite,
+  colorSuccess,
   avatarBg: "#EAEAEA",
   radioBoxActive: "#BFD602",
   light: {
@@ -40,7 +42,8 @@ export default {
     lighterBlue: '#2972E6',
     borderLine: "rgba(0, 0, 0, 0.25)",
     cardBg: "#fff",
-    modalBg: "#030303"
+    modalBg: "#030303",
+    dateMonthColor: "#A3A3A3"
   },
   dark: {
     text: '#fff',
@@ -56,6 +59,7 @@ export default {
     borderLine: "rgba(255, 255, 255, 0.25)",
     darkText: '#fefefe',
     cardBg: "#121212",
-    modalBg: "#030303"
+    modalBg: "#030303",
+    dateMonthColor: "#A3A3A3"
   },
 };
