@@ -30,7 +30,7 @@ export default function OTPScreen({
       />
       <HeaderBackButton/>
       <View style={{
-        paddingTop: fontsConstants.h(50)
+        paddingTop: fontsConstants.h(12)
       }}>
         <ScreenTitle
           title={`Reset Password`}
@@ -69,7 +69,7 @@ export default function OTPScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: fontsConstants.h(50),
+    paddingTop: fontsConstants.h(40),
     paddingHorizontal: globalConstants.mainViewHorizontalPadding
   },
 });

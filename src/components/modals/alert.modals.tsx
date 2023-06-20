@@ -96,7 +96,7 @@ export const AlertModal = ({
               modalRef?.current?.close();
             }}
             containerStyle={{
-              marginTop: withCancelButton ? fontsConstants.h(170) : fontsConstants.h(250)
+              marginTop: withCancelButton ? fontsConstants.h(130) : fontsConstants.h(210)
             }}
           />
         ) : null}

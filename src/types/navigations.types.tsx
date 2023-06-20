@@ -20,6 +20,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   PaymentsTabScreen: undefined;
   PortfolioTabScreen: undefined;
   MoreTabScreen: undefined;
+  NotificationsScreen: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

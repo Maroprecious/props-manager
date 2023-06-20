@@ -9,7 +9,7 @@ import AppThemeContext from "src/contexts/Theme.context";
 
 export const ScreenTitle = ({
   title = "Title",
-  intro = "Intro",
+  intro,
   containerStyle = {}
 } : {
   title: string,
@@ -29,15 +29,17 @@ export const ScreenTitle = ({
       }}>
         {title}
       </Text>
-      <Text style={{
-        fontSize: fontsConstants.h(12),
-        marginBottom: fontsConstants.h(50),
-        marginTop: fontsConstants.h(10),
-        textAlign: "center",
-        color: colorsConstants[theme].screenIntro
-      }}>
-        {intro}
-      </Text>
+      {intro ? (
+        <Text style={{
+          fontSize: fontsConstants.h(12),
+          marginBottom: fontsConstants.h(50),
+          marginTop: fontsConstants.h(10),
+          textAlign: "center",
+          color: colorsConstants[theme].screenIntro
+        }}>
+          {intro}
+        </Text>
+      ) : null}
     </View>
   )
 } 

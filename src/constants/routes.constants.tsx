@@ -5,6 +5,12 @@ import ForgotPasswordScreen from "src/screens/auth/forgotpassword.screen";
 import OTPScreen from "src/screens/auth/otp.screen";
 import ResetPasswordScreen from "src/screens/auth/resetpassword.screen";
 import { BottomTabNavigator } from "src/navigations/BottomTabNavigator";
+import NotificationsScreen from "src/screens/notifications";
+import { HeaderBackButton } from "src/components/buttons/buttons.components";
+import React from "react";
+import fontsConstants from "./fonts.constants";
+import layoutsConstants from "./layouts.constants";
+import { View } from "src/components/Themed";
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -19,6 +25,23 @@ export const UserAppRoutes = [
       headerShown: false,
     },
     initialParams: {},
+  }, {
+    name: "NotificationsScreen",
+    component: NotificationsScreen,
+    options: {
+      headerShown: false,
+      header: ({  }) => (
+        <View>
+          <HeaderBackButton
+            containerStyle={{
+              marginTop: fontsConstants.h(40),
+              paddingHorizontal: layoutsConstants.mainViewHorizontalPadding
+            }}
+          />
+        </View>
+      ),
+    },
+    initialParams: {}
   }
 ];
 
