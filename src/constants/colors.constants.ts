@@ -43,7 +43,8 @@ export default {
     borderLine: "rgba(0, 0, 0, 0.25)",
     cardBg: "#fff",
     modalBg: "#030303",
-    dateMonthColor: "#A3A3A3"
+    dateMonthColor: "#A3A3A3",
+    darkText3: "#000B22"
   },
   dark: {
     text: '#fff',
@@ -60,6 +61,7 @@ export default {
     darkText: '#fefefe',
     cardBg: "#121212",
     modalBg: "#030303",
-    dateMonthColor: "#A3A3A3"
+    dateMonthColor: "#A3A3A3",
+    darkText3: "rgba(255, 255, 255, 0.6)"
   },
 };

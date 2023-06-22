@@ -29,6 +29,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   OTPVerifyScreen: {
     type: verificationType
   }
+  InviteScreen: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

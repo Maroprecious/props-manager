@@ -143,7 +143,7 @@ export default function MoreTabScreen({
           </View> */}
         </>
       </DefaultCard>
-      {MenuItems.map((menu, index) => (
+      {MenuItems.map((menu: any, index) => (
         <TouchableOpacity
           activeOpacity={layoutsConstants.activeOpacity}
           onPress={() => {
@@ -157,9 +157,7 @@ export default function MoreTabScreen({
                 break;
             
               default:
-                navigation.navigate("VerifyEmailScreen", {
-                  type: "verify-email"
-                })
+                navigation.navigate(menu.screen)
                 break;
             }
           }}

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, Text, StyleSheet, Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -124,7 +124,7 @@ export function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="PaymentsTabNavigator"
-        component={PortfolioTabNavigator}
+        component={PaymentsTabNavigator}
         options={{
           title: 'Payments',
           headerShown: false,
@@ -133,8 +133,7 @@ export function BottomTabNavigator() {
               backgroundColor: focused ? colorsConstants.colorWhite : undefined,
             }]}>
               <Icon
-                type="ionicon"
-                name={focused ? `compass` : `compass-outline`}
+                name={focused ? `account-balance-wallet` : `account-balance-wallet`}
                 size={fontsConstants.h(20)}
                 color={focused ? colorsConstants.colorPrimary : colorsConstants[theme].tabIconDefault}
               />
@@ -149,7 +148,7 @@ export function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="PortfolioTabNavigator"
-        component={PaymentsTabNavigator}
+        component={PortfolioTabNavigator}
         options={{
           title: 'Portfolio',
           headerShown: false,
@@ -157,9 +156,8 @@ export function BottomTabNavigator() {
             <View style={[styles.tabBarItemViewStyle, {
               backgroundColor: focused ? colorsConstants.colorWhite : undefined,
             }]}>
-              <Icon
-                type="ionicon"
-                name={focused ? `chatbubble-ellipses` : `chatbubble-ellipses-outline`}
+              <FontAwesome5
+                name={focused ? `mail-bulk` : `mail-bulk`}
                 size={fontsConstants.h(20)}
                 color={focused ? colorsConstants.colorPrimary : colorsConstants[theme].tabIconDefault}
               />

@@ -1,5 +1,7 @@
 import HomeTabScreen from "src/screens/hometab";
 import MoreTabScreen from "src/screens/motetab";
+import PaymentsTabScreen from "src/screens/paymentstab";
+import PortfolioTabScreen from "src/screens/portfolio";
 import { RenderProps } from "src/types/navigations.types";
 
 export const HomeTabRoutes: Array<RenderProps> = [{
@@ -13,7 +15,7 @@ export const HomeTabRoutes: Array<RenderProps> = [{
 
 export const PaymentsTabRoutes: Array<RenderProps> = [{
   name: "PaymentsTabScreen",
-  component: HomeTabScreen,
+  component: PaymentsTabScreen,
   options: {
     headerShown: false,
   },
@@ -21,8 +23,8 @@ export const PaymentsTabRoutes: Array<RenderProps> = [{
 }];
 
 export const PortfolioTabRoutes: Array<RenderProps> = [{
-  name: "HomeTabScreen",
-  component: HomeTabScreen,
+  name: "PortfolioTabScreen",
+  component: PortfolioTabScreen,
   options: {
     headerShown: false,
   },

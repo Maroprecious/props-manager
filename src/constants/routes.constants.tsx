@@ -11,6 +11,7 @@ import React from "react";
 import fontsConstants from "./fonts.constants";
 import layoutsConstants from "./layouts.constants";
 import { View } from "src/components/Themed";
+import InviteScreen from "src/screens/motetab/invite.screen";
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -60,6 +61,13 @@ export const UserAppRoutes = [
     initialParams: {
       type: "verify-email"
     },
+  }, {
+    name: "InviteScreen",
+    component: InviteScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
   }
 ];
 
