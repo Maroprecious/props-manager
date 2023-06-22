@@ -42,6 +42,24 @@ export const UserAppRoutes = [
       ),
     },
     initialParams: {}
+  }, {
+    name: "VerifyEmailScreen",
+    component: ForgotPasswordScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {
+      type: "verify-email"
+    }
+  }, {
+    name: "OTPVerifyScreen",
+    component: OTPScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {
+      type: "verify-email"
+    },
   }
 ];
 

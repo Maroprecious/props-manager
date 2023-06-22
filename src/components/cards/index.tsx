@@ -43,7 +43,8 @@ export const NotificationItemCard = ({
   items = [{
     title: "",
     type: "settings",
-    text: ""
+    text: "",
+    id: 1
   }],
   onMenuPress = () => null,
   onNotificationItemPress = () => null,

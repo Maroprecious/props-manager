@@ -14,6 +14,8 @@ declare global {
   }
 }
 
+export type verificationType = "verify-email" | "verify-phone-number" | "reset-password";
+
 export type RootStackParamList = LaunchStackParamList & AuthStackParamList & RootTabParamList & {
   App: NavigatorScreenParams<RootTabParamList> | undefined;
   HomeTabScreen: undefined;
@@ -21,6 +23,12 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   PortfolioTabScreen: undefined;
   MoreTabScreen: undefined;
   NotificationsScreen: undefined;
+  VerifyEmailScreen: {
+    type: verificationType
+  }
+  OTPVerifyScreen: {
+    type: verificationType
+  }
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -40,9 +48,13 @@ export type LaunchStackParamList = {
 
 export type AuthStackParamList = {
   LoginScreen: undefined;
-  ForgotPasswordScreen: undefined;
+  ForgotPasswordScreen: {
+    type: verificationType
+  };
   CreateAccountScreen: undefined;
-  OTPScreen: undefined;
+  OTPScreen: {
+    type: verificationType
+  };
   ResetPasswordScreen: undefined;
 }
 
