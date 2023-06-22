@@ -157,7 +157,9 @@ export default function MoreTabScreen({
                 break;
             
               default:
-                navigation.navigate("NotificationsScreen")
+                navigation.navigate("VerifyEmailScreen", {
+                  type: "verify-email"
+                })
                 break;
             }
           }}

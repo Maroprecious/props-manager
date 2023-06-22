@@ -5,7 +5,7 @@ import { View, SafeAreaView } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import { DefaultInput } from "src/components/inputs/inputs.components";
 import fontsConstants from "src/constants/fonts.constants";
-import { RootStackScreenProps } from "src/types/navigations.types";
+import { RootStackScreenProps, verificationType } from "src/types/navigations.types";
 import colorsConstants from "src/constants/colors.constants";
 import AppThemeContext from "src/contexts/Theme.context";
 import globalConstants from "src/constants/global.constants";
@@ -17,8 +17,19 @@ export default function ForgotPasswordScreen({
 }: RootStackScreenProps<"ForgotPasswordScreen">) {
   const theme = useContext(AppThemeContext);
 
-  const doGetRetPin = async () => {
-    navigation.navigate("OTPScreen")
+  const screenType: verificationType = route.params?.type;
+
+  const doGetPin = async () => {
+    switch (screenType) {
+      case "reset-password":
+        navigation.navigate("OTPScreen", route.params)
+        break;
+      case "verify-email": 
+        navigation.navigate("OTPVerifyScreen", route.params)
+        break;
+      default:
+        break;
+    }
   }
 
   return (
@@ -33,8 +44,14 @@ export default function ForgotPasswordScreen({
         paddingTop: fontsConstants.h(12)
       }}>
         <ScreenTitle
-          title={`Forgot Password`}
-          intro={`Please enter your email address. You will\nreceive a password reset PIN`}
+          title={screenType === "reset-password" ? `Forgot Password`
+            : screenType === "verify-email" ? `Verify Email`
+            : ``
+          }
+          intro={screenType === "reset-password" ? `Please enter your email address. You will\nreceive a password reset PIN` 
+            : screenType === "verify-email" ? `Please enter your email address, You will receive an email verification PIN.`
+            : ``
+          }
           containerStyle={{
           }}
         />
@@ -43,8 +60,11 @@ export default function ForgotPasswordScreen({
           keyboardType="email-address"
         />
         <DefaultButton
-          title={`Send Reset PIN`}
-          onPress={doGetRetPin}
+          title={screenType === "reset-password" ? `Send Reset PIN`
+            : screenType === "verify-email" ? `Send Verification PIN`
+            : `Verify`
+          }
+          onPress={doGetPin}
         />
         <DefaultButton
           title={`Cancel`}
