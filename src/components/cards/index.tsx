@@ -8,6 +8,7 @@ import { Text } from "src/components/Themed";
 import moment from "moment";
 import layoutsConstants from "src/constants/layouts.constants";
 import { NotificationProps, NotificationType } from "src/types/app.types";
+import { ImageSourcePropType } from "react-native";
 
 export const DefaultCard = ({
   children = <></>,
@@ -49,11 +50,13 @@ export const NotificationItemCard = ({
   onMenuPress = () => null,
   onNotificationItemPress = () => null,
   containerStyle = {},
+  showMenuButton = true,
   ...props
 } : {
   onMenuPress?: Function
   onNotificationItemPress?: Function
   containerStyle?: StyleProp<ViewStyle>
+  showMenuButton?: boolean
 } & NotificationProps & CardProps) => {
   const theme = useContext(AppThemeContext);
   return (
@@ -168,14 +171,16 @@ export const NotificationItemCard = ({
               </TouchableOpacity>
             ))}
           </View>
-          <Icon
-            name="ellipsis-vertical"
-            type="ionicon"
-            color={colorsConstants[theme].dateMonthColor}
-            size={fontsConstants.h(20)}
-            onPress={() => onMenuPress()}
-            activeOpacity={layoutsConstants.activeOpacity}
-          />
+          {showMenuButton ? (
+            <Icon
+              name="ellipsis-vertical"
+              type="ionicon"
+              color={colorsConstants[theme].dateMonthColor}
+              size={fontsConstants.h(20)}
+              onPress={() => onMenuPress()}
+              activeOpacity={layoutsConstants.activeOpacity}
+            />
+          ) : <></>}          
         </View>
       </View>
       <View
@@ -269,5 +274,70 @@ export const RenderNotificationItemIcon = ({
         }}
       />
     </View>
+  )
+}
+
+export const MenuItemCard = ({
+  onItemPress = () => null,
+  label = "Item",
+  containerStyle = {},
+  icon = require("src/assets/images/icons/buy-airtime.png"),
+  ...props
+} : {
+  label: string
+  onItemPress?: Function
+  icon?: ImageSourcePropType
+  containerStyle?: StyleProp<ViewStyle>
+} & CardProps ) => {
+  const theme = useContext(AppThemeContext);
+  return  (
+    <Card
+      containerStyle={[{
+        marginTop: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
+        paddingLeft: 0,
+        paddingRight: 0,
+        backgroundColor: colorsConstants[theme].cardBg,
+        borderRadius: fontsConstants.w(15),
+        borderWidth: 0,
+        elevation: 5,
+        alignItems: "center",
+        justifyContent: "center",
+        height: fontsConstants.w(90),
+        width: fontsConstants.w(90),
+        marginBottom: fontsConstants.h(30),
+        marginLeft: fontsConstants.w(10),
+        marginRight: fontsConstants.w(10)
+      }, containerStyle]
+      }
+      {...props}
+    >
+      <TouchableOpacity
+        onPress={() => onItemPress()}
+        activeOpacity={layoutsConstants.activeOpacity}
+        style={{
+          alignItems: "center"
+        }}
+      >
+        <Image
+          source={icon}
+          style={{
+            height: fontsConstants.w(25),
+            width: fontsConstants.w(25),
+            marginBottom: fontsConstants.h(5),
+          }}
+        />
+        <Text style={{
+          color: colorsConstants[theme].darkText,
+          fontFamily: fontsConstants.Lora_Regular,
+          fontSize: fontsConstants.h(12),
+          lineHeight: fontsConstants.h(15),
+          textAlign: "center"
+        }}>
+          {label}
+        </Text>
+      </TouchableOpacity>
+    </Card>
   )
 }

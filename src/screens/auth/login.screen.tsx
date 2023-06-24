@@ -9,7 +9,6 @@ import fontsConstants from "src/constants/fonts.constants";
 import globalConstants from "src/constants/global.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
-import colorsConstants from "src/constants/colors.constants";
 import { ScreenTitle } from "./components/screentitle.component";
 
 export default function LoginScreen({

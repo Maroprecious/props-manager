@@ -32,6 +32,10 @@ export default function useCachedResources() {
           "Raleway-Regular": require("../assets/fonts/Raleway-Regular.ttf"),
           "Roboto-Light": require("../assets/fonts/Roboto-Light.ttf"),
           "Roboto-Black": require("../assets/fonts/Roboto-Black.ttf"),
+          "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
+          "Avenir-Medium": require("../assets/fonts/Avenir-Medium.ttf"),
+          "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+          "Roboto-Medium": require("../assets/fonts/Roboto-Medium.ttf"),
         });
         // await new Promise(resolve => setTimeout(resolve, 5000));
       } catch (e) {

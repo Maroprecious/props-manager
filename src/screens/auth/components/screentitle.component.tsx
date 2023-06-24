@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { ViewStyle } from "react-native";
+import { TextStyle, ViewStyle } from "react-native";
 import { StyleProp } from "react-native";
 import { View } from "react-native";
 import { Text } from "src/components/Themed";
@@ -10,10 +10,12 @@ import AppThemeContext from "src/contexts/Theme.context";
 export const ScreenTitle = ({
   title = "Title",
   intro,
-  containerStyle = {}
+  containerStyle = {},
+  introTextStyle = {},
 } : {
   title: string,
   intro?: string,
+  introTextStyle?: StyleProp<TextStyle>
   containerStyle?: StyleProp<ViewStyle>
 }) => {
 
@@ -30,13 +32,14 @@ export const ScreenTitle = ({
         {title}
       </Text>
       {intro ? (
-        <Text style={{
+        <Text style={[{
+          fontFamily: fontsConstants.Lora_Regular,
           fontSize: fontsConstants.h(12),
           marginBottom: fontsConstants.h(50),
           marginTop: fontsConstants.h(10),
           textAlign: "center",
           color: colorsConstants[theme].screenIntro
-        }}>
+        }, introTextStyle]}>
           {intro}
         </Text>
       ) : null}
