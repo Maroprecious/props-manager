@@ -50,11 +50,13 @@ export const NotificationItemCard = ({
   onMenuPress = () => null,
   onNotificationItemPress = () => null,
   containerStyle = {},
+  showMenuButton = true,
   ...props
 } : {
   onMenuPress?: Function
   onNotificationItemPress?: Function
   containerStyle?: StyleProp<ViewStyle>
+  showMenuButton?: boolean
 } & NotificationProps & CardProps) => {
   const theme = useContext(AppThemeContext);
   return (
@@ -169,14 +171,16 @@ export const NotificationItemCard = ({
               </TouchableOpacity>
             ))}
           </View>
-          <Icon
-            name="ellipsis-vertical"
-            type="ionicon"
-            color={colorsConstants[theme].dateMonthColor}
-            size={fontsConstants.h(20)}
-            onPress={() => onMenuPress()}
-            activeOpacity={layoutsConstants.activeOpacity}
-          />
+          {showMenuButton ? (
+            <Icon
+              name="ellipsis-vertical"
+              type="ionicon"
+              color={colorsConstants[theme].dateMonthColor}
+              size={fontsConstants.h(20)}
+              onPress={() => onMenuPress()}
+              activeOpacity={layoutsConstants.activeOpacity}
+            />
+          ) : <></>}          
         </View>
       </View>
       <View

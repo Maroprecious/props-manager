@@ -36,11 +36,12 @@ export default function PaymentsTabScreen({
             marginTop: fontsConstants.h(20)
           }}
         >
-          {PaymentsMenuItems.map((item, index) => (
+          {PaymentsMenuItems.map((item: any, index) => (
             <MenuItemCard
               key={index.toString()}
               label={item.label}
               icon={item.icon}
+              onItemPress={() => navigation.navigate(item.screen)}
             />
           ))}
         </RNView>

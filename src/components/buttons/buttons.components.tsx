@@ -29,6 +29,14 @@ export const DefaultButton = ({
         fontSize: fontsConstants.h(20)
       }, titleStyle]}
       type={type}
+      disabledStyle={{
+        backgroundColor: type === "solid" ? 
+          colorsConstants.colorPrimaryDisabled
+          : undefined,
+      }}
+      disabledTitleStyle={{
+        color: type === "solid" ? colorsConstants.colorWhite : undefined
+      }}
       buttonStyle={[{
         height: buttonHeight,
         borderRadius: borderRadius,

@@ -36,11 +36,12 @@ export default function PortfolioTabScreen({
             marginTop: fontsConstants.h(20)
           }}
         >
-          {PortfolioMenuItems.map((item, index) => (
+          {PortfolioMenuItems.map((item: any, index) => (
             <MenuItemCard
               key={index.toString()}
               label={item.label}
               icon={item.icon}
+              onItemPress={() => navigation.navigate(item.screen)}
             />
           ))}
         </RNView>

@@ -30,6 +30,16 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
     type: verificationType
   }
   InviteScreen: undefined;
+  PayRentScreen: undefined;
+  ConfirmRentPayment: {
+    amount: number,
+  };
+  TransactionsScreen: undefined;
+  RentalsScreen: undefined;
+  ViewRentalScreen: {
+    rental: any
+  };
+  DocumentsScreen: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

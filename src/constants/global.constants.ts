@@ -112,11 +112,40 @@ export const NotificationsData: NotificationProps[] = [{
   }]
 }, ...RecentActivitiesData]
 
+export const TransactionHistory: NotificationProps[] = [{
+  date: "2023-04-26",
+  items: [{
+    id: 1,
+    title: "Rent Paid",
+    type: "bill",
+    text: "You have successfully paid your rent for property ID: 00038 Amount: ₦1,500,000 Transaction ID: 010334903",
+    status: "success"
+  }]
+}, {
+  date: "2023-04-16",
+  items: [{
+    id: 2,
+    title: "Airtime Recharge",
+    type: "bill",
+    text: "You have successfully recharged airtime for 07010203040 Amount: ₦1,500 Transaction ID: 010334903",
+    status: "success"
+  }]
+}, {
+  date: "2023-03-01",
+  items: [{
+    id: 3,
+    title: "Cable TV Payment",
+    type: "bill",
+    text: "You successfully paid for DSTV subscription Amount: ₦11,500 Transaction ID: 010334903",
+    status: "success"
+  }]
+}]
+
 export const PaymentsMenuItems = [{
   id: 1,
   label: "Pay\nRent",
   icon: require("src/assets/images/icons/buy-airtime.png"),
-  screen: ""
+  screen: "PayRentScreen"
 }, {
   id: 2,
   label: "Pay\nBills",
@@ -141,19 +170,19 @@ export const PaymentsMenuItems = [{
   id: 6,
   label: "Transaction\nHistory",
   icon: require("src/assets/images/icons/transaction-history.png"),
-  screen: ""
+  screen: "TransactionsScreen"
 }]
 
 export const PortfolioMenuItems = [{
   id: 1,
   label: "Rental",
   icon: require("src/assets/images/icons/rental.png"),
-  screen: ""
+  screen: "RentalsScreen"
 }, {
   id: 2,
   label: "Documents",
   icon: require("src/assets/images/icons/documents.png"),
-  screen: ""
+  screen: "DocumentsScreen"
 }]
 
 export const DashboardSliderInfo = [{
@@ -170,6 +199,31 @@ export const DashboardSliderInfo = [{
   hasLink: true,
   linkLabel: `Click to Add Details`,
   image: require("src/assets/images/add-tenancy-image.png")
+}]
+
+export const Tenancies = [{
+  id: 1,
+  address: '10 Alake Street, Victoria Island. Lagos',
+  rentAmount: 1350000,
+  dueDate: `2023-02-25`
+}, {
+  id: 2,
+  address: '14 Akeju Street, Victoria Island. Lagos',
+  rentAmount: 1750000,
+  dueDate: `2023-01-14`,
+  landlord: 'Mr Money',
+  propertyId: 'AXV-MPM-443'
+}]
+
+export const DefaultDocuments = [{
+  title: 'Tenancy Agreement',
+  id: 1,
+}, {
+  title: 'Legal Statement',
+  id: 2,
+}, {
+  title: 'Signed Reference Form',
+  id: 3
 }]
 
 export default {

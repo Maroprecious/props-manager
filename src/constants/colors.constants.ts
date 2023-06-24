@@ -1,12 +1,14 @@
 const tintColorLight = '#2f95dc';
 const tintColorDark = '#fff';
 const colorPrimary = '#0041A0';
+const colorPrimaryDisabled = 'rgba(0, 65, 160, 0.3)';
 const colorWhite = "#ffffff";
 const criticalRed = "#EB212D";
 const colorSuccess = "#079B2F";
 
 export default {
   colorPrimary,
+  colorPrimaryDisabled,
   criticalRed,
   colorWhite,
   colorSuccess,
@@ -36,6 +38,7 @@ export default {
     textLightGrey: '#949496',
     lighterGrey: "rgba(200, 200, 201, 0.13)",
     grey: '#C8C8C9',
+    'grey0.13': "rgba(200, 200, 201, 0.13)",
     textBlack: '#000000',
     darkText: '#030303',
     textBlack2: '#242A37',
@@ -58,6 +61,8 @@ export default {
     screenLabel: "rgba(255, 255, 255, 0.8)",
     screenIntro: "rgba(255, 255, 255, 0.6)",
     borderLine: "rgba(255, 255, 255, 0.25)",
+    grey: '#C8C8C9',
+    'grey0.13': "rgba(200, 200, 201, 0.13)",
     darkText: '#fefefe',
     cardBg: "#121212",
     modalBg: "#030303",

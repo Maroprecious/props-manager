@@ -12,6 +12,12 @@ import fontsConstants from "./fonts.constants";
 import layoutsConstants from "./layouts.constants";
 import { View } from "src/components/Themed";
 import InviteScreen from "src/screens/motetab/invite.screen";
+import PayRentScreen from "src/screens/rent/payrent.screen";
+import ConfirmRentPayment from "src/screens/rent/confirmrentpayment.screen";
+import TransactionsScreen from "src/screens/transactions/history.screen";
+import RentalsScreen from "src/screens/rent/rentals.screen";
+import ViewRentalScreen from "src/screens/rent/view.screen";
+import DocumentsScreen from "src/screens/rent/documents.screen";
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -64,6 +70,48 @@ export const UserAppRoutes = [
   }, {
     name: "InviteScreen",
     component: InviteScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "PayRentScreen",
+    component: PayRentScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "ConfirmRentPayment",
+    component: ConfirmRentPayment,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "TransactionsScreen",
+    component: TransactionsScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "RentalsScreen",
+    component: RentalsScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "ViewRentalScreen",
+    component: ViewRentalScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "DocumentsScreen",
+    component: DocumentsScreen,
     options: {
       headerShown: false,
     },

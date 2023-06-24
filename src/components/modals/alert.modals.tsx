@@ -2,7 +2,7 @@ import React, { JSXElementConstructor, ReactElement, useContext } from "react"
 import { View as RNView, StyleProp, ViewStyle } from 'react-native'
 import { Text } from 'src/components/Themed'
 import { Image } from 'react-native-elements'
-import { Modalize } from "react-native-modalize"
+import { Modalize, ModalizeProps } from "react-native-modalize"
 import colorsConstants from "src/constants/colors.constants";
 import AppThemeContext from "src/contexts/Theme.context";
 import { DefaultButton } from "../buttons/buttons.components";
@@ -14,14 +14,16 @@ export const AlertModal = ({
   title = "Alert",
   cancelButtonTitle = "Cancel",
   body,
-  type = "success",
+  type,
   modalRef,
   withButton = true,
   withCancelButton = false,
   buttonTitle = 'Close',
   onButtonPress,
   onCancelButtonPress,
-  cancelButtonContainerStyle = {}
+  cancelButtonContainerStyle = {},
+  buttonContainerStyle = {},
+  modalStyle = {}
 } : {
   modalRef?: any;
   withButton?: boolean;
@@ -34,6 +36,8 @@ export const AlertModal = ({
   type?: "success" | "error" | "info" | "warning"
   body?: string | ReactElement<{}, string | JSXElementConstructor<any>>;
   cancelButtonContainerStyle?: StyleProp<ViewStyle>;
+  buttonContainerStyle?: StyleProp<ViewStyle>;
+  modalStyle?: StyleProp<ViewStyle>;
 }) => {
   const theme = useContext(AppThemeContext);
 
@@ -46,7 +50,7 @@ export const AlertModal = ({
       onOpen={() => {
         Keyboard.dismiss()
       }}
-      modalStyle={{
+      modalStyle={[{
         minHeight: "100%",
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
@@ -54,7 +58,7 @@ export const AlertModal = ({
         paddingHorizontal: globalConstants.mainViewHorizontalPadding,
         paddingBottom: fontsConstants.h(87),
         paddingTop: fontsConstants.h(100)
-      }}
+      }, modalStyle]}
       childrenStyle={{
       }}
     >
@@ -69,19 +73,21 @@ export const AlertModal = ({
           }}>
             {title}
           </Text>
-          <Image
-            source={type === "success" ? require("src/assets/images/icons/check-success.png") 
-              : type === "error" ? require("src/assets/images/icons/check-success.png") 
-              : type === "info" ? require("src/assets/images/icons/check-success.png")
-              : require("src/assets/images/icons/check-success.png")
-            }
-            style={{
-              marginTop: fontsConstants.h(72),
-              marginBottom: fontsConstants.h(27),
-              height: fontsConstants.h(100),
-              width: fontsConstants.h(100)
-            }}
-          />
+          {type !== undefined ? (
+            <Image
+              source={type === "success" ? require("src/assets/images/icons/check-success.png") 
+                : type === "error" ? require("src/assets/images/icons/check-success.png") 
+                : type === "info" ? require("src/assets/images/icons/check-success.png")
+                : require("src/assets/images/icons/check-success.png")
+              }
+              style={{
+                marginTop: fontsConstants.h(72),
+                marginBottom: fontsConstants.h(27),
+                height: fontsConstants.h(100),
+                width: fontsConstants.h(100)
+              }}
+            />
+          ) : null}
           {typeof body === "string" ? (
             <Text style={{
               fontFamily: fontsConstants.Raleway_Regular,
@@ -95,9 +101,9 @@ export const AlertModal = ({
             onPress={onButtonPress ? () => onButtonPress() : () => {
               modalRef?.current?.close();
             }}
-            containerStyle={{
+            containerStyle={[{
               marginTop: withCancelButton ? fontsConstants.h(130) : fontsConstants.h(210)
-            }}
+            }, buttonContainerStyle]}
           />
         ) : null}
         {withCancelButton ? (

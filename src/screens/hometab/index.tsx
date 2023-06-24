@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View as RNView, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { StyleSheet, View as RNView, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, StyleProp, ViewStyle } from "react-native";
 import { ScrollView, Text, View } from "src/components/Themed";
 import { NotificationItemCard } from "src/components/cards";
 import { Avatar, Icon, Image } from 'react-native-elements'
@@ -12,38 +12,47 @@ import { NotificationProps } from "src/types/app.types";
 import { RootTabScreenProps } from "src/types/navigations.types";
 import AppIntroSlider from "react-native-app-intro-slider";
 import moment from "moment";
-import { DefaultRadiobox } from "src/components/inputs/checkbox.components";
 import { formatCurrency } from "src/utils/FormatNumber";
+import { useNavigation } from "@react-navigation/native";
+import { RentalDetailItem } from "../rent/view.screen";
+import { LocationIcon } from "../rent/components";
+
+export const RenderAddTenancyButton = ({
+
+} : {
+
+}) => {
+  const navigation = useNavigation();
+
+  const theme = useColorScheme();
+  return (
+    <TouchableOpacity
+      activeOpacity={layoutsConstants.activeOpacity}
+      style={{
+        flexDirection: "row",
+        alignItems: "center"
+      }}
+    >
+      <Icon
+        name="playlist-add"
+        size={fontsConstants.w(20)}
+      />
+      <Text style={{
+        fontFamily: fontsConstants.Avenir_Medium,
+        fontSize: fontsConstants.h(10),
+        color: colorsConstants[theme].modalBg
+      }}>
+        {`Add`}
+      </Text>
+    </TouchableOpacity>
+  )
+}
 
 export default function HomeTabScreen({
   navigation,
   route
 }: RootTabScreenProps<"HomeTabNavigator">) {
   const theme = useColorScheme();
-
-  const renderAddTenancyButton = () => {
-    return (
-      <TouchableOpacity
-        activeOpacity={layoutsConstants.activeOpacity}
-        style={{
-          flexDirection: "row",
-          alignItems: "center"
-        }}
-      >
-        <Icon
-          name="playlist-add"
-          size={fontsConstants.w(20)}
-        />
-        <Text style={{
-          fontFamily: fontsConstants.Avenir_Medium,
-          fontSize: fontsConstants.h(10),
-          color: colorsConstants[theme].modalBg
-        }}>
-          {`Add`}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
 
   return (
     <ScrollView style={styles.container}>
@@ -241,25 +250,7 @@ export default function HomeTabScreen({
           marginBottom: fontsConstants.h(20),
           marginTop: fontsConstants.h(20)
         }}>
-          <RNView
-            style={{
-              backgroundColor: "rgba(176, 179, 186, 0.1)",
-              borderRadius: fontsConstants.w(12),
-              height: fontsConstants.w(55),
-              width: fontsConstants.w(55),
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Image
-              source={require("src/assets/images/icons/location-danger.png")}
-              style={{
-                height: fontsConstants.w(25),
-                width: fontsConstants.w(25),
-              }}
-              resizeMode="contain"
-            />
-          </RNView>
+          <LocationIcon/>
           <RNView style={{
             flex: 1,
             marginLeft: fontsConstants.w(15)
@@ -277,7 +268,7 @@ export default function HomeTabScreen({
               {`10 Alake Street, Victoria Island. Lagos`}
             </Text>
           </RNView>
-          {renderAddTenancyButton()}
+          <RenderAddTenancyButton/>
         </RNView>
         <RNView
           style={{
@@ -296,35 +287,19 @@ export default function HomeTabScreen({
             value: moment('2023-02-25').format("DD/MM/YYYY"),
             color: "#FE4A5E"
           }].map((item, index) => (
-            <RNView
-              style={[styles.rowItemContainer, {
-                marginLeft: index === 1 ? fontsConstants.w(5) : 0,
-                marginRight: index === 1 ? 0 : fontsConstants.w(5),
-              }]}
+            <RentalDetailItem
               key={index.toString()}
-            >
-              <RNView>
-                <Text style={[styles.rILabel, {
-                  color: colorsConstants[theme].modalBg,
-                }]}>{item.label}</Text>
-                <Text style={[styles.rIValue, {
-                  color: colorsConstants[theme].darkText3,
-                }]}>{item.value}</Text>
-              </RNView>
-              <RNView style={{
-                alignItems: "center",
-              }}>
-                <DefaultRadiobox
-                  checked
-                  checkedColor={item.color}
-                  size={fontsConstants.h(12)}
-                  containerStyle={{
-                    marginBottom: fontsConstants.h(15)
-                  }}
-                />
-                {index === 0 ? renderAddTenancyButton() : null}
-              </RNView>
-            </RNView>
+              label={item.label}
+              value={item.value}
+              radioColor={item.color}
+              labelStyle={{color: colorsConstants[theme].modalBg}}
+              valueStyle={{color: colorsConstants[theme].darkText3}}
+              button={index === 0 ? <RenderAddTenancyButton/> : null}
+              containerStyle={{
+                marginLeft: index === 1 ? fontsConstants.w(5) : 0,
+                marginRight: index === 1 ? 0 : fontsConstants.w(5)
+              }}
+            />
           ))}
         </RNView>
         <RNView
@@ -345,29 +320,18 @@ export default function HomeTabScreen({
             value: `12 months`,
             color: "#633EFF"
           }].map((item, index) => (
-            <RNView
-              style={[styles.rowItemContainer, {
-                marginLeft: index === 1 ? fontsConstants.w(5) : 0,
-                marginRight: index === 1 ? 0 : fontsConstants.w(5),
-              }]}
+            <RentalDetailItem
               key={index.toString()}
-            >
-              <RNView>
-                <Text style={[styles.rILabel, {
-                  color: colorsConstants[theme].modalBg,
-                }]}>{item.label}</Text>
-                <Text style={[styles.rIValue, {
-                  color: colorsConstants[theme].darkText3,
-                }]}>{item.value}</Text>
-              </RNView>
-              <RNView>
-                <DefaultRadiobox
-                  checked
-                  checkedColor={item.color}
-                  size={fontsConstants.h(12)}
-                />
-              </RNView>
-            </RNView>
+              label={item.label}
+              value={item.value}
+              radioColor={item.color}
+              labelStyle={{color: colorsConstants[theme].modalBg}}
+              valueStyle={{color: colorsConstants[theme].darkText3}}
+              containerStyle={{
+                marginLeft: index === 1 ? fontsConstants.w(5) : 0,
+                marginRight: index === 1 ? 0 : fontsConstants.w(5)
+              }}
+            />
           ))}
         </RNView>
         <RNView>

@@ -22,6 +22,8 @@ const Roboto_Light = "Roboto-Light";
 const Roboto_Black = "Roboto-Black";
 const Roboto_Bold = "Roboto-Bold";
 const Avenir_Medium = "Avenir-Medium";
+const Roboto_Regular = "Roboto-Regular";
+const Roboto_Medium = "Roboto-Medium";
 
 
 function normalize(size: number): number {
@@ -50,5 +52,7 @@ export default {
     Roboto_Light,
     Roboto_Black,
     Roboto_Bold,
-    Avenir_Medium
+    Avenir_Medium,
+    Roboto_Regular,
+    Roboto_Medium
 }
