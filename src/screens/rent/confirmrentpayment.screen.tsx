@@ -222,5 +222,5 @@ const styles = StyleSheet.create({
     fontSize: fontsConstants.h(14),
     opacity: 0.6
   },
-  inputContainerStyle: {marginBottom: fontsConstants.h(20), zIndex: -1}
+  inputContainerStyle: {marginBottom: fontsConstants.h(20)}
 });

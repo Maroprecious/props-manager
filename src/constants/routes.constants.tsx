@@ -18,6 +18,8 @@ import TransactionsScreen from "src/screens/transactions/history.screen";
 import RentalsScreen from "src/screens/rent/rentals.screen";
 import ViewRentalScreen from "src/screens/rent/view.screen";
 import DocumentsScreen from "src/screens/rent/documents.screen";
+import RequestPaymentScreen from "src/screens/rent/requestpayment.screen";
+import ConfirmRequestPaymentScreen from "src/screens/rent/confirmpaymentrequest.screen";
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -112,6 +114,20 @@ export const UserAppRoutes = [
   }, {
     name: "DocumentsScreen",
     component: DocumentsScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "RequestPaymentScreen",
+    component: RequestPaymentScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "ConfirmRequestPaymentScreen",
+    component: ConfirmRequestPaymentScreen,
     options: {
       headerShown: false,
     },

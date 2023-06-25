@@ -160,7 +160,7 @@ export const PaymentsMenuItems = [{
   id: 4,
   label: "Request\nPayment",
   icon: require("src/assets/images/icons/recieve-payment.png"),
-  screen: ""
+  screen: "RequestPaymentScreen"
 }, {
   id: 5,
   label: "Your\nFinancials",
@@ -238,6 +238,20 @@ export const AccountTypes = [{
   id: 3,
   label: 'Property Manager',
   value: 3
+}]
+
+export const PaymentRequestTypes = [{
+  id: 1,
+  label: 'Rent',
+  value: 'rent'
+}, {
+  id: 2,
+  label: 'Service Charge',
+  value: 'service charge'
+}, {
+  id: 3,
+  label: 'Agreement Fees',
+  value: 'agreement fees'
 }]
 
 export default {
