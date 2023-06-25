@@ -4,9 +4,9 @@ import { StyleSheet, ImageBackground, View as RNView, TouchableOpacity } from "r
 import { View, Text, ScrollView } from "src/components/Themed";
 import { Image } from 'react-native-elements';
 import { DefaultButton } from "src/components/buttons/buttons.components";
-import { DefaultInput } from "src/components/inputs/inputs.components";
+import { DefaultInput, DefaultPhoneInput, DefaultSelectInput } from "src/components/inputs/inputs.components";
 import fontsConstants from "src/constants/fonts.constants";
-import globalConstants from "src/constants/global.constants";
+import globalConstants, { AccountTypes } from "src/constants/global.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
 import colorsConstants from "src/constants/colors.constants";
@@ -28,6 +28,8 @@ export default function CreateAccountScreen({
     buttonTitle: `Login`,
     type: `success`
   })
+
+  const [accountType, setAccountType] = useState(-1);
 
   const doSignUp = async () => {
     alertRef.current?.open()
@@ -78,9 +80,12 @@ export default function CreateAccountScreen({
           keyboardType="default"
           containerStyle={styles.inputContainerStyle}
         />
-        <DefaultInput
+        <DefaultPhoneInput
           placeholder="Mobile number"
           keyboardType="number-pad"
+          onChangeNumber={(number: string) => {
+            console.log(number)
+          }}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
@@ -93,114 +98,118 @@ export default function CreateAccountScreen({
           secureTextEntry
           containerStyle={styles.inputContainerStyle}
         />
-        <DefaultInput
-          placeholder="Tenant"
-          keyboardType="default"
-          containerStyle={styles.inputContainerStyle}
+        <DefaultSelectInput
+          items={AccountTypes}
+          value={accountType}
+          setValue={setAccountType}
+          containerStyle={styles.inputContainerStyle}    
+          dropDownDirection="BOTTOM"      
         />
-        <Text style={[styles.noteText, {
-          textAlign: "center",
-          marginTop: fontsConstants.h(-5)
-        }]}>
-          {`By clicking `}
-          <Text style={{
-            textDecorationLine: "underline"
-          }}>Sign up</Text>
-          {`you agree to the following`}
-        </Text>
-        <RNView style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: fontsConstants.h(10)
-        }}>
-          <TouchableOpacity>
-            <Text style={[styles.noteText, {
+        <RNView style={{zIndex: -99999999999}}>
+          <Text style={[styles.noteText, {
+            textAlign: "center",
+            marginTop: fontsConstants.h(-5)
+          }]}>
+            {`By clicking `}
+            <Text style={{
               textDecorationLine: "underline"
-            }]}>
-              {`Terms and Conditions`}
-            </Text>
-          </TouchableOpacity>
-          <Text style={styles.noteText}>{` without reservations`}</Text>
-        </RNView>
-        <DefaultButton
-          title={`Sign up`}
-          onPress={doSignUp}
-        />
-        <RNView style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: fontsConstants.h(25)
-        }}>
-          <TouchableOpacity style={{
+            }}>Sign up</Text>
+            {`you agree to the following`}
+          </Text>
+          <RNView style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: fontsConstants.h(10)
+          }}>
+            <TouchableOpacity>
+              <Text style={[styles.noteText, {
+                textDecorationLine: "underline"
+              }]}>
+                {`Terms and Conditions`}
+              </Text>
+            </TouchableOpacity>
+            <Text style={styles.noteText}>{` without reservations`}</Text>
+          </RNView>
+          <DefaultButton
+            title={`Sign up`}
+            onPress={doSignUp}
+          />
+          <RNView style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: fontsConstants.h(25)
+          }}>
+            <TouchableOpacity style={{
 
-          }} activeOpacity={globalConstants.activeOpacity}
-            onPress={() => navigation.navigate("LoginScreen")}
-          >
-          <Text style={styles.linkTextStyle}>
-              {`Already have an account? `}
-              <Text style={{
-                textDecorationLine: "underline",
-                fontFamily: fontsConstants.American_Typewriter_Bold
-              }}>Sign In</Text>
-            </Text>
-          </TouchableOpacity>
-        </RNView>
-        <Text style={{
-          marginTop: fontsConstants.h(20),
-          textAlign: "center",
-          color: "#949496",
-          fontFamily: fontsConstants.Lora_Regular,
-          fontSize: fontsConstants.h(14)
-        }}>{`Login with social account`}</Text>
-        <RNView style={{
-          flexDirection: "row",
-          alignItems: "center",
-          marginTop: fontsConstants.h(17),
-          justifyContent: "center"
-        }}>
-          <DefaultButton
-            title={`Google`}
-            iconPosition="left"
-            icon={
-              <Image
-                source={require("src/assets/images/icons/google-icon.png")}
-                style={[styles.socialButtonIcon]}
-              />
-            }
-            titleStyle={styles.socailButtonTitleStyle}
-            buttonHeight={fontsConstants.h(50)}
-            buttonStyle={[styles.socialButtonContainerStyle, {
-            }]}
-            containerStyle={{
-              borderRadius: fontsConstants.h(10),
-              marginRight: fontsConstants.w(7)
-            }}
-            raised
-          />
-          <DefaultButton
-            title={`Facebook`}
-            iconPosition="left"
-            icon={
-              <Image
-                source={require("src/assets/images/icons/facebook-icon-f.png")}
-                style={[styles.socialButtonIcon, {
-                  height: fontsConstants.h(20),
-                  width: fontsConstants.h(10)
-                }]}
-              />
-            }
-            titleStyle={styles.socailButtonTitleStyle}
-            buttonHeight={fontsConstants.h(50)}
-            buttonStyle={[styles.socialButtonContainerStyle, {
-            }]}
-            containerStyle={{
-              borderRadius: fontsConstants.h(10),
-              marginLeft: fontsConstants.w(7)
-            }}
-            raised
-          />
+            }} activeOpacity={globalConstants.activeOpacity}
+              onPress={() => navigation.navigate("LoginScreen")}
+            >
+            <Text style={styles.linkTextStyle}>
+                {`Already have an account? `}
+                <Text style={{
+                  textDecorationLine: "underline",
+                  fontFamily: fontsConstants.American_Typewriter_Bold
+                }}>Sign In</Text>
+              </Text>
+            </TouchableOpacity>
+          </RNView>
+          <Text style={{
+            marginTop: fontsConstants.h(20),
+            textAlign: "center",
+            color: "#949496",
+            fontFamily: fontsConstants.Lora_Regular,
+            fontSize: fontsConstants.h(14)
+          }}>{`Login with social account`}</Text>
+          <RNView style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: fontsConstants.h(17),
+            justifyContent: "center"
+          }}>
+            <DefaultButton
+              title={`Google`}
+              iconPosition="left"
+              icon={
+                <Image
+                  source={require("src/assets/images/icons/google-icon.png")}
+                  style={[styles.socialButtonIcon]}
+                />
+              }
+              titleStyle={styles.socailButtonTitleStyle}
+              buttonHeight={fontsConstants.h(50)}
+              buttonStyle={[styles.socialButtonContainerStyle, {
+              }]}
+              containerStyle={{
+                borderRadius: fontsConstants.h(10),
+                marginRight: fontsConstants.w(7)
+              }}
+              raised
+            />
+            <DefaultButton
+              title={`Facebook`}
+              iconPosition="left"
+              icon={
+                <Image
+                  source={require("src/assets/images/icons/facebook-icon-f.png")}
+                  style={[styles.socialButtonIcon, {
+                    height: fontsConstants.h(20),
+                    width: fontsConstants.h(10)
+                  }]}
+                />
+              }
+              titleStyle={styles.socailButtonTitleStyle}
+              buttonHeight={fontsConstants.h(50)}
+              buttonStyle={[styles.socialButtonContainerStyle, {
+              }]}
+              containerStyle={{
+                borderRadius: fontsConstants.h(10),
+                marginLeft: fontsConstants.w(7)
+              }}
+              raised
+            />
+          </RNView>
         </RNView>
       </View>
       <AlertModal

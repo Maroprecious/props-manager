@@ -226,6 +226,20 @@ export const DefaultDocuments = [{
   id: 3
 }]
 
+export const AccountTypes = [{
+  id: 1,
+  label: 'Tenant',
+  value: 1
+}, {
+  id: 2,
+  label: 'Landlord',
+  value: 2
+}, {
+  id: 3,
+  label: 'Property Manager',
+  value: 3
+}]
+
 export default {
   componentHeight: fontsConstants.h(60),
   mainViewHorizontalPadding: fontsConstants.w(30),

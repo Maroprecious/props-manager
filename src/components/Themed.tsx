@@ -90,6 +90,6 @@ export function ScrollView(props: ScrollViewProps) {
   );
 
   return (
-    <DefaultScrollView style={[{ backgroundColor }, style]} {...otherProps} />
+    <DefaultScrollView showsVerticalScrollIndicator={false} style={[{ backgroundColor }, style]} {...otherProps} />
   );
 }
