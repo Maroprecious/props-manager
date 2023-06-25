@@ -10,7 +10,7 @@ import { ScreenTitle } from "../auth/components/screentitle.component";
 import layoutsConstants from "src/constants/layouts.constants";
 import { formatCurrency } from "src/utils/FormatNumber";
 import colorsConstants from "src/constants/colors.constants";
-import { DefaultInput } from "src/components/inputs/inputs.components";
+import { DefaultInput, DefaultSelectInput } from "src/components/inputs/inputs.components";
 import { AlertModal } from "src/components/modals/alert.modals";
 import { Modalize } from "react-native-modalize";
 import { Avatar, Icon, Image } from "react-native-elements";
@@ -27,7 +27,7 @@ export default function ConfirmRentPayment({
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={{flex: 1}}
+      contentContainerStyle={{minHeight: "100%"}}
     >
       <ImageBackground
         source={require("src/assets/images/backgrounds/background.png")}
@@ -76,20 +76,32 @@ export default function ConfirmRentPayment({
           }}
           containerStyle={{marginBottom: fontsConstants.h(20)}}
         />
+        <DefaultSelectInput
+          items={[{
+            label: "First Bank",
+            value: "first bank"
+          }]}
+          listMode="MODAL"
+          searchable
+          searchPlaceholder="Search..."
+          value={`first bank`}
+          containerStyle={{marginBottom: fontsConstants.h(20), maxHeight: fontsConstants.h(350)}}
+          dropDownDirection="BOTTOM"      
+        />
         <DefaultInput
           placeholder={`Account Number`}
-          containerStyle={{marginBottom: fontsConstants.h(20)}}
+          containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
           placeholder={`Landlord's Name`}
-          containerStyle={{marginBottom: fontsConstants.h(20)}}
+          containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
           placeholder={`Narration`}
           multiline
           numberOfLines={4}
           inputHeight={fontsConstants.h(90)}
-          containerStyle={{marginBottom: fontsConstants.h(20)}}
+          containerStyle={styles.inputContainerStyle}
         />
         <View style={{
           flexDirection: "row",
@@ -209,5 +221,6 @@ const styles = StyleSheet.create({
     fontFamily: fontsConstants.Roboto_Medium,
     fontSize: fontsConstants.h(14),
     opacity: 0.6
-  }
+  },
+  inputContainerStyle: {marginBottom: fontsConstants.h(20), zIndex: -1}
 });
