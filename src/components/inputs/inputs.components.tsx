@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { TextProps, View, ViewStyle } from "react-native"
+import { TextProps, TextStyle, View, ViewStyle } from "react-native"
 import { StyleProp } from "react-native"
 import DropDownPicker from "react-native-dropdown-picker"
 import { Icon, Input, InputProps } from "react-native-elements"
@@ -8,14 +8,17 @@ import { countryCodes } from "src/constants/countrycodes.constants"
 import fontsConstants from "src/constants/fonts.constants"
 import globalConstants from "src/constants/global.constants"
 import AppThemeContext from "src/contexts/Theme.context"
+import { Text } from "../Themed"
 
 export const DefaultInput = ({
   inputHeight = globalConstants.componentHeight,
   containerStyle = {},
+  labelStyle = {},
   ...props
 } : {
   inputHeight?: number
   containerStyle?: StyleProp<ViewStyle>
+  labelStyle?: StyleProp<TextStyle>
 } & InputProps) => {
 
   const theme = useContext(AppThemeContext);
@@ -34,6 +37,12 @@ export const DefaultInput = ({
         borderRadius: fontsConstants.h(10),
         borderBottomWidth: 0
       }}
+      labelStyle={[{
+        color: colorsConstants[theme].screenLabel,
+        fontFamily: fontsConstants.Lora_Bold,
+        fontSize: fontsConstants.w(15),
+        marginBottom: fontsConstants.h(10)
+      }, labelStyle]}
       containerStyle={[{
         height: inputHeight,
         paddingLeft: 0,
@@ -138,7 +147,10 @@ export const DefaultSelectInput = ({
   onChangeValue = () => null,
   itemKey = "value",
   renderListItem,
-  labelProps
+  labelProps,
+  wrapperStyle,
+  label,
+  labelStyle,
 } : {
   value: string | number
   items: {
@@ -159,6 +171,9 @@ export const DefaultSelectInput = ({
   itemKey?: string
   renderListItem?: any
   labelProps?: TextProps
+  wrapperStyle?: StyleProp<ViewStyle>
+  label?: string
+  labelStyle?: StyleProp<TextStyle>
 }) => {
 
   const theme = useContext(AppThemeContext);
@@ -166,79 +181,89 @@ export const DefaultSelectInput = ({
   const [open, setOpen] = useState(false);
 
   return (
-    <DropDownPicker
-      open={open}
-      value={value}
-      searchable={searchable}
-      searchPlaceholder={searchPlaceholder}
-      items={items}
-      setOpen={setOpen}
-      setValue={setValue}
-      onSelectItem={(v: any) => onSelectItem(v)}
-      onChangeValue={(v: any) => onChangeValue(v)}
-      placeholder={placeholder}
-      listMode={listMode}
-      itemKey={itemKey}
-      renderListItem={renderListItem}
-      dropDownDirection={dropDownDirection}
-      theme={theme === "dark" ? `DARK` : `LIGHT`}
-      placeholderStyle={{
-        color: colorsConstants[theme].inputPlaceHolderColor
-      }}
-      labelProps={labelProps}
-      containerStyle={[{
-        height: inputHeight,
-        backgroundColor: colorsConstants[theme].inputBackground,
-        marginBottom: fontsConstants.w(30),
-        borderRadius: fontsConstants.h(10),
-        borderBottomLeftRadius: open ? fontsConstants.h(0) : undefined,
-        borderBottomRightRadius:  open ? fontsConstants.h(0) : undefined,
-        borderColor: open ? colorsConstants[theme].borderLine : undefined,
-        borderWidth: open ? fontsConstants.h(1) : undefined
-      }, containerStyle]}
-      textStyle={{
-        fontFamily: fontsConstants.American_Typewriter_Regular,
-        fontSize: fontsConstants.w(14)
-      }}
-      selectedItemLabelStyle={{
-        color: theme === "dark" ? 
-          colorsConstants.colorWhite :
-          colorsConstants[theme].darkText,
-      }}
-      labelStyle={{
-        color: theme === "dark" ? 
-          colorsConstants.colorWhite :
-          colorsConstants[theme].darkText,
-      }}
-      style={{
-        backgroundColor: "transparent",
-        borderColor: "transparent",
-        height: inputHeight,
-      }}
-      dropDownContainerStyle={[{
-        borderColor: colorsConstants[theme].borderLine,
-      }, dropDownContainerStyle]}
-      TickIconComponent={ ({style}) =>
-        <Icon
-          name="checkmark"
-          type="ionicon" 
-          size={fontsConstants.w(13)}
-        />
-      }
-      ArrowDownIconComponent={ ({style}) =>
-        <Icon
-          name='chevron-down'
-          type='ionicon'
-          size={fontsConstants.w(13)}
-        />
-      }
-      ArrowUpIconComponent={ ({style}) =>
-        <Icon
-          name='chevron-up'
-          type='ionicon'
-          size={fontsConstants.w(13)}
-        />
-      }
-    />
+    <View style={[{}, wrapperStyle]}>
+      {label ? (
+        <Text style={[{
+          color: colorsConstants[theme].screenLabel,
+          fontFamily: fontsConstants.Lora_Bold,
+          fontSize: fontsConstants.w(15),
+          marginBottom: fontsConstants.h(10)
+        }, labelStyle]}>{label}</Text>
+      ) : null}
+      <DropDownPicker
+        open={open}
+        value={value}
+        searchable={searchable}
+        searchPlaceholder={searchPlaceholder}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        onSelectItem={(v: any) => onSelectItem(v)}
+        onChangeValue={(v: any) => onChangeValue(v)}
+        placeholder={placeholder}
+        listMode={listMode}
+        itemKey={itemKey}
+        renderListItem={renderListItem}
+        dropDownDirection={dropDownDirection}
+        theme={theme === "dark" ? `DARK` : `LIGHT`}
+        placeholderStyle={{
+          color: colorsConstants[theme].inputPlaceHolderColor
+        }}
+        labelProps={labelProps}
+        containerStyle={[{
+          height: inputHeight,
+          backgroundColor: colorsConstants[theme].inputBackground,
+          marginBottom: fontsConstants.w(30),
+          borderRadius: fontsConstants.h(10),
+          borderBottomLeftRadius: open ? fontsConstants.h(0) : undefined,
+          borderBottomRightRadius:  open ? fontsConstants.h(0) : undefined,
+          borderColor: open ? colorsConstants[theme].borderLine : undefined,
+          borderWidth: open ? fontsConstants.h(1) : undefined
+        }, containerStyle]}
+        textStyle={{
+          fontFamily: fontsConstants.American_Typewriter_Regular,
+          fontSize: fontsConstants.w(14)
+        }}
+        selectedItemLabelStyle={{
+          color: theme === "dark" ? 
+            colorsConstants.colorWhite :
+            colorsConstants[theme].darkText,
+        }}
+        labelStyle={{
+          color: theme === "dark" ? 
+            colorsConstants.colorWhite :
+            colorsConstants[theme].darkText,
+        }}
+        style={{
+          backgroundColor: "transparent",
+          borderColor: "transparent",
+          height: inputHeight,
+        }}
+        dropDownContainerStyle={[{
+          borderColor: colorsConstants[theme].borderLine,
+        }, dropDownContainerStyle]}
+        TickIconComponent={ ({style}) =>
+          <Icon
+            name="checkmark"
+            type="ionicon" 
+            size={fontsConstants.w(13)}
+          />
+        }
+        ArrowDownIconComponent={ ({style}) =>
+          <Icon
+            name='chevron-down'
+            type='ionicon'
+            size={fontsConstants.w(13)}
+          />
+        }
+        ArrowUpIconComponent={ ({style}) =>
+          <Icon
+            name='chevron-up'
+            type='ionicon'
+            size={fontsConstants.w(13)}
+          />
+        }
+      />
+    </View>
   )
 }

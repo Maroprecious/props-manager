@@ -40,6 +40,16 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
     rental: any
   };
   DocumentsScreen: undefined;
+  RequestPaymentScreen: undefined;
+  ConfirmRequestPaymentScreen: {
+    amount: number,
+    purpose: string,
+    recipient: {
+      name: string,
+      email: string,
+    },
+    comment?: string
+  }
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

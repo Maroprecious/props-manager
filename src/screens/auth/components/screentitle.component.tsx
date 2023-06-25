@@ -25,7 +25,7 @@ export const ScreenTitle = ({
     <View style={containerStyle}>
       <Text style={{
         fontFamily: fontsConstants.Lora_Bold,
-        fontSize: fontsConstants.h(30),
+        fontSize: fontsConstants.w(25),
         textAlign: "center",
         color: colorsConstants[theme].screenLabel
       }}>
