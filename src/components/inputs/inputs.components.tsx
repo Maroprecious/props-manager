@@ -29,7 +29,8 @@ export const DefaultInput = ({
       inputStyle={{
         fontFamily: fontsConstants.American_Typewriter_Regular,
         paddingHorizontal: fontsConstants.w(20),
-        fontSize: fontsConstants.w(14)
+        fontSize: fontsConstants.w(14),
+        color: colorsConstants[theme].darkText
       }}
       cursorColor={colorsConstants[theme].screenIntro}
       inputContainerStyle={{

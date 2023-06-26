@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import { ImageBackground, Platform, StyleSheet, View } from "react-native";
 import { SafeAreaView, Text } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
@@ -75,7 +75,7 @@ export default function AirtimeTopUpScreen({
             value={mobile}
             onChangeText={(v: string) => setMobile(v)}
             placeholder="Enter phone number"
-            keyboardType="phone-pad"
+            keyboardType={Platform.OS === "ios" ? "name-phone-pad" : "phone-pad"}
           />
         </View>
         <DefaultButton
