@@ -49,7 +49,8 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
       email: string,
     },
     comment?: string
-  }
+  };
+  BillsPaymentScreen: undefined
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

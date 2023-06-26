@@ -1,5 +1,5 @@
 import React, { JSXElementConstructor, ReactElement, useContext } from "react"
-import { StyleProp, TouchableOpacity, View, ViewStyle } from "react-native";
+import { StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
 import { Card, CardProps, Icon, Image } from "react-native-elements"
 import colorsConstants from "src/constants/colors.constants";
 import fontsConstants from "src/constants/fonts.constants";
@@ -281,10 +281,12 @@ export const MenuItemCard = ({
   onItemPress = () => null,
   label = "Item",
   containerStyle = {},
+  labelStyle = {},
   icon = require("src/assets/images/icons/buy-airtime.png"),
   ...props
 } : {
   label: string
+  labelStyle?: StyleProp<TextStyle>
   onItemPress?: Function
   icon?: ImageSourcePropType
   containerStyle?: StyleProp<ViewStyle>
@@ -306,7 +308,7 @@ export const MenuItemCard = ({
         justifyContent: "center",
         height: fontsConstants.w(90),
         width: fontsConstants.w(90),
-        marginBottom: fontsConstants.h(30),
+        marginBottom: fontsConstants.h(20),
         marginLeft: fontsConstants.w(10),
         marginRight: fontsConstants.w(10)
       }, containerStyle]
@@ -328,13 +330,13 @@ export const MenuItemCard = ({
             marginBottom: fontsConstants.h(5),
           }}
         />
-        <Text style={{
+        <Text style={[{
           color: colorsConstants[theme].darkText,
           fontFamily: fontsConstants.Lora_Regular,
           fontSize: fontsConstants.h(12),
           lineHeight: fontsConstants.h(15),
           textAlign: "center"
-        }}>
+        }, labelStyle]}>
           {label}
         </Text>
       </TouchableOpacity>
