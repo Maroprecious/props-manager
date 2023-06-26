@@ -51,6 +51,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
     comment?: string
   };
   BillsPaymentScreen: undefined
+  AirtimeTopUpScreen: undefined
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
