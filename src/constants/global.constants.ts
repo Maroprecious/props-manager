@@ -155,7 +155,7 @@ export const PaymentsMenuItems = [{
   id: 3,
   label: "Airtime\nTopup",
   icon: require("src/assets/images/icons/buy-airtime.png"),
-  screen: ""
+  screen: "AirtimeTopUpScreen"
 }, {
   id: 4,
   label: "Request\nPayment",
@@ -284,6 +284,20 @@ export const BillItems = [{
   label: "Embassy",
   icon: require("src/assets/images/icons/embassy.png"),
   screen: "TransactionsScreen"
+}]
+
+export const NetworkServiceProviders = [{
+  label: "MTN",
+  value: "mtn"
+}, {
+  label: "Glo",
+  value: "glo"
+}, {
+  label: "Airtel",
+  value: "airtel"
+}, {
+  label: "Etisalat",
+  value: "etisalat"
 }]
 
 export default {
