@@ -31,6 +31,7 @@ export const DefaultInput = ({
         paddingHorizontal: fontsConstants.w(20),
         fontSize: fontsConstants.w(14)
       }}
+      cursorColor={colorsConstants[theme].screenIntro}
       inputContainerStyle={{
         height: inputHeight,
         backgroundColor: colorsConstants[theme].inputBackground,

@@ -150,7 +150,7 @@ export const PaymentsMenuItems = [{
   id: 2,
   label: "Pay\nBills",
   icon: require("src/assets/images/icons/invoice.png"),
-  screen: ""
+  screen: "BillsPaymentScreen"
 }, {
   id: 3,
   label: "Airtime\nTopup",
@@ -252,6 +252,38 @@ export const PaymentRequestTypes = [{
   id: 3,
   label: 'Agreement Fees',
   value: 'agreement fees'
+}]
+
+export const BillItems = [{
+  id: 1,
+  label: "Electricity",
+  icon: require("src/assets/images/icons/plugs.png"),
+  screen: "PayRentScreen"
+}, {
+  id: 2,
+  label: "Water",
+  icon: require("src/assets/images/icons/blood-drop.png"),
+  screen: "BillsPaymentScreen"
+}, {
+  id: 3,
+  label: "Government",
+  icon: require("src/assets/images/icons/buy-airtime.png"),
+  screen: ""
+}, {
+  id: 4,
+  label: "Cable TV",
+  icon: require("src/assets/images/icons/recieve-payment.png"),
+  screen: "RequestPaymentScreen"
+}, {
+  id: 5,
+  label: "Buy Air Ticket",
+  icon: require("src/assets/images/icons/financials.png"),
+  screen: ""
+}, {
+  id: 6,
+  label: "Embassy",
+  icon: require("src/assets/images/icons/embassy.png"),
+  screen: "TransactionsScreen"
 }]
 
 export default {

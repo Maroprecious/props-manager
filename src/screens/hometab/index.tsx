@@ -36,11 +36,12 @@ export const RenderAddTenancyButton = ({
       <Icon
         name="playlist-add"
         size={fontsConstants.w(20)}
+        color={colorsConstants[theme].darkText}
       />
       <Text style={{
         fontFamily: fontsConstants.Avenir_Medium,
         fontSize: fontsConstants.h(10),
-        color: colorsConstants[theme].modalBg
+        color: colorsConstants[theme].darkText
       }}>
         {`Add`}
       </Text>
@@ -292,7 +293,7 @@ export default function HomeTabScreen({
               label={item.label}
               value={item.value}
               radioColor={item.color}
-              labelStyle={{color: colorsConstants[theme].modalBg}}
+              labelStyle={{color: colorsConstants[theme].darkText}}
               valueStyle={{color: colorsConstants[theme].darkText3}}
               button={index === 0 ? <RenderAddTenancyButton/> : null}
               containerStyle={{
@@ -325,7 +326,7 @@ export default function HomeTabScreen({
               label={item.label}
               value={item.value}
               radioColor={item.color}
-              labelStyle={{color: colorsConstants[theme].modalBg}}
+              labelStyle={{color: colorsConstants[theme].darkText}}
               valueStyle={{color: colorsConstants[theme].darkText3}}
               containerStyle={{
                 marginLeft: index === 1 ? fontsConstants.w(5) : 0,

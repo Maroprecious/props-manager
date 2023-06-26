@@ -36,6 +36,7 @@ export default function useCachedResources() {
           "Avenir-Medium": require("../assets/fonts/Avenir-Medium.ttf"),
           "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
           "Roboto-Medium": require("../assets/fonts/Roboto-Medium.ttf"),
+          "Montserrat-Medium": require("../assets/fonts/Montserrat-Medium.ttf"),
         });
         // await new Promise(resolve => setTimeout(resolve, 5000));
       } catch (e) {

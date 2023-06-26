@@ -131,7 +131,7 @@ export default function ViewRentalScreen({
                 label={item.label}
                 value={item.value}
                 radioColor={item.color}
-                labelStyle={{color: colorsConstants[theme].modalBg}}
+                labelStyle={{color: colorsConstants[theme].darkText}}
                 valueStyle={{color: colorsConstants[theme].darkText3}}
                 containerStyle={{
                   marginLeft: index === 1 ? fontsConstants.w(5) : 0,
@@ -163,7 +163,7 @@ export default function ViewRentalScreen({
                 label={item.label}
                 value={item.value}
                 radioColor={item.color}
-                labelStyle={{color: colorsConstants[theme].modalBg}}
+                labelStyle={{color: colorsConstants[theme].darkText}}
                 valueStyle={{color: colorsConstants[theme].darkText3}}
                 containerStyle={{
                   marginLeft: index === 1 ? fontsConstants.w(5) : 0,
@@ -195,7 +195,7 @@ export default function ViewRentalScreen({
                 label={item.label}
                 value={item.value}
                 radioColor={item.color}
-                labelStyle={{color: colorsConstants[theme].modalBg}}
+                labelStyle={{color: colorsConstants[theme].darkText}}
                 valueStyle={{color: colorsConstants[theme].darkText3}}
                 containerStyle={{
                   marginLeft: index === 1 ? fontsConstants.w(5) : 0,

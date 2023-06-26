@@ -140,6 +140,7 @@ export default function DocumentsScreen({
               <View style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
+                alignItems: "center",
                 backgroundColor: colorsConstants[theme]["grey0.13"],
                 borderRadius: fontsConstants.w(10),
                 marginBottom: fontsConstants.h(10),
