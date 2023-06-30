@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { StyleSheet, View as RNView, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, StyleProp, ViewStyle } from "react-native";
 import { ScrollView, Text, View } from "src/components/Themed";
 import { NotificationItemCard } from "src/components/cards";
@@ -156,7 +156,7 @@ export default function HomeTabScreen({
                       navigation.navigate("InviteScreen")
                       break;
                     case 2: 
-                      console.log("No nav")
+                    navigation.navigate("AddProperty")
                       break;
                     default:
                       break;
@@ -211,7 +211,7 @@ export default function HomeTabScreen({
                               navigation.navigate("InviteScreen")
                               break;
                             case 2: 
-                              console.log("No nav")
+                            navigation.navigate("AddProperty")
                               break;
                             default:
                               break;

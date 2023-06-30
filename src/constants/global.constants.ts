@@ -31,12 +31,12 @@ export const MenuItems = [{
   id: 2,
   label: 'FAQs',
   icon: require("src/assets/images/icons/faq.png"),
-  screen: 'InviteScreen'
+  screen: 'FaqScreen'
 }, {
   id: 3,
   label: 'Help and Support',
   icon: require("src/assets/images/icons/question.png"),
-  screen: 'InviteScreen'
+  screen: 'HelpAndSupportScreen'
 }, {
   id: 4,
   label: 'Invite Others',
@@ -46,7 +46,7 @@ export const MenuItems = [{
   id: 5,
   label: 'Terms and Conditions',
   icon: require("src/assets/images/icons/agreement.png"),
-  screen: 'InviteScreen'
+  screen: 'TermsAndConditionScreen'
 }, {
   id: 6,
   label: 'Logout',
@@ -299,6 +299,55 @@ export const NetworkServiceProviders = [{
   label: "Etisalat",
   value: "etisalat"
 }]
+
+export const Socials =[
+  {
+    icon: require('src/assets/images/Whatsapp-icon.png'),
+    text: 'Chat Us on WhatsApp',
+    contact: '+234 9056378091'
+  },
+  {
+    icon: require('src/assets/images/icons/Call-us.png'),
+    text: 'Please Call Us',
+    contact: '+234 9056378091'
+  },
+  {
+    icon: require('src/assets/images/icons/Email-Us.png'),
+    text: 'Email Us',
+    contact: 'info@Supersofttechnology.com'
+  },
+  {
+    icon: require('src/assets/images/icons/World-wide-web-icon.png'),
+    text: 'Visit Our Website',
+    contact: 'Www.Supersofttechnology.com'
+  },
+]
+export const Faqs =[
+  {
+    question: 'How do I add my tenancy details?',
+    answer: 'You can add your tenancy details using the Add Tenancy Details page Or by clicking the add tenancy details button on the home page. This functionality allows the user add their tenancy details, including rent amount, due date, landlord information and tenancy location.'
+  },
+  {
+    question: 'How do I add my owned properties?',
+    answer: 'You can add your tenancy details using the Add Tenancy Details page Or by clicking the add tenancy details button on the home page. This functionality allows the user add their tenancy details, including rent amount, due date, landlord information and tenancy location.'
+  },
+  {
+    question: 'Can I pay my rent using the MPM mobile app?',
+    answer: 'You can add your tenancy details using the Add Tenancy Details page Or by clicking the add tenancy details button on the home page. This functionality allows the user add their tenancy details, including rent amount, due date, landlord information and tenancy location.'
+  },
+  {
+    question: 'How do I find my landlord on this app?',
+    answer: 'You can add your tenancy details using the Add Tenancy Details page Or by clicking the add tenancy details button on the home page. This functionality allows the user add their tenancy details, including rent amount, due date, landlord information and tenancy location.'
+  },
+  {
+    question: 'How many owned properties can I add?',
+    answer: 'You can add your tenancy details using the Add Tenancy Details page Or by clicking the add tenancy details button on the home page. This functionality allows the user add their tenancy details, including rent amount, due date, landlord information and tenancy location.'
+  },
+  {
+    question: 'Can I request payments from here?',
+    answer: 'You can add your tenancy details using the Add Tenancy Details page Or by clicking the add tenancy details button on the home page. This functionality allows the user add their tenancy details, including rent amount, due date, landlord information and tenancy location.'
+  },
+]
 
 export default {
   componentHeight: fontsConstants.h(60),

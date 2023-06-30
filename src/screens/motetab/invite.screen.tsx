@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import * as React from "react";
+import { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView, Text } from "src/components/Themed";
 import { HeaderBackButton } from "src/components/buttons/buttons.components";

@@ -7,7 +7,7 @@ import ResetPasswordScreen from "src/screens/auth/resetpassword.screen";
 import { BottomTabNavigator } from "src/navigations/BottomTabNavigator";
 import NotificationsScreen from "src/screens/notifications";
 import { HeaderBackButton } from "src/components/buttons/buttons.components";
-import React from "react";
+import * as React from "react";
 import fontsConstants from "./fonts.constants";
 import layoutsConstants from "./layouts.constants";
 import { View } from "src/components/Themed";
@@ -22,7 +22,11 @@ import RequestPaymentScreen from "src/screens/rent/requestpayment.screen";
 import ConfirmRequestPaymentScreen from "src/screens/rent/confirmpaymentrequest.screen";
 import BillsPaymentScreen from "src/screens/bills";
 import AirtimeTopUpScreen from "src/screens/bills/airtimetopup.screen";
-
+import  AddProperty  from "src/screens/add-property/add-property";
+import AddTenancyDetails from "src/screens/add-property/add-tenancy-details";
+import FaqScreen from "src/screens/motetab/faq.screen";
+import HelpAndSupportScreen from "src/screens/motetab/Help-support.screen";
+import TermsAndConditionScreen from "src/screens/motetab/terms-condition.screen";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -144,6 +148,41 @@ export const UserAppRoutes = [
   }, {
     name: "AirtimeTopUpScreen",
     component: AirtimeTopUpScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "AddProperty",
+    component: AddProperty,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "AddTenancyDetails",
+    component: AddTenancyDetails,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "FaqScreen",
+    component: FaqScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "HelpAndSupportScreen",
+    component: HelpAndSupportScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "TermsAndConditionScreen",
+    component: TermsAndConditionScreen,
     options: {
       headerShown: false,
     },
