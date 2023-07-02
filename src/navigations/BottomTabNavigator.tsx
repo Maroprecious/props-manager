@@ -105,7 +105,7 @@ export function BottomTabNavigator() {
           title: 'Home',
           tabBarIcon: ({ focused, color }) => (
             <View style={[styles.tabBarItemViewStyle, {
-              backgroundColor: focused && theme === "dark" ? colorsConstants.colorWhite : undefined,
+              backgroundColor: focused ? colorsConstants.colorWhite : undefined,
             }]}>
               <Icon
                 type="ionicon"

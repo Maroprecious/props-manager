@@ -43,7 +43,7 @@ export default function App() {
       <AppThemeContext.Provider value={appTheme || colorScheme}>
         <SafeAreaProvider>
           <StatusBar />
-          <Navigation colorScheme={colorScheme} />
+          <Navigation colorScheme={appTheme || colorScheme} />
           <ConfirmModal
             
           />
