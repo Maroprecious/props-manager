@@ -11,7 +11,7 @@ export default function useColorScheme(): NonNullable<ColorSchemeName> {
 export async function useAppTheme () {
   try {
     const theme = await SecureStoreManager.getAppTheme();
-    return theme;
+    return theme !== null ? theme : "light";
   } catch (e) { 
     console.log(e)
     return useColorScheme();

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View as RNView, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, StyleProp, ViewStyle } from "react-native";
+import { StyleSheet, View as RNView, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { ScrollView, Text, View } from "src/components/Themed";
 import { NotificationItemCard } from "src/components/cards";
 import { Avatar, Icon, Image } from 'react-native-elements'
@@ -7,7 +7,6 @@ import colorsConstants from "src/constants/colors.constants";
 import fontsConstants from "src/constants/fonts.constants";
 import { DashboardSliderInfo, RecentActivitiesData } from "src/constants/global.constants";
 import layoutsConstants from "src/constants/layouts.constants";
-import useColorScheme from "src/hooks/useColorScheme";
 import { NotificationProps } from "src/types/app.types";
 import { RootTabScreenProps } from "src/types/navigations.types";
 import AppIntroSlider from "react-native-app-intro-slider";
@@ -16,6 +15,8 @@ import { formatCurrency } from "src/utils/FormatNumber";
 import { useNavigation } from "@react-navigation/native";
 import { RentalDetailItem } from "../rent/view.screen";
 import { LocationIcon } from "../rent/components";
+import { useContext } from "react";
+import AppThemeContext from "src/contexts/Theme.context";
 
 export const RenderAddTenancyButton = ({
 
@@ -23,8 +24,7 @@ export const RenderAddTenancyButton = ({
 
 }) => {
   const navigation = useNavigation();
-
-  const theme = useColorScheme();
+  const theme = useContext(AppThemeContext)
   return (
     <TouchableOpacity
       activeOpacity={layoutsConstants.activeOpacity}
@@ -53,7 +53,7 @@ export default function HomeTabScreen({
   navigation,
   route
 }: RootTabScreenProps<"HomeTabNavigator">) {
-  const theme = useColorScheme();
+  const theme = useContext(AppThemeContext)
 
   return (
     <ScrollView style={styles.container}>
