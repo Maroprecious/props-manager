@@ -10,3 +10,10 @@ export type NotificationProps = {
 }
 
 export type NotificationType = "settings" | "bill" | "location" | "mail" | "invoice" | "award" 
+
+export type ReduxAuthState = {
+  token: string | undefined | null,
+  user: {
+    id: string | undefined | null
+  }
+}
