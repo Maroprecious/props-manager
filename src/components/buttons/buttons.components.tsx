@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
 import React, { useContext } from "react"
-import { ImageSourcePropType, ImageStyle, StyleProp, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
+import { ImageSourcePropType, ImageStyle, StyleProp, TextStyle, TouchableOpacity, ViewStyle, GestureResponderEvent } from "react-native"
 import { Image } from 'react-native-elements'
 import { Button, ButtonProps } from "react-native-elements"
 import colorsConstants from "src/constants/colors.constants"
@@ -13,6 +13,7 @@ export const DefaultButton = ({
   titleStyle = {},
   buttonStyle = {},
   type = "solid",
+  onPress,
   borderRadius = fontsConstants.h(20),
   ...props
 } : {
@@ -21,9 +22,11 @@ export const DefaultButton = ({
   buttonStyle?: StyleProp<ViewStyle>
   buttonHeight?: number
   borderRadius?: number
+  onPress?: (e: GestureResponderEvent) => void
 } & ButtonProps) => {
   return (
     <Button
+    onPress={onPress}
       titleStyle={[{
         fontFamily: fontsConstants.American_Typewriter_Bold,
         fontSize: fontsConstants.h(20)

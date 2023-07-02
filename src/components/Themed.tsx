@@ -51,6 +51,7 @@ export function Text(props: TextProps) {
         style,
       ]}
       {...otherProps}
+      maxFontSizeMultiplier={1}
     />
   );
 }

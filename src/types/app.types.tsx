@@ -9,4 +9,4 @@ export type NotificationProps = {
   }[]
 }
 
-export type NotificationType = "settings" | "bill" | "location" | "mail" | "invoice" | "award"
+export type NotificationType = "settings" | "bill" | "location" | "mail" | "invoice" | "award" 
