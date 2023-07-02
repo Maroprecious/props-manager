@@ -27,6 +27,7 @@ import AddTenancyDetails from "src/screens/add-property/add-tenancy-details";
 import FaqScreen from "src/screens/motetab/faq.screen";
 import HelpAndSupportScreen from "src/screens/motetab/Help-support.screen";
 import TermsAndConditionScreen from "src/screens/motetab/terms-condition.screen";
+import { useAppSelector } from "src/hooks/useReduxHooks";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -237,7 +238,7 @@ const WelcomeAppRputes = [
 ];
 
 const AppRoutes = () => {
-  const user = {id: "null"};
+  const { token, user } = useAppSelector((state) => state.auth);
   const routes = user?.id === null || user?.id === undefined ? WelcomeAppRputes : UserAppRoutes;
   return routes;
 };
