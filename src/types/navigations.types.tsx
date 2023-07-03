@@ -57,6 +57,12 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   FaqScreen: undefined
   HelpAndSupportScreen: undefined
   TermsAndConditionScreen: undefined
+  SettingScreen: undefined
+  ChangePasswordScreen: undefined
+  ChangePasswordOtpScreen: undefined
+  Setup2faScreen: undefined
+  VerifyWithMobile: undefined
+  VerifyWithEmail: undefined
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
