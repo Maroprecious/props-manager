@@ -59,11 +59,13 @@ export const DefaultInput = ({
 export const DefaultPhoneInput = ({
   inputHeight = globalConstants.componentHeight,
   containerStyle = {},
+  labelStyle = {},
   onChangeNumber = () => null,
   ...props
 } : {
   inputHeight?: number
   containerStyle?: StyleProp<ViewStyle>
+  labelStyle?: StyleProp<TextStyle>
   onChangeNumber?: Function
 } & InputProps) => {
 
@@ -110,7 +112,8 @@ export const DefaultPhoneInput = ({
       inputStyle={{
         fontFamily: fontsConstants.American_Typewriter_Regular,
         paddingHorizontal: fontsConstants.w(20),
-        fontSize: fontsConstants.w(14)
+        fontSize: fontsConstants.w(14),
+        color: colorsConstants[theme].darkText
       }}
       onChangeText={onChangeText}
       inputContainerStyle={{
@@ -119,6 +122,12 @@ export const DefaultPhoneInput = ({
         borderRadius: fontsConstants.h(10),
         borderBottomWidth: 0
       }}
+      labelStyle={[{
+        color: colorsConstants[theme].screenLabel,
+        fontFamily: fontsConstants.Lora_Bold,
+        fontSize: fontsConstants.w(15),
+        marginBottom: fontsConstants.h(10)
+      }, labelStyle]}
       containerStyle={[{
         height: inputHeight,
         paddingLeft: 0,
