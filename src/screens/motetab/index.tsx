@@ -69,16 +69,21 @@ export default function MoreTabScreen({
                 color: colorsConstants[theme].screenLabel,
               }}>User ID: 0038</Text>
             </View>
-            <Text style={{
-              fontFamily: fontsConstants.Roboto_Light,
-              fontSize: fontsConstants.h(12),
-              textDecorationLine: "underline",
-              marginTop: fontsConstants.h(26),
-              color: colorsConstants[theme].screenLabel
-            }}
+            <TouchableOpacity
+              activeOpacity={layoutsConstants.activeOpacity}
+              onPress={() => navigation.navigate("EditProfileScreen")}
             >
-              {`Edit Details`}
-            </Text>
+              <Text style={{
+                fontFamily: fontsConstants.Roboto_Light,
+                fontSize: fontsConstants.h(12),
+                textDecorationLine: "underline",
+                marginTop: fontsConstants.h(26),
+                color: colorsConstants[theme].screenLabel
+              }}
+              >
+                {`Edit Details`}
+              </Text>
+            </TouchableOpacity>
           </View>
           <View style={[styles.cardItemContainer, {
             // borderBottomColor: colorsConstants[theme].borderLine,

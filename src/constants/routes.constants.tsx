@@ -34,6 +34,7 @@ import ChangePasswordOtpScreen from "src/screens/motetab/change-password-otp.scr
 import Setup2faScreen from "src/screens/motetab/setup-2fa";
 import VerifyWithMobile from "src/screens/motetab/verify-with-mobile.screen";
 import VerifyWithEmail from "src/screens/motetab/verify-with-email.screen";
+import EditProfileScreen from "src/screens/motetab/editprofile.screen";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -236,6 +237,13 @@ export const UserAppRoutes = [
       headerShown: false,
     },
     initialParams: {},
+  }, {
+    name: "EditProfileScreen",
+    component: EditProfileScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
   }
 ];
 
@@ -287,7 +295,7 @@ const WelcomeAppRputes = [
 
 const AppRoutes = () => {
   const { token, user } = useAppSelector((state) => state.auth);
-  const routes = user?.id === null || user?.id === undefined ? UserAppRoutes  : WelcomeAppRputes;
+  const routes = user?.id === null || user?.id === undefined ? UserAppRoutes : WelcomeAppRputes;
   return routes;
 };
 
