@@ -28,6 +28,12 @@ import FaqScreen from "src/screens/motetab/faq.screen";
 import HelpAndSupportScreen from "src/screens/motetab/Help-support.screen";
 import TermsAndConditionScreen from "src/screens/motetab/terms-condition.screen";
 import { useAppSelector } from "src/hooks/useReduxHooks";
+import SettingScreen from "src/screens/motetab/settings-screen";
+import ChangePasswordScreen from "src/screens/motetab/change-password-screen";
+import ChangePasswordOtpScreen from "src/screens/motetab/change-password-otp.screen";
+import Setup2faScreen from "src/screens/motetab/setup-2fa";
+import VerifyWithMobile from "src/screens/motetab/verify-with-mobile.screen";
+import VerifyWithEmail from "src/screens/motetab/verify-with-email.screen";
 import EditProfileScreen from "src/screens/motetab/editprofile.screen";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -185,6 +191,48 @@ export const UserAppRoutes = [
   }, {
     name: "TermsAndConditionScreen",
     component: TermsAndConditionScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "SettingScreen",
+    component: SettingScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "ChangePasswordScreen",
+    component: ChangePasswordScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "ChangePasswordOtpScreen",
+    component: ChangePasswordOtpScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "Setup2faScreen",
+    component: Setup2faScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "VerifyWithMobile",
+    component: VerifyWithMobile,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "VerifyWithEmail",
+    component: VerifyWithEmail,
     options: {
       headerShown: false,
     },

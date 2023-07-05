@@ -15,7 +15,7 @@ import Layout from "../layout/layout"
 import { useRef } from 'react';
 // import { Button } from 'src/components/buttons/button';
 import { useNavigation } from '@react-navigation/native';
-import { Platform } from 'react-native';
+import { Platform, TextStyle } from 'react-native';
 
 
 export const AlertModal = ({
@@ -143,10 +143,11 @@ type props = {
   text1?: string;
   text2?: string;
   text3?: string;
+  textStyle?: StyleProp<TextStyle>;
   page?: any;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  feedback: React.ReactNode
+  feedback: React.ReactNode,
 }
 
 export const Success = ({
@@ -156,7 +157,8 @@ export const Success = ({
   page,
   visible,
   setVisible,
-  feedback
+  feedback,
+  textStyle
 }: props) => {
   const navigation = useNavigation();
   const animation = useRef(null);
@@ -177,9 +179,9 @@ export const Success = ({
             <RNView>
             <Image source={require('src/assets/images/icons/check-success.png')} style={styles.success_img} />
             </RNView>
-            <Text style={styles.successText}>{text2}</Text>
+            <Text style={[styles.successText, textStyle]}>{text2}</Text>
             {
-              text3 && <Text style={styles.successText2}>{text3}</Text>
+              text3 && <Text style={[styles.successText2, textStyle]}>{text3}</Text>
 
             }
             <RNView style={styles.bottom}>

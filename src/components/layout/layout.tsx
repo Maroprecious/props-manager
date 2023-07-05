@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View, Text } from '../Themed';
-import { ImageBackground, StyleSheet, Image, TouchableOpacity, Platform, Dimensions } from 'react-native';
+import { ImageBackground, StyleSheet, Image, TouchableOpacity, Platform, Dimensions , TextStyle, StyleProp} from 'react-native';
 import { useContext } from 'react';
 import AppThemeContext from "src/contexts/Theme.context";
 import { StatusBar } from 'expo-status-bar';
@@ -13,9 +13,10 @@ import fontsConstants from "src/constants/fonts.constants";
 type props = {
     children: React.ReactNode;
     goback?: boolean;
-    title?: string
+    title?: string,
+    textstyle?: StyleProp<TextStyle>
 }
-const Layout = ({ children, goback, title }: props) => {
+const Layout = ({ children, goback, title, textstyle}: props) => {
     const theme = useContext(AppThemeContext);
 
     const navigation = useNavigation()
@@ -27,7 +28,7 @@ const Layout = ({ children, goback, title }: props) => {
                 </TouchableOpacity>
             }
             {
-                title && <Text style={[styles.title, {color: colorsConstants[theme].textBlack2 }]}>{title}</Text>
+                title && <Text style={[styles.title, {color: colorsConstants[theme].textBlack2 }, textstyle]}>{title}</Text>
             }
             {children}
         </ImageBackground>

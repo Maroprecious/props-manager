@@ -20,7 +20,6 @@ export default function LoginScreen({
   const doLogin = async () => {
     navigation.navigate("App")
   }
-
   return (
     <ScrollView
       style={styles.container}

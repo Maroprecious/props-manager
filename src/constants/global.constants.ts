@@ -29,7 +29,7 @@ export const MenuItems = [{
   id: 1,
   label: 'Settings',
   icon: require("src/assets/images/icons/gear.png"),
-  screen: 'InviteScreen'
+  screen: 'SettingScreen'
 }, {
   id: 2,
   label: 'FAQs',

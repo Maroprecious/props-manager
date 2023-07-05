@@ -8,6 +8,8 @@ import {
   StyleProp,
   ViewStyle,
   Platform,
+  TextStyle,
+  TextInputProps
 } from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import colorsConstants from 'src/constants/colors.constants';
@@ -20,13 +22,19 @@ const OtpInput = ({
   label, 
   boxCount = 4,
   containerStyle = {},
+  inputStyle = {},
+  textStyle = {},
+  otherProps= {},
   itemSpacing = 9,
 }: {
   value: string;
   onChange?: (t: string) => void;
   label? : string;
   boxCount?: 4 | 6;
+  otherProps?: TextInputProps;
   containerStyle?: StyleProp<ViewStyle>;
+  inputStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
   itemSpacing?: number;
 }) => {
 
@@ -85,7 +93,7 @@ const OtpInput = ({
       <TouchableWithoutFeedback key={index} onPress={() => refs[index].current?.focus()}>
         <View
           key={index}
-          style={{
+          style={[{
             height: fontsConstants.w(60),
             width: fontsConstants.w(60),
             alignItems: 'center',
@@ -95,12 +103,12 @@ const OtpInput = ({
             // backgroundColor: theme === "light" ? `rgba(0, 0, 0, 0.05)` : `rgba(255, 255, 255, 0.05)`,
             borderColor: theme === "light" ? colorsConstants.colorPrimary : colorsConstants.dark.text,
             borderWidth: fontsConstants.h(1)
-          }}>
+          }, inputStyle]}>
           <TextInput
             ref={ref}
             value={value}
             keyboardType={Platform.OS === "android" ? "number-pad" : "name-phone-pad"}
-            style={{width: fontsConstants.w(20), textAlign: 'center', color: theme === "light" ? colorsConstants.colorPrimary : colorsConstants.colorWhite}}
+            style={[{width: fontsConstants.w(20), textAlign: 'center', color: theme === "light" ? colorsConstants.colorPrimary : colorsConstants.colorWhite}, textStyle, {...otherProps}]}
             allowFontScaling={false}
             maxLength={1}
             selectionColor={colorsConstants.colorPrimary}

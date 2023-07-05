@@ -48,12 +48,15 @@ export default {
     textblackopacity: 'rgba(0, 0, 0, 0.45)',
     lighterBlue: '#2972E6',
     borderLine: "rgba(0, 0, 0, 0.25)",
+    dropShadow: 'rgba(0, 0, 0, 0.10)',
+    otptext: 'rgba(0, 0, 0, 0.85)',
     cardBg: "#fff",
     modalBg: "#030303",
     dateMonthColor: "#A3A3A3",
     darkText3: "#000B22",
     socialText: '#212121',
-    termsTitle: '#707070'
+    termsTitle: '#707070',
+    titleText: 'rgba(148, 148, 150, 0.75)'
   },
   dark: {
     text: '#fff',
@@ -81,6 +84,9 @@ export default {
     dateMonthColor: "#A3A3A3",
     darkText3: "rgba(255, 255, 255, 0.6)",
     socialText: '#212121',
-    termsTitle: '#707070'
+    dropShadow: 'rgba(0, 0, 0, 0.10)',
+    termsTitle: '#707070',
+    titleText: 'rgba(148, 148, 150, 0.75)',
+    otptext: 'rgba(0, 0, 0, 0.85)',
   },
 };
