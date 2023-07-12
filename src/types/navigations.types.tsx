@@ -63,6 +63,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   Setup2faScreen: undefined
   VerifyWithMobile: undefined
   VerifyWithEmail: undefined
+  PayBillsScreen: undefined
   EditProfileScreen: undefined
 };
 

@@ -34,6 +34,7 @@ import ChangePasswordOtpScreen from "src/screens/motetab/change-password-otp.scr
 import Setup2faScreen from "src/screens/motetab/setup-2fa";
 import VerifyWithMobile from "src/screens/motetab/verify-with-mobile.screen";
 import VerifyWithEmail from "src/screens/motetab/verify-with-email.screen";
+import PayBillsScreen from "src/screens/paymentstab/pay-bills";
 import EditProfileScreen from "src/screens/motetab/editprofile.screen";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -233,6 +234,13 @@ export const UserAppRoutes = [
   }, {
     name: "VerifyWithEmail",
     component: VerifyWithEmail,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "PayBillsScreen",
+    component: PayBillsScreen,
     options: {
       headerShown: false,
     },
