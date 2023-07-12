@@ -353,7 +353,7 @@ export const Faqs =[
 ]
 
 export default {
-  componentHeight: fontsConstants.h(60),
+  componentHeight: fontsConstants.h(50),
   mainViewHorizontalPadding: fontsConstants.w(30),
   activeOpacity: 0.6,
   APP_THEME,
