@@ -261,7 +261,7 @@ export const BillItems = [{
   id: 1,
   label: "Electricity",
   icon: require("src/assets/images/icons/plugs.png"),
-  screen: "PayRentScreen"
+  screen: "PayBillsScreen"
 }, {
   id: 2,
   label: "Water",

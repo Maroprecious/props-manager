@@ -25,6 +25,8 @@ export default {
     inputPlaceHolderColor: 'rgba(3, 3, 3, 0.2)',
     screenLabel: "#242A37",
     screenIntro: "#949496",
+    border_bottom: 'rgba(112, 112, 112, 0.5)',
+
 
     //
     primary: colorPrimary,
@@ -56,7 +58,15 @@ export default {
     darkText3: "#000B22",
     socialText: '#212121',
     termsTitle: '#707070',
-    titleText: 'rgba(148, 148, 150, 0.75)'
+    titleText: 'rgba(148, 148, 150, 0.75)',
+    container: 'rgba(255, 255, 255, 0.8)',
+    overlay: 'rgba(3, 3, 3, 0.94)',
+    naira: 'rgba(27, 42, 59, 0.80)',
+    success_message: '#777779',
+    success_name: '#212121',
+    success_text: '#000000D9',
+    download_icon: 'rgba(2, 130, 173, 0.71)',
+
   },
   dark: {
     text: '#fff',
@@ -88,5 +98,16 @@ export default {
     termsTitle: '#707070',
     titleText: 'rgba(148, 148, 150, 0.75)',
     otptext: 'rgba(0, 0, 0, 0.85)',
+    border_bottom: 'rgba(112, 112, 112, 0.5)',
+    opaqueWhite: 'rgba(255, 255, 255, 0.22)',
+    container: 'rgba(255, 255, 255, 0.8)',
+    overlay: 'rgba(3, 3, 3, 0.94)',
+    naira: 'rgba(27, 42, 59, 0.80)',
+    success_message: '#777779',
+    success_name: '#212121',
+    success_text: '#000000D9',
+    download_icon: 'rgba(2, 130, 173, 0.71)',
+
+
   },
 };
