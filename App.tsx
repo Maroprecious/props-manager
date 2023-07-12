@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import { persistor, store } from 'src/services/redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import { enableMapSet } from 'immer';
 
 import { useEffect, useState } from "react";
 import { LogBox } from "react-native";
@@ -15,6 +16,8 @@ import React from "react";
 import Navigation from "src/navigations";
 import AppThemeContext from "src/contexts/Theme.context";
 import { ConfirmModal } from "src/components/modals/confirm.modals";
+
+enableMapSet()
 
 export default function App() {
   // const [loaded, error] = useFonts(cachedFonts);
