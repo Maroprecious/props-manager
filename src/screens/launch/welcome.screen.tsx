@@ -10,6 +10,7 @@ import { SliderData } from "src/constants/global.constants";
 import AppThemeContext from "src/contexts/Theme.context";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import layoutsConstants from "src/constants/layouts.constants";
+import SecureStoreManager from "src/utils/SecureStoreManager";
 
 export default function WelcomeScreen({
   navigation,
@@ -57,6 +58,7 @@ export default function WelcomeScreen({
         data={SliderData}
         renderItem={({item, index}) => (
           <View style={{
+            paddingBottom: fontsConstants.h(20)
           }} key={index.toString()}>
             <View style={{
               height: fontsConstants.h(373),
@@ -90,7 +92,10 @@ export default function WelcomeScreen({
             </Text>
             <DefaultButton
               title={`Get Started`}
-              onPress={() => navigation.navigate("LoginScreen")}
+              onPress={() => {
+                SecureStoreManager.setInitialRouteName("LoginScreen")
+                navigation.navigate("LoginScreen")
+              }}
               containerStyle={{
                 marginHorizontal: layoutsConstants.mainViewHorizontalPadding,
                 marginTop: fontsConstants.h(23)

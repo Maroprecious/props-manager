@@ -14,14 +14,17 @@ export const DefaultInput = ({
   inputHeight = globalConstants.componentHeight,
   containerStyle = {},
   labelStyle = {},
+  secureTextEntry = false,
   ...props
 } : {
   inputHeight?: number
   containerStyle?: StyleProp<ViewStyle>
   labelStyle?: StyleProp<TextStyle>
+  secureTextEntry?: boolean
 } & InputProps) => {
 
   const theme = useContext(AppThemeContext);
+  const [showEntry, setShowEntry] = useState(secureTextEntry);
 
   return (
     <Input
@@ -51,7 +54,20 @@ export const DefaultInput = ({
         paddingRight: 0,
         marginBottom: fontsConstants.w(30)
       }, containerStyle]}
+      rightIcon={ secureTextEntry ? (
+        <Icon
+          name={showEntry ? `eye-off` : `eye`}
+          type="ionicon"
+          onPress={() => setShowEntry(!showEntry)}
+          size={fontsConstants.h(20)}
+          color={showEntry ? colorsConstants[theme].inputPlaceHolderColor : colorsConstants[theme].darkText}
+          containerStyle={{
+            marginRight: fontsConstants.w(10)
+          }}
+        />
+      ) : undefined}
       {...props}
+      secureTextEntry={showEntry}
     />
   )
 }

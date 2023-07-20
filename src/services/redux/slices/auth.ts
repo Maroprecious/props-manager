@@ -7,7 +7,14 @@ import { ReduxAuthState } from 'src/types/app.types';
 const initialAuthState: ReduxAuthState = {
   token: API_BEARER_TOKEN,
   user: {
-    id: null
+    id: null,
+    completed: false,
+    email: "",
+    firstName: "",
+    lastName: "",
+    roles: [],
+    username: "",
+    verified: false
   }
 }
 

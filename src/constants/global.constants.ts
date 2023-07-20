@@ -1,11 +1,10 @@
 import { NotificationProps } from "src/types/app.types";
 import fontsConstants from "./fonts.constants";
-import { API_DEV_URL, API_PROD_URL } from "@env";
 export const APP_NAME = "MPM-Mobile";
 export const APP_THEME = `${APP_NAME}-APP-THEME`;
 export const APP_CONFIRM = `${APP_NAME}-APP-CONFIRM`;
-
-export const API_BASE_URL =  __DEV__ ? `${API_DEV_URL}` : `${API_PROD_URL}`;
+export const APP_TOKEN = `${APP_NAME}-APP-TOKEN`;
+export const APP_INITIAL_ROUTE = `${APP_NAME}-APP-INITIAL-ROUTE`;
 
 export const SliderData = [
   {
