@@ -66,6 +66,7 @@ export default {
     success_name: '#212121',
     success_text: '#000000D9',
     download_icon: 'rgba(2, 130, 173, 0.71)',
+    address: 'rgba(0, 11, 34, 0.60)'
 
   },
   dark: {
@@ -107,6 +108,10 @@ export default {
     success_name: '#212121',
     success_text: '#000000D9',
     download_icon: 'rgba(2, 130, 173, 0.71)',
+    address: 'rgba(0, 11, 34, 0.60)',
+    textBlack: '#000000',
+
+
 
 
   },

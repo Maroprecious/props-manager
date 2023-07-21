@@ -20,12 +20,12 @@ export default function DocumentsScreen({
 }: RootStackScreenProps<"DocumentsScreen">) {
   const theme = useContext(AppThemeContext);
 
-  const [selected, setSelected] = useState<any>({id: -1})
+  const [selected, setSelected] = useState<any>({ id: -1 })
 
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={{flex: 1}}
+      contentContainerStyle={{ flex: 1 }}
     >
       <ImageBackground
         source={require("src/assets/images/backgrounds/background.png")}
@@ -36,7 +36,7 @@ export default function DocumentsScreen({
           paddingBottom: layoutsConstants.tabBarHeight / 2
         }}
       >
-        <HeaderBackButton/>
+        <HeaderBackButton />
         <ScreenTitle
           title={`Documents`}
           introTextStyle={{
@@ -74,39 +74,39 @@ export default function DocumentsScreen({
                   marginBottom: fontsConstants.h(10)
                 }}
               >
-              <LocationIcon
-                imageSize={fontsConstants.w(20)}
-                containerStyle={{
-                  height: fontsConstants.w(45),
-                  width: fontsConstants.w(45),
-                }}
-              /> 
-              <View style={{
+                <LocationIcon
+                  imageSize={fontsConstants.w(20)}
+                  containerStyle={{
+                    height: fontsConstants.w(45),
+                    width: fontsConstants.w(45),
+                  }}
+                />
+                <View style={{
                   marginHorizontal: fontsConstants.w(10),
                   flex: 1
                 }}>
-                <Text style={{
-                  fontFamily: fontsConstants.Lora_Bold,
-                  fontSize: fontsConstants.h(15),
-                  color: colorsConstants[theme].screenLabel,
-                }}>
-                  {`Property Location`}
-                </Text>
-                <Text style={{
-                  fontFamily: fontsConstants.Lora_Regular,
-                  fontSize: fontsConstants.h(14),
-                  color: colorsConstants[theme].darkText3,
-                }}>
-                  {item.address}
-                </Text>
-              </View>
-              <DefaultRadiobox
-                checked={selected?.id === item.id}
-                checkedColor={colorsConstants.radioBoxActive}
-                size={fontsConstants.w(20)}
-                label={`Select`}
-                onPress={() => setSelected(item)}
-              />
+                  <Text style={{
+                    fontFamily: fontsConstants.Lora_Bold,
+                    fontSize: fontsConstants.h(15),
+                    color: colorsConstants[theme].screenLabel,
+                  }}>
+                    {`Property Location`}
+                  </Text>
+                  <Text style={{
+                    fontFamily: fontsConstants.Lora_Regular,
+                    fontSize: fontsConstants.h(14),
+                    color: colorsConstants[theme].darkText3,
+                  }}>
+                    {item.address}
+                  </Text>
+                </View>
+                <DefaultRadiobox
+                  checked={selected?.id === item.id}
+                  checkedColor={colorsConstants.radioBoxActive}
+                  size={fontsConstants.w(20)}
+                  label={`Select`}
+                  onPress={() => setSelected(item)}
+                />
               </View>
             ))}
             <View style={{
@@ -184,9 +184,9 @@ export default function DocumentsScreen({
                     <View style={{
                       alignItems: "center"
                     }}>
-                      <Entypo 
-                        name={item.icon.name} 
-                        size={fontsConstants.h(15)} 
+                      <Entypo
+                        name={item.icon.name}
+                        size={fontsConstants.h(15)}
                         color={item.icon.color}
                       />
                       <Text style={{

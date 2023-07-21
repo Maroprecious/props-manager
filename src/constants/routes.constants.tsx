@@ -35,6 +35,11 @@ import Setup2faScreen from "src/screens/motetab/setup-2fa";
 import VerifyWithMobile from "src/screens/motetab/verify-with-mobile.screen";
 import VerifyWithEmail from "src/screens/motetab/verify-with-email.screen";
 import PayBillsScreen from "src/screens/paymentstab/pay-bills";
+import TenancyScreen from "src/screens/portfolio/tenancy";
+import ViewTenancyScreen from "src/screens/portfolio/view-tenancy";
+import ViewTenant from "src/screens/portfolio/view-tenant-details";
+import PropertyManagerScreen from "src/screens/portfolio/property-manager";
+import AssignPropertyManager from "src/screens/portfolio/assign-property-mgr";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -119,6 +124,41 @@ export const UserAppRoutes = [
     },
     initialParams: {},
   }, {
+    name: "TenancyScreen",
+    component: TenancyScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "ViewTenancyScreen",
+    component: ViewTenancyScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "PropertyManagerScreen",
+    component: PropertyManagerScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "AssignPropertyManager",
+    component: AssignPropertyManager,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+      name: "ViewTenant",
+      component: ViewTenant,
+      options: {
+        headerShown: false,
+      },
+      initialParams: {},
+    },{
     name: "ViewRentalScreen",
     component: ViewRentalScreen,
     options: {
@@ -295,7 +335,7 @@ const WelcomeAppRputes = [
 
 const AppRoutes = () => {
   const { token, user } = useAppSelector((state) => state.auth);
-  const routes = user?.id === null || user?.id === undefined ? UserAppRoutes  : WelcomeAppRputes;
+  const routes = user?.id === null || user?.id !== undefined ? UserAppRoutes  : WelcomeAppRputes;
   return routes;
 };
 

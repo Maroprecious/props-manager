@@ -188,6 +188,44 @@ export const PortfolioMenuItems = [{
   screen: "DocumentsScreen"
 }]
 
+export const LandlordPortfolioItems = [
+  {
+    id: 1,
+    label: "Properties",
+    icon: require("src/assets/images/icons/town.png"),
+    screen: "RentalsScreen"
+  },
+  {
+    id: 2,
+    label: "Rental",
+    icon: require("src/assets/images/icons/rental.png"),
+    screen: "RentalsScreen"
+  },
+  {
+    id: 3,
+    label: "Tenancy",
+    icon: require("src/assets/images/icons/tenancy-icon.png"),
+    screen: "TenancyScreen"
+  },
+  {
+    id: 4,
+    label: "Property Managers",
+    icon: require("src/assets/images/icons/Property-manager-icon.png"),
+    screen: "PropertyManagerScreen"
+  },
+{
+  id: 5,
+  label: "Documents",
+  icon: require("src/assets/images/icons/documents.png"),
+  screen: "DocumentsScreen"
+},{
+  id: 6,
+  label: "Property Analytics",
+  icon: require("src/assets/images/icons/Property-analytics-icon.png"),
+  screen: "RentalsScreen"
+}, 
+]
+
 export const DashboardSliderInfo = [{
   id: 1,
   title: 'Invite Others',
@@ -351,7 +389,61 @@ export const Faqs =[
     answer: 'You can add your tenancy details using the Add Tenancy Details page Or by clicking the add tenancy details button on the home page. This functionality allows the user add their tenancy details, including rent amount, due date, landlord information and tenancy location.'
   },
 ]
-
+export const TenantInfo = [
+  {
+    id: 1,
+    label: "Flat 1",
+    icon: require("src/assets/images/icons/human-icon.png"),
+    occupant: 'Jackson Gbenga',
+    phone: '070666444555',
+    rent_status: "Unpaid",
+    amount: '₦ 1,350,000. 00',
+  },
+  {
+    id: 2,
+    label: "Flat 2",
+    icon: require("src/assets/images/icons/human-icon.png"),
+    occupant: 'Jackson Gbenga',
+    phone: '070666444555',
+    rent_status: "Paid",
+    amount: '₦ 1,350,000. 00',
+  },
+  {
+    id: 3,
+    label: "Flat 3",
+    icon: require("src/assets/images/icons/human-icon.png"),
+    occupant: 'Jackson Tobi',
+    phone: '070666444555',
+    rent_status: "Paid",
+    amount: '₦ 1,350,000. 00',
+  },
+  {
+    id: 4,
+    label: "Flat 4",
+    icon: require("src/assets/images/icons/human-icon.png"),
+    occupant: 'Stanley Olaoye',
+    phone: '070666444555',
+    rent_status: "Unpaid",
+    amount: '₦ 1,350,000. 00',
+  },
+{
+  id: 5,
+  label: "Flat 5",
+    icon: require("src/assets/images/icons/human-icon.png"),
+    occupant: 'Jackson Gbenga',
+    phone: '070666444555',
+    rent_status: "Unpaid",
+    amount: '₦ 1,350,000. 00',
+},{
+  id: 6,
+  label: "Flat 6",
+    icon: require("src/assets/images/icons/human-icon.png"),
+    occupant: 'Jackson Gbenga',
+    phone: '070666444555',
+    rent_status: "Paid",
+    amount: '₦ 1,350,000. 00',
+}, 
+]
 export default {
   componentHeight: fontsConstants.h(60),
   mainViewHorizontalPadding: fontsConstants.w(30),

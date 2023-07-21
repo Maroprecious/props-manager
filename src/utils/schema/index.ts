@@ -32,8 +32,16 @@ const ChangePasswordSchema = Yup.object().shape({
   ),
 
 })
+const AssignManagerSchema = Yup.object().shape({
+  firstname: Yup.string().required('First name is required'),
+  lastname: Yup.string().required('Last Name is required'),
+  mobile: Yup.string().required("Manager's mobile is required"),
+  email_id: Yup.string().required('Email ID is required'),
+  role: Yup.string().required("Manager's role is required"),
+})
 export {
     AddPropertyValidationSchema,
     AddTenancyValidationSchema,
-    ChangePasswordSchema
+    ChangePasswordSchema,
+    AssignManagerSchema
 }
