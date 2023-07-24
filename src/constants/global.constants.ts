@@ -168,7 +168,7 @@ export const PaymentsMenuItems = [{
   id: 5,
   label: "Your\nFinancials",
   icon: require("src/assets/images/icons/financials.png"),
-  screen: ""
+  screen: "YourFinancialsScreen"
 }, {
   id: 6,
   label: "Transaction\nHistory",
