@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { DeviceEventEmitter, ModalProps, View } from "react-native"
+import { DeviceEventEmitter, ModalProps, View, Pressable, StyleSheet, Platform, StyleProp, TextStyle, StatusBar, Image as RNImage } from "react-native"
 import { Modal } from "react-native"
 import colorsConstants from "src/constants/colors.constants"
 import fontsConstants from "src/constants/fonts.constants"
@@ -9,6 +9,7 @@ import { Text } from "../Themed"
 import { Icon, Image } from "react-native-elements"
 import { DefaultButton } from "../buttons/buttons.components"
 import { APP_CONFIRM } from "src/constants/global.constants"
+import { useAppTheme } from "src/hooks/useColorScheme"
 
 type modalTypes = "delete" | "cancel" | "info"
 
@@ -168,3 +169,6 @@ export const ConfirmModal = () => {
 export const showConfirm = (options: ConfirmProps) => {
   DeviceEventEmitter.emit(APP_CONFIRM, options);
 }
+
+
+

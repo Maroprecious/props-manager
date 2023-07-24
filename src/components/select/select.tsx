@@ -23,6 +23,7 @@ type selectProps = {
     err?: boolean;
     errMsg?: string;
     extraStyles?: StyleProp<ViewStyle>;
+    containerStyles?: StyleProp<ViewStyle>;
     placeholder?: string;
     containerWidth?: string;
     fontFamily?: string;
@@ -43,7 +44,8 @@ export const Select = ({
     fontFamily,
     bgColor,
     defaultValue,
-    textstyle
+    textstyle,
+    containerStyles
 }: selectProps) => {
     const [value, setValue] = useState<string | null>(null);
     const [isFocus, setIsFocus] = useState(false);
@@ -66,7 +68,7 @@ export const Select = ({
     return (
         <View style={[{ width: "100%", marginBottom: 20 }, extraStyles]}>
             <Dropdown
-                style={[styles.dropdown, {backgroundColor: colorsConstants[theme].inputBackground},{ width: containerWidth }, isFocus && { borderColor: colorsConstants.light.black }]}
+                style={[styles.dropdown, {backgroundColor: colorsConstants[theme].inputBackground},{ width: containerWidth }, isFocus && { borderColor: colorsConstants.light.black }, containerStyles]}
                 placeholderStyle={[styles.placeholderStyle, { fontFamily: fontFamily }, textstyle, {color: colorsConstants[theme].darkText,}]}
                 selectedTextStyle={[styles.selectedTextStyle, { fontFamily: fontFamily }, textstyle]}
                 data={options}
@@ -75,7 +77,7 @@ export const Select = ({
 
                 labelField={'label'}
                 valueField={'value'}
-                itemContainerStyle={[{ backgroundColor: bgColor }]}
+                itemContainerStyle={[{ backgroundColor: bgColor }, containerStyles]}
                 placeholder={
                     !isFocus ? (placeholder ? placeholder : "Select Status") : "..."
                 }

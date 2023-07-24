@@ -4,7 +4,7 @@ import { SafeAreaView } from "src/components/Themed";
 import { MenuItemCard } from "src/components/cards";
 import { TabScreenTitle } from "src/components/labels/screentitle.components";
 import fontsConstants from "src/constants/fonts.constants";
-import { PortfolioMenuItems } from "src/constants/global.constants";
+import { PortfolioMenuItems, LandlordPortfolioItems } from "src/constants/global.constants";
 import layoutsConstants from "src/constants/layouts.constants";
 import useColorScheme from "src/hooks/useColorScheme";
 import { RootTabScreenProps } from "src/types/navigations.types";
@@ -28,7 +28,7 @@ export default function PortfolioTabScreen({
         <TabScreenTitle
           title={`Portfolio`}
         />
-        <RNView
+        {/* <RNView
           style={{
             flexDirection: "row",
             justifyContent: "flex-start",
@@ -37,6 +37,23 @@ export default function PortfolioTabScreen({
           }}
         >
           {PortfolioMenuItems.map((item: any, index) => (
+            <MenuItemCard
+              key={index.toString()}
+              label={item.label}
+              icon={item.icon}
+              onItemPress={() => navigation.navigate(item.screen)}
+            />
+          ))}
+        </RNView> */}
+        <RNView
+        style={{
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            flexWrap: "wrap",
+            marginTop: fontsConstants.h(20)
+          }}
+        >
+          {LandlordPortfolioItems.map((item: any, index) => (
             <MenuItemCard
               key={index.toString()}
               label={item.label}

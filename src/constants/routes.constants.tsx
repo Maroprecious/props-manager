@@ -34,6 +34,11 @@ import Setup2faScreen from "src/screens/motetab/setup-2fa";
 import VerifyWithMobile from "src/screens/motetab/verify-with-mobile.screen";
 import VerifyWithEmail from "src/screens/motetab/verify-with-email.screen";
 import PayBillsScreen from "src/screens/paymentstab/pay-bills";
+import TenancyScreen from "src/screens/portfolio/tenancy";
+import ViewTenancyScreen from "src/screens/portfolio/view-tenancy";
+import ViewTenant from "src/screens/portfolio/view-tenant-details";
+import PropertyManagerScreen from "src/screens/portfolio/property-manager";
+import AssignPropertyManager from "src/screens/portfolio/assign-property-mgr";
 import EditProfileScreen from "src/screens/motetab/editprofile.screen";
 import { AuthUserType } from "src/types/app.types";
 /**
@@ -120,6 +125,41 @@ export const UserAppRoutes = [
     },
     initialParams: {},
   }, {
+    name: "TenancyScreen",
+    component: TenancyScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "ViewTenancyScreen",
+    component: ViewTenancyScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "PropertyManagerScreen",
+    component: PropertyManagerScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "AssignPropertyManager",
+    component: AssignPropertyManager,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+      name: "ViewTenant",
+      component: ViewTenant,
+      options: {
+        headerShown: false,
+      },
+      initialParams: {},
+    },{
     name: "ViewRentalScreen",
     component: ViewRentalScreen,
     options: {
