@@ -11,6 +11,8 @@ import fontsConstants from "src/constants/fonts.constants";
 import { MenuItems } from "src/constants/global.constants";
 import layoutsConstants from "src/constants/layouts.constants";
 import AppThemeContext from "src/contexts/Theme.context";
+import { useAppDispatch } from "src/hooks/useReduxHooks";
+import { logout } from "src/services/redux/slices/auth";
 import { RootTabScreenProps } from "src/types/navigations.types";
 
 export default function MoreTabScreen({
@@ -18,6 +20,11 @@ export default function MoreTabScreen({
   route
 }: RootTabScreenProps<"MoreTabNavigator">) {
   const theme = useContext(AppThemeContext);
+  const dispatch = useAppDispatch();
+
+  const doLogout = () => {
+    dispatch(logout());
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -69,16 +76,21 @@ export default function MoreTabScreen({
                 color: colorsConstants[theme].screenLabel,
               }}>User ID: 0038</Text>
             </View>
-            <Text style={{
-              fontFamily: fontsConstants.Roboto_Light,
-              fontSize: fontsConstants.h(12),
-              textDecorationLine: "underline",
-              marginTop: fontsConstants.h(26),
-              color: colorsConstants[theme].screenLabel
-            }}
+            <TouchableOpacity
+              activeOpacity={layoutsConstants.activeOpacity}
+              onPress={() => navigation.navigate("EditProfileScreen")}
             >
-              {`Edit Details`}
-            </Text>
+              <Text style={{
+                fontFamily: fontsConstants.Roboto_Light,
+                fontSize: fontsConstants.h(12),
+                textDecorationLine: "underline",
+                marginTop: fontsConstants.h(26),
+                color: colorsConstants[theme].screenLabel
+              }}
+              >
+                {`Edit Details`}
+              </Text>
+            </TouchableOpacity>
           </View>
           <View style={[styles.cardItemContainer, {
             // borderBottomColor: colorsConstants[theme].borderLine,
@@ -152,7 +164,8 @@ export default function MoreTabScreen({
                 showConfirm({
                   title: "Logout",
                   type: "info",
-                  message: "Are you sure you want to logout"
+                  message: "Are you sure you want to logout",
+                  onConfirm: doLogout
                 })
                 break;
             

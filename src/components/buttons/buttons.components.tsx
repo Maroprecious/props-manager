@@ -13,8 +13,7 @@ export const DefaultButton = ({
   titleStyle = {},
   buttonStyle = {},
   type = "solid",
-  onPress,
-  borderRadius = fontsConstants.h(20),
+  borderRadius = fontsConstants.h(10),
   ...props
 } : {
   type?: "outline" | "solid" | "clear"
@@ -22,14 +21,12 @@ export const DefaultButton = ({
   buttonStyle?: StyleProp<ViewStyle>
   buttonHeight?: number
   borderRadius?: number
-  onPress?: (e: GestureResponderEvent) => void
 } & ButtonProps) => {
   return (
     <Button
-    onPress={onPress}
       titleStyle={[{
         fontFamily: fontsConstants.American_Typewriter_Bold,
-        fontSize: fontsConstants.h(20)
+        fontSize: fontsConstants.h(18)
       }, titleStyle]}
       type={type}
       disabledStyle={{

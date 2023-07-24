@@ -14,14 +14,17 @@ export const DefaultInput = ({
   inputHeight = globalConstants.componentHeight,
   containerStyle = {},
   labelStyle = {},
+  secureTextEntry = false,
   ...props
 } : {
   inputHeight?: number
   containerStyle?: StyleProp<ViewStyle>
   labelStyle?: StyleProp<TextStyle>
+  secureTextEntry?: boolean
 } & InputProps) => {
 
   const theme = useContext(AppThemeContext);
+  const [showEntry, setShowEntry] = useState(secureTextEntry);
 
   return (
     <Input
@@ -51,7 +54,20 @@ export const DefaultInput = ({
         paddingRight: 0,
         marginBottom: fontsConstants.w(30)
       }, containerStyle]}
+      rightIcon={ secureTextEntry ? (
+        <Icon
+          name={showEntry ? `eye-off` : `eye`}
+          type="ionicon"
+          onPress={() => setShowEntry(!showEntry)}
+          size={fontsConstants.h(20)}
+          color={showEntry ? colorsConstants[theme].inputPlaceHolderColor : colorsConstants[theme].darkText}
+          containerStyle={{
+            marginRight: fontsConstants.w(10)
+          }}
+        />
+      ) : undefined}
       {...props}
+      secureTextEntry={showEntry}
     />
   )
 }
@@ -59,11 +75,13 @@ export const DefaultInput = ({
 export const DefaultPhoneInput = ({
   inputHeight = globalConstants.componentHeight,
   containerStyle = {},
+  labelStyle = {},
   onChangeNumber = () => null,
   ...props
 } : {
   inputHeight?: number
   containerStyle?: StyleProp<ViewStyle>
+  labelStyle?: StyleProp<TextStyle>
   onChangeNumber?: Function
 } & InputProps) => {
 
@@ -110,7 +128,8 @@ export const DefaultPhoneInput = ({
       inputStyle={{
         fontFamily: fontsConstants.American_Typewriter_Regular,
         paddingHorizontal: fontsConstants.w(20),
-        fontSize: fontsConstants.w(14)
+        fontSize: fontsConstants.w(14),
+        color: colorsConstants[theme].darkText
       }}
       onChangeText={onChangeText}
       inputContainerStyle={{
@@ -119,6 +138,12 @@ export const DefaultPhoneInput = ({
         borderRadius: fontsConstants.h(10),
         borderBottomWidth: 0
       }}
+      labelStyle={[{
+        color: colorsConstants[theme].screenLabel,
+        fontFamily: fontsConstants.Lora_Bold,
+        fontSize: fontsConstants.w(15),
+        marginBottom: fontsConstants.h(10)
+      }, labelStyle]}
       containerStyle={[{
         height: inputHeight,
         paddingLeft: 0,

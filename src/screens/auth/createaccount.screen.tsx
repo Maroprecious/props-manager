@@ -109,11 +109,13 @@ export default function CreateAccountScreen({
         />
         <Text style={[styles.noteText, {
           textAlign: "center",
-          marginTop: fontsConstants.h(-5)
+          marginTop: fontsConstants.h(-5),
+          zIndex: -1
         }]}>
           {`By clicking `}
           <Text style={{
-            textDecorationLine: "underline"
+            textDecorationLine: "underline",
+            zIndex: -1
           }}>Sign up</Text>
           {`you agree to the following`}
         </Text>
@@ -121,7 +123,8 @@ export default function CreateAccountScreen({
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          marginBottom: fontsConstants.h(10)
+          marginBottom: fontsConstants.h(10),
+          zIndex: -1
         }}>
           <TouchableOpacity>
             <Text style={[styles.noteText, {
@@ -135,6 +138,7 @@ export default function CreateAccountScreen({
         <DefaultButton
           title={`Sign up`}
           onPress={doSignUp}
+          containerStyle={{zIndex: -1}}
         />
         <RNView style={{
           flexDirection: "row",
