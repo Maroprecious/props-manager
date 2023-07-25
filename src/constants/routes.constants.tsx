@@ -22,12 +22,11 @@ import RequestPaymentScreen from "src/screens/rent/requestpayment.screen";
 import ConfirmRequestPaymentScreen from "src/screens/rent/confirmpaymentrequest.screen";
 import BillsPaymentScreen from "src/screens/bills";
 import AirtimeTopUpScreen from "src/screens/bills/airtimetopup.screen";
-import  AddProperty  from "src/screens/add-property/add-property";
+import AddProperty  from "src/screens/add-property/add-property";
 import AddTenancyDetails from "src/screens/add-property/add-tenancy-details";
 import FaqScreen from "src/screens/motetab/faq.screen";
 import HelpAndSupportScreen from "src/screens/motetab/Help-support.screen";
 import TermsAndConditionScreen from "src/screens/motetab/terms-condition.screen";
-import { useAppSelector } from "src/hooks/useReduxHooks";
 import SettingScreen from "src/screens/motetab/settings-screen";
 import ChangePasswordScreen from "src/screens/motetab/change-password-screen";
 import ChangePasswordOtpScreen from "src/screens/motetab/change-password-otp.screen";
@@ -40,8 +39,8 @@ import ViewTenancyScreen from "src/screens/portfolio/view-tenancy";
 import ViewTenant from "src/screens/portfolio/view-tenant-details";
 import PropertyManagerScreen from "src/screens/portfolio/property-manager";
 import AssignPropertyManager from "src/screens/portfolio/assign-property-mgr";
-import YourFinancialsScreen from "src/screens/paymentstab/your-financials";
-
+import EditProfileScreen from "src/screens/motetab/editprofile.screen";
+import { AuthUserType } from "src/types/app.types";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -287,8 +286,8 @@ export const UserAppRoutes = [
     },
     initialParams: {},
   }, {
-    name: "YourFinancialsScreen",
-    component: YourFinancialsScreen,
+    name: "EditProfileScreen",
+    component: EditProfileScreen,
     options: {
       headerShown: false,
     },
@@ -342,9 +341,8 @@ const WelcomeAppRputes = [
   },
 ];
 
-const AppRoutes = () => {
-  const { token, user } = useAppSelector((state) => state.auth);
-  const routes = user?.id === null || user?.id !== undefined ? UserAppRoutes  : WelcomeAppRputes;
+const AppRoutes = (user: AuthUserType) => {
+  const routes = user?.id === null || user?.id === undefined ? WelcomeAppRputes : UserAppRoutes;
   return routes;
 };
 

@@ -1,11 +1,10 @@
 import { NotificationProps } from "src/types/app.types";
 import fontsConstants from "./fonts.constants";
-import { API_DEV_URL, API_PROD_URL } from "@env";
 export const APP_NAME = "MPM-Mobile";
 export const APP_THEME = `${APP_NAME}-APP-THEME`;
 export const APP_CONFIRM = `${APP_NAME}-APP-CONFIRM`;
-
-export const API_BASE_URL =  __DEV__ ? `${API_DEV_URL}` : `${API_PROD_URL}`;
+export const APP_TOKEN = `${APP_NAME}-APP-TOKEN`;
+export const APP_INITIAL_ROUTE = `${APP_NAME}-APP-INITIAL-ROUTE`;
 
 export const SliderData = [
   {
@@ -270,15 +269,15 @@ export const DefaultDocuments = [{
 export const AccountTypes = [{
   id: 1,
   label: 'Tenant',
-  value: 1
+  value: 'TENANT'
 }, {
   id: 2,
   label: 'Landlord',
-  value: 2
+  value: 'LANDLORD'
 }, {
   id: 3,
   label: 'Property Manager',
-  value: 3
+  value: 'PROPERTY MANAGER'
 }]
 
 export const PaymentRequestTypes = [{
@@ -445,7 +444,7 @@ export const TenantInfo = [
 }, 
 ]
 export default {
-  componentHeight: fontsConstants.h(60),
+  componentHeight: fontsConstants.h(50),
   mainViewHorizontalPadding: fontsConstants.w(30),
   activeOpacity: 0.6,
   APP_THEME,

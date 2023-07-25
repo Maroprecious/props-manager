@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, ImageBackground, View as RNView, TouchableOpacity } from "react-native";
 import { View, Text, ScrollView } from "src/components/Themed";
 import { Image } from 'react-native-elements';
@@ -10,15 +10,45 @@ import globalConstants from "src/constants/global.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
 import { ScreenTitle } from "./components/screentitle.component";
+import useAuthenticate from "src/hooks/useAuthentication";
+import { showToast } from "src/components/Toast";
+import SecureStoreManager from "src/utils/SecureStoreManager";
+import { populateUserData } from "src/services/redux/slices/auth";
+import { useAppDispatch } from "src/hooks/useReduxHooks";
 
 export default function LoginScreen({
   navigation,
   route
 }: RootStackScreenProps<"LoginScreen">) {
   const theme = useContext(AppThemeContext);
+  const dispatch = useAppDispatch();
+
+  const { authenticate, loading } = useAuthenticate()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const doLogin = async () => {
-    navigation.navigate("App")
+    const req = await authenticate({
+      email,
+      password
+    })
+    if (req.hasError && req.status !== 200)
+      showToast({
+        title: `Login`,
+        message: `${req?.message || req?.statusText || req?.error}`,
+        type: `error`
+      })
+    else {
+      SecureStoreManager.setAuthToken(req?.data?.token || "");
+      const user = req?.data;
+      const token = req?.data?.token;
+      delete user?.['token'];
+      dispatch(populateUserData({
+        token,
+        user
+      }));
+      navigation.navigate("App")
+    }
   }
   return (
     <ScrollView
@@ -64,14 +94,20 @@ export default function LoginScreen({
         <DefaultInput
           placeholder="Enter email or mobile number"
           keyboardType="email-address"
+          value={email}
+          onChangeText={(t: string) => setEmail(t)}
         />
         <DefaultInput
           placeholder="Enter password"
+          value={password}
+          onChangeText={(t: string) => setPassword(t)}
           secureTextEntry
         />
         <DefaultButton
           title={`Login`}
           onPress={doLogin}
+          loading={loading}
+          disabled={email === "" || password === ""}
         />
         <RNView style={{
           flexDirection: "row",

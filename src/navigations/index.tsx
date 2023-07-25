@@ -17,11 +17,15 @@ import { ColorSchemeName } from "react-native";
 import LinkingConfiguration from "./LinkingConfiguration";
 import { RenderProps, RootStackParamList } from "src/types/navigations.types";
 import AppRoutes from "src/constants/routes.constants";
+import { useAppSelector } from "src/hooks/useReduxHooks";
+import axios from "axios";
 
 export default function Navigation({
   colorScheme,
+  initialRouteName,
 }: {
   colorScheme: ColorSchemeName;
+  initialRouteName?: keyof RootStackParamList
 }) {
 
   return (
@@ -29,7 +33,7 @@ export default function Navigation({
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator />
+      <RootNavigator initialRouteName={initialRouteName} />
     </NavigationContainer>
   );
 }
@@ -56,12 +60,16 @@ export function renderScreen({
     />
   );
 }
-function RootNavigator({initialRouteName="WelcomeScreen"}: {initialRouteName?: any}) {
+function RootNavigator({initialRouteName="WelcomeScreen"}: {initialRouteName?: keyof RootStackParamList}) {
+  const { token, user } = useAppSelector((state) => state.auth);
+  axios.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${token}`;
   return (
     <Stack.Navigator
       initialRouteName={initialRouteName}
     >
-      {AppRoutes().map((route: any) => {
+      {AppRoutes(user).map((route: any) => {
         return renderScreen(route);
       })}
     </Stack.Navigator>

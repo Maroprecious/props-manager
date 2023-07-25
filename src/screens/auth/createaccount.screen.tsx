@@ -13,6 +13,8 @@ import colorsConstants from "src/constants/colors.constants";
 import { ScreenTitle } from "./components/screentitle.component";
 import { Modalize } from "react-native-modalize";
 import { AlertModal } from "src/components/modals/alert.modals";
+import useAuthenticate from "src/hooks/useAuthentication";
+import { showToast } from "src/components/Toast";
 
 export default function CreateAccountScreen({
   navigation,
@@ -28,13 +30,34 @@ export default function CreateAccountScreen({
     buttonTitle: `Login`,
     type: `success`
   })
-
+  const { createAccount, loading } = useAuthenticate()
+  const [data, setData] = useState<any>({
+    email: '',
+    firstName: '',
+    lastName: '',
+    password: '',
+    phoneNumber: '',
+    role: ''
+  })
   const [accountType, setAccountType] = useState(-1);
 
   const doSignUp = async () => {
+    const req = await createAccount(data)
+    if (req.hasError && req.status !== 200)
+      showToast({
+        title: `Login`,
+        message: `${req?.message || req?.statusText || req?.error}`,
+        type: `error`
+      })
+    else {
     alertRef.current?.open()
-  }
+      
+    }
 
+  }
+  const handleData = (value: string, name: string):void => {
+    setData({...data, [name]: value})
+  }
   return (
     <ScrollView
       style={styles.container}
@@ -73,35 +96,40 @@ export default function CreateAccountScreen({
         <DefaultInput
           placeholder="Firstname"
           keyboardType="default"
+          onChangeText={(e) => handleData(e, 'firstName')}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
           placeholder="Lastname"
           keyboardType="default"
+          onChangeText={(e) => handleData(e, 'lastName')}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultPhoneInput
           placeholder="Mobile number"
           keyboardType="number-pad"
           onChangeNumber={(number: string) => {
-            console.log(number)
+            handleData(number, 'phoneNumber')
           }}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
           placeholder="Email ID"
           keyboardType="email-address"
+          onChangeText={(e) => handleData(e, 'email')}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
           placeholder="Password"
           secureTextEntry
+          onChangeText={(e) => handleData(e, 'password')}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultSelectInput
           items={AccountTypes}
           value={accountType}
           setValue={setAccountType}
+          onSelectItem={(e: {value: string}) => handleData(e.value, 'role')}
           containerStyle={[styles.inputContainerStyle, {
             zIndex: 10
           }]}    
@@ -109,11 +137,13 @@ export default function CreateAccountScreen({
         />
         <Text style={[styles.noteText, {
           textAlign: "center",
-          marginTop: fontsConstants.h(-5)
+          marginTop: fontsConstants.h(-5),
+          zIndex: -1
         }]}>
           {`By clicking `}
           <Text style={{
-            textDecorationLine: "underline"
+            textDecorationLine: "underline",
+            zIndex: -1
           }}>Sign up</Text>
           {`you agree to the following`}
         </Text>
@@ -121,7 +151,8 @@ export default function CreateAccountScreen({
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          marginBottom: fontsConstants.h(10)
+          marginBottom: fontsConstants.h(10),
+          zIndex: -1
         }}>
           <TouchableOpacity>
             <Text style={[styles.noteText, {
@@ -135,6 +166,9 @@ export default function CreateAccountScreen({
         <DefaultButton
           title={`Sign up`}
           onPress={doSignUp}
+          loading={loading}
+          disabled={data.email && data.phoneNumber && data.firstName && data.lastName && data.password && data.role ? false : true}
+          containerStyle={{zIndex: -1}}
         />
         <RNView style={{
           flexDirection: "row",

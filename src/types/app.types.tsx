@@ -13,7 +13,16 @@ export type NotificationType = "settings" | "bill" | "location" | "mail" | "invo
 
 export type ReduxAuthState = {
   token: string | undefined | null,
-  user: {
-    id: string | undefined | null
-  }
+  user: AuthUserType
+}
+
+export type AuthUserType = {
+  id: string | null
+  username: string
+  email: string
+  firstName: string
+  lastName: string
+  roles: string[]
+  completed: boolean
+  verified: boolean
 }

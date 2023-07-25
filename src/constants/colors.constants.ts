@@ -5,6 +5,14 @@ const colorPrimaryDisabled = 'rgba(0, 65, 160, 0.3)';
 const colorWhite = "#ffffff";
 const criticalRed = "#EB212D";
 const colorSuccess = "#079B2F";
+const colorWarning = "#ffc107";
+const colorDanger = "#dc3545";
+const colorInfo = "#17a2b8";
+const colorWhiteOpaq = {
+  '0.2': `rgba(255, 255, 255, 0.2)`,
+  '0.4': `rgba(255, 255, 255, 0.4)`,
+  '0.6': `rgba(255, 255, 255, 0.6)`,
+};
 
 export default {
   colorPrimary,
@@ -12,6 +20,10 @@ export default {
   criticalRed,
   colorWhite,
   colorSuccess,
+  colorDanger,
+  colorInfo,
+  colorWarning,
+  colorWhiteOpaq,
   avatarBg: "#EAEAEA",
   radioBoxActive: "#BFD602",
   light: {

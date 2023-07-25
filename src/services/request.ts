@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { API_BEARER_TOKEN } from "@env";
-import { API_BASE_URL } from 'src/constants/global.constants';
+import { API_BASE_URL } from 'src/constants';
 
 axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.headers.common['Authorization'] = `Bearer ${API_BEARER_TOKEN}`;
-axios.defaults.timeout = 60 * 1000;
+axios.defaults.timeout = 60 * 1000; //60secs timeout
 
 export const buildHeader = async (isDefaultAuth?: boolean): Promise<any> => {
   const headers = {
@@ -89,7 +89,6 @@ export async function makeApiRequest({
       'Content-Type': contentType
     });
 
-  console.log('✅ Making axios request', data, type, queryParams, pathParams, route, routePlusParams, isDefaultAuth);
   let reqStatus;
   try {
     const response = await axios({
@@ -102,7 +101,11 @@ export async function makeApiRequest({
       },
     });
     reqStatus = response?.status;
-    return response.data;
+    return {
+      data: response.data,
+      status: response.status,
+      statusText: response.statusText,
+    };
   } catch (error: any) {
     console.log(error);
     if (error?.response) {
@@ -111,16 +114,16 @@ export async function makeApiRequest({
     } else if (error?.request) {
       reqStatus = 444;
       return {
-        statusCode: 444,
+        status: 444,
         message: "No response from server",
-        status: "error"
+        statusText: "error"
       }
     } else {
       reqStatus = -1;
       return {
-        statusCode: -1,
+        status: -1,
         message: "Unable to set up request",
-        status: "error"
+        statusText: "error"
       }
     }
   } finally {

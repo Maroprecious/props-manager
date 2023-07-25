@@ -70,6 +70,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   VerifyWithMobile: undefined
   VerifyWithEmail: undefined
   PayBillsScreen: undefined
+  EditProfileScreen: undefined
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
