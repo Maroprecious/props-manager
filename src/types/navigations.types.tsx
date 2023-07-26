@@ -45,6 +45,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   ViewTenant: undefined;
   PropertyManagerScreen: undefined;
   AssignPropertyManager: undefined
+  YourFinancialsScreen: undefined;
   RequestPaymentScreen: undefined;
   ConfirmRequestPaymentScreen: {
     amount: number,

@@ -167,7 +167,7 @@ export const PaymentsMenuItems = [{
   id: 5,
   label: "Your\nFinancials",
   icon: require("src/assets/images/icons/financials.png"),
-  screen: ""
+  screen: "YourFinancialsScreen"
 }, {
   id: 6,
   label: "Transaction\nHistory",
@@ -269,15 +269,15 @@ export const DefaultDocuments = [{
 export const AccountTypes = [{
   id: 1,
   label: 'Tenant',
-  value: 1
+  value: 'TENANT'
 }, {
   id: 2,
   label: 'Landlord',
-  value: 2
+  value: 'LANDLORD'
 }, {
   id: 3,
   label: 'Property Manager',
-  value: 3
+  value: 'PROPERTY MANAGER'
 }]
 
 export const PaymentRequestTypes = [{

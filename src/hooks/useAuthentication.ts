@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { loginEndpoint } from "src/constants/api.endpoints.constants";
+import { loginEndpoint , signUpEndpoint} from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { LoginResponse, NetworkResponse } from "src/types/api.response.types";
 
@@ -54,7 +54,44 @@ const useAuthenticate = () => {
       hasError: request?.status !== 200 && request?.status !== 201
     }
   };
-  return { authenticate, loading, requestPasswordReset };
+
+
+  const createAccount = async (data: {
+    email: string, 
+    firstName: string,
+    lastName: string,
+    phoneNumber: string,
+    password: string,
+    role: string
+  }, cb = () => {}): Promise<LoginResponse> => {
+    let response: LoginResponse;
+    try {
+      setLoading(true);
+      const request = await makeApiRequest({
+        route: `${signUpEndpoint}`,
+        type: 'POST',
+        data,
+        isDefaultAuth: true,
+      });
+      response = {
+        ...request,
+        hasError: request?.status !== 200 && request?.status !== 201
+      }
+      setLoading(false);
+      cb();   
+    } catch (e: any) {
+      response = {
+        message: e?.response?.data?.message || "An error occured",
+        status: e?.response?.status || 400,
+        hasError: true,
+        statusText: e?.response?.statusText || "error"
+      }
+    } finally {
+      setLoading(false)
+    }
+    return response;
+  };
+  return { authenticate, loading, requestPasswordReset, createAccount };
 };
 
 export default useAuthenticate;
