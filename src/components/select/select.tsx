@@ -30,6 +30,7 @@ type selectProps = {
     bgColor?: string,
     defaultValue?: string;
     textstyle?: StyleProp<TextStyle>;
+    dynamicPlaceholder?: string
 };
 
 export const Select = ({
@@ -45,7 +46,8 @@ export const Select = ({
     bgColor,
     defaultValue,
     textstyle,
-    containerStyles
+    containerStyles,
+    dynamicPlaceholder
 }: selectProps) => {
     const [value, setValue] = useState<string | null>(null);
     const [isFocus, setIsFocus] = useState(false);
@@ -79,7 +81,7 @@ export const Select = ({
                 valueField={'value'}
                 itemContainerStyle={[{ backgroundColor: bgColor }, containerStyles]}
                 placeholder={
-                    !isFocus ? (placeholder ? placeholder : "Select Status") : "..."
+                    !isFocus ? (placeholder ? placeholder : "Select Status") : dynamicPlaceholder
                 }
                 searchPlaceholder="Search..."
                 value={value}
@@ -145,6 +147,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: "AmericanTypewriterBold",
         paddingLeft: 20,
+        color: colorsConstants.light.black
         
     },
     icon: {
@@ -153,7 +156,7 @@ const styles = StyleSheet.create({
     },
     inputSearchStyle: {
         height: 40,
-        fontSize: 16,
+        fontSize: 14,
     },
     label_tag: {
         color: colorsConstants.light.darkText,
