@@ -91,7 +91,7 @@ export const DefaultPhoneInput = ({
   
   const onChangeText = (v: string) => {
     setMobile(v)
-    onChangeNumber(`${code}${Number(mobile)}`)
+    onChangeNumber(`${code}(0)${Number(mobile)}`)
   }
 
   const onChangeCode = (v: string) => {

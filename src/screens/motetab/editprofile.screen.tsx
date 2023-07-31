@@ -1,24 +1,60 @@
 import * as React from "react";
-import { useContext } from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
-import { ScrollView, Text } from "src/components/Themed";
+import { useContext, useState } from "react";
+import { ImageBackground, StyleSheet } from "react-native";
+import { ScrollView } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
 import globalConstants from "src/constants/global.constants";
 import { ScreenTitle } from "../auth/components/screentitle.component";
-import { TouchableOpacity } from "react-native";
 import layoutsConstants from "src/constants/layouts.constants";
-import colorsConstants from "src/constants/colors.constants";
-import { Image } from "react-native-elements";
 import { DefaultInput, DefaultPhoneInput } from "src/components/inputs/inputs.components";
+import { useAppDispatch, useAppSelector } from "src/hooks/useReduxHooks";
+import useUser from "src/hooks/useUser";
+import { showToast } from "src/components/Toast";
+import { updateUserProfileData } from "src/services/redux/slices/auth";
 
 export default function EditProfileScreen({
   navigation,
   route
 }: RootStackScreenProps<"EditProfileScreen">) {
   const theme = useContext(AppThemeContext);
+
+  const user = useAppSelector((state) => state.auth.user)
+  const dispatch = useAppDispatch();
+  const { loading, updateProfile } = useUser();
+
+  const [firstName, setFirstName] = useState(user.firstName)
+  const [lastName, setLastName] = useState(user.lastName)
+  const [username, setUsername] = useState(user.username)
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber)
+  
+  const doUpdateProfile = async () => {
+    const req = await updateProfile({
+      userId: user?.id || "",
+      firstName,
+      lastName,
+      aliasName: username,
+      phoneNumber: phoneNumber || ""
+    })
+    console.log(req)
+    showToast({
+      title: `Profile Update`,
+      type: req?.hasError ? `error` : `info`,
+      message: req?.data?.message || req?.error || req?.statusText || "Unknown error occured"
+    })
+    if (req?.status === 200) {
+      dispatch(updateUserProfileData({
+        ...user,
+        firstName,
+        lastName,
+        username,
+        phoneNumber
+      }));  
+      navigation.goBack()
+    }
+  }
 
   return (
     <ScrollView
@@ -44,29 +80,39 @@ export default function EditProfileScreen({
         />
         <DefaultInput
           label={`First Name`}
+          value={firstName || ""}
+          onChangeText={(t: string) => setFirstName(t)}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
           label={`Last Name`}
+          value={lastName || ""}
+          onChangeText={(t: string) => setLastName(t)}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
           label={`Alias`}
+          value={username || ""}
+          onChangeText={(t: string) => setUsername(t)}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultPhoneInput
           label={`Mobile`}
+          value={phoneNumber || ""}
+          onChangeNumber={(t: string) => setPhoneNumber(t)}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
           label={`Email`}
           disabled
-          value="Email"
+          value={user.email}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultButton
           title={`Update`}
-          onPress={() => navigation.goBack()}
+          onPress={doUpdateProfile}
+          loading={loading}
+          disabled={firstName === "" || lastName === "" || phoneNumber === ""}
         />
       </ImageBackground>
     </ScrollView>

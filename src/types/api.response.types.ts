@@ -6,7 +6,8 @@ export type NetworkResponse = {
   hasError?: boolean,
   errorType?: string,
   message?: string,
-  error?: string
+  error?: string,
+  data?: any
 }
 
 export type LoginResponse =  NetworkResponse & {

@@ -11,7 +11,7 @@ import fontsConstants from "src/constants/fonts.constants";
 import { MenuItems } from "src/constants/global.constants";
 import layoutsConstants from "src/constants/layouts.constants";
 import AppThemeContext from "src/contexts/Theme.context";
-import { useAppDispatch } from "src/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "src/hooks/useReduxHooks";
 import { logout } from "src/services/redux/slices/auth";
 import { RootTabScreenProps } from "src/types/navigations.types";
 
@@ -21,6 +21,8 @@ export default function MoreTabScreen({
 }: RootTabScreenProps<"MoreTabNavigator">) {
   const theme = useContext(AppThemeContext);
   const dispatch = useAppDispatch();
+
+  const user = useAppSelector((state) => state.auth.user)
 
   const doLogout = () => {
     dispatch(logout());
@@ -43,7 +45,7 @@ export default function MoreTabScreen({
           }]}>
             <Avatar
               size={fontsConstants.w(70)}
-              title={`FE`}
+              title={`${user.firstName.substring(0,1)}${user.lastName.substring(0,1)}`}
               rounded
               titleStyle={{
                 color: colorsConstants[theme].screenLabel,
@@ -69,12 +71,12 @@ export default function MoreTabScreen({
                 fontSize: fontsConstants.h(16),
                 color: colorsConstants[theme].screenLabel,
                 marginBottom: fontsConstants.h(4),
-              }}>Fortune Ekezie</Text>
+              }}>{`${user.firstName} ${user.lastName}`}</Text>
               <Text style={{
                 fontFamily: fontsConstants.Lora_Regular,
                 fontSize: fontsConstants.h(12),
                 color: colorsConstants[theme].screenLabel,
-              }}>User ID: 0038</Text>
+              }}>User ID: {user.id}</Text>
             </View>
             <TouchableOpacity
               activeOpacity={layoutsConstants.activeOpacity}
