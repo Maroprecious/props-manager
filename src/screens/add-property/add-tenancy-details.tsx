@@ -131,6 +131,7 @@ export default function AddTenancyDetails({
                             <RNView style={styles.selectOption}>
                                 <Select options={options}
                                     placeholder='Property Type'
+                                    dynamicPlaceholder='Property Type'
                                     onChange={(e) => setFieldValue('property_type', e.value)}
                                     err={!!errors.property_type && touched.property_type}
                                     errMsg={errors.property_type}
@@ -142,6 +143,7 @@ export default function AddTenancyDetails({
                             <RNView style={styles.selectOption}>
                                 <Select options={options}
                                     placeholder='Unit Type'
+                                    dynamicPlaceholder='Unit Type'
                                     onChange={(e) => setFieldValue('unit_type', e.value)}
                                     err={!!errors.unit_type && touched.unit_type}
                                     errMsg={errors.unit_type}
@@ -153,6 +155,7 @@ export default function AddTenancyDetails({
                             <RNView style={styles.selectOption}>
                                 <Select options={options}
                                     placeholder='Select block/flat number'
+                                    dynamicPlaceholder='Select block/flat number'
                                     onChange={(e) => setFieldValue('block', e.value)}
                                     err={!!errors.block && touched.block}
                                     errMsg={errors.block} containerWidth='94%'
@@ -164,6 +167,7 @@ export default function AddTenancyDetails({
                             <RNView style={styles.selectOption}>
                                 <Select options={options}
                                     placeholder='Select tenancy duration'
+                                    dynamicPlaceholder='Select tenancy duration'
                                     onChange={(e) => setFieldValue('duration', e.value)}
                                     err={!!errors.duration && touched.duration}
                                     errMsg={errors.duration} containerWidth='94%'

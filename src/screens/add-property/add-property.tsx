@@ -74,6 +74,7 @@ export default function AddProperty({
           <Select
             options={options}
             placeholder='Select Occupational Status'
+            dynamicPlaceholder='Select Occupational Status'
             onChange={(e) => {
               // setFieldValue('status', e.value)
               if (e.value === '2') {

@@ -84,6 +84,38 @@ export const RecentActivitiesData: NotificationProps[] = [{
     status: "success"
   }]
 }]
+export const FinancialsData: NotificationProps[] = [
+  {
+    date: "2023-04-10",
+    items: [{
+      id: 4,
+      title: "Bill Paid",
+      type: "bill",
+      text: "You have successfully paid for Your LAWMA bill Receipt No: 0093748 Amount: ₦1,500,000 Transaction ID: 010334903",
+      status: "success"
+    }]
+  },
+  {
+    date: "2023-04-10",
+  items: [{
+    id: 4,
+    title: "Bill Paid",
+    type: "bill",
+    text: "You have successfully paid for Your LAWMA bill Receipt No: 0093748 Amount: ₦1,500,000 Transaction ID: 010334903",
+    status: "success"
+  }]
+  },
+  {
+    date: "2023-04-10",
+  items: [{
+    id: 4,
+    title: "Bill Paid",
+    type: "bill",
+    text: "You have successfully paid for Your LAWMA bill Receipt No: 0093748 Amount: ₦1,500,000 Transaction ID: 010334903",
+    status: "success"
+  }]
+  }
+]
 
 export const NotificationsData: NotificationProps[] = [{
   date: "2023-04-26",
@@ -212,17 +244,17 @@ export const LandlordPortfolioItems = [
     icon: require("src/assets/images/icons/Property-manager-icon.png"),
     screen: "PropertyManagerScreen"
   },
-{
-  id: 5,
-  label: "Documents",
-  icon: require("src/assets/images/icons/documents.png"),
-  screen: "DocumentsScreen"
-},{
-  id: 6,
-  label: "Property Analytics",
-  icon: require("src/assets/images/icons/Property-analytics-icon.png"),
-  screen: "RentalsScreen"
-}, 
+  {
+    id: 5,
+    label: "Documents",
+    icon: require("src/assets/images/icons/documents.png"),
+    screen: "DocumentsScreen"
+  }, {
+    id: 6,
+    label: "Property Analytics",
+    icon: require("src/assets/images/icons/Property-analytics-icon.png"),
+    screen: "RentalsScreen"
+  },
 ]
 
 export const DashboardSliderInfo = [{
@@ -340,7 +372,7 @@ export const NetworkServiceProviders = [{
   value: "etisalat"
 }]
 
-export const Socials =[
+export const Socials = [
   {
     icon: require('src/assets/images/Whatsapp-icon.png'),
     text: 'Chat Us on WhatsApp',
@@ -362,7 +394,7 @@ export const Socials =[
     contact: 'Www.Supersofttechnology.com'
   },
 ]
-export const Faqs =[
+export const Faqs = [
   {
     question: 'How do I add my tenancy details?',
     answer: 'You can add your tenancy details using the Add Tenancy Details page Or by clicking the add tenancy details button on the home page. This functionality allows the user add their tenancy details, including rent amount, due date, landlord information and tenancy location.'
@@ -425,23 +457,23 @@ export const TenantInfo = [
     rent_status: "Unpaid",
     amount: '₦ 1,350,000. 00',
   },
-{
-  id: 5,
-  label: "Flat 5",
+  {
+    id: 5,
+    label: "Flat 5",
     icon: require("src/assets/images/icons/human-icon.png"),
     occupant: 'Jackson Gbenga',
     phone: '070666444555',
     rent_status: "Unpaid",
     amount: '₦ 1,350,000. 00',
-},{
-  id: 6,
-  label: "Flat 6",
+  }, {
+    id: 6,
+    label: "Flat 6",
     icon: require("src/assets/images/icons/human-icon.png"),
     occupant: 'Jackson Gbenga',
     phone: '070666444555',
     rent_status: "Paid",
     amount: '₦ 1,350,000. 00',
-}, 
+  },
 ]
 export default {
   componentHeight: fontsConstants.h(50),
