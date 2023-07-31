@@ -19,6 +19,7 @@ import { RootStackScreenProps } from 'src/types/navigations.types';
 import { Modalize } from "react-native-modalize";
 import styles from './styles/add-tenancy-details.styles';
 import useColorScheme from "src/hooks/useColorScheme";
+import colorsConstants from 'src/constants/colors.constants';
 
 
 const options: optionProps[] = [
@@ -131,6 +132,7 @@ export default function AddTenancyDetails({
                             <RNView style={styles.selectOption}>
                                 <Select options={options}
                                     placeholder='Property Type'
+                                    
                                     dynamicPlaceholder='Property Type'
                                     onChange={(e) => setFieldValue('property_type', e.value)}
                                     err={!!errors.property_type && touched.property_type}
@@ -202,7 +204,7 @@ export default function AddTenancyDetails({
                                     err={!!errors.landlords_name && touched.landlords_name}
                                     errMsg={errors.landlords_name}
                                     containerWidth='94%'
-                                    extrastyles={styles.text_input}
+                                    extrastyles={[styles.text_input, {color: colorsConstants[theme].textBlack}]}
                                     textstyle={styles.error} />
 
                             </RNView>
@@ -228,7 +230,7 @@ export default function AddTenancyDetails({
                                 title={`Submit`}
                                 onPress={() => handleSubmit()}
                                 disabled={!isValid}
-
+                                style={{marginHorizontal: 10}}
                             />
                         </RNView>
 
