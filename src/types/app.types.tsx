@@ -25,4 +25,5 @@ export type AuthUserType = {
   roles: string[]
   completed: boolean
   verified: boolean
+  phoneNumber?: string
 }

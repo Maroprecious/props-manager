@@ -95,9 +95,12 @@ export type AuthStackParamList = {
   };
   CreateAccountScreen: undefined;
   OTPScreen: {
-    type: verificationType
+    type: verificationType,
+    email: string
   };
-  ResetPasswordScreen: undefined;
+  ResetPasswordScreen: {
+    email: string
+  };
 }
 
 export type RootTabParamList = {

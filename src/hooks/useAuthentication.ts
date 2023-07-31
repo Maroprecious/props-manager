@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { loginEndpoint , signUpEndpoint} from "src/constants/api.endpoints.constants";
+import { loginEndpoint , requestOTPEndpoint, resetPasswordEndpoint, signUpEndpoint, verifyOTPEndpoint} from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { LoginResponse, NetworkResponse } from "src/types/api.response.types";
 
@@ -37,13 +37,50 @@ const useAuthenticate = () => {
     return response;
   };
 
-  const requestPasswordReset = async (data: {
-    email: string, 
+  const requestPasswordReset = async (pathParams: {
+    email: string
   }, cb = () => {}): Promise<NetworkResponse> => {
     setLoading(true);
     const request = await makeApiRequest({
-      route: `${loginEndpoint}`,
-      type: 'POST',
+      route: `${requestOTPEndpoint}`,
+      type: 'GET',
+      pathParams,
+      isDefaultAuth: true,
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+
+  const verifyOTP = async (pathParams: {
+    otp: string
+  }, cb = () => {}): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${verifyOTPEndpoint}`,
+      type: 'GET',
+      pathParams,
+      isDefaultAuth: true,
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+
+  const resetPassword = async (data: {
+    email: string,
+    newPassword: string
+  }, cb = () => {}): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${resetPasswordEndpoint}`,
+      type: 'PUT',
       data,
       isDefaultAuth: true,
     });
@@ -51,7 +88,7 @@ const useAuthenticate = () => {
     cb();
     return {
       ...request,
-      hasError: request?.status !== 200 && request?.status !== 201
+      hasError: request?.status !== 200
     }
   };
 
@@ -91,7 +128,7 @@ const useAuthenticate = () => {
     }
     return response;
   };
-  return { authenticate, loading, requestPasswordReset, createAccount };
+  return { authenticate, loading, requestPasswordReset, createAccount, verifyOTP, resetPassword };
 };
 
 export default useAuthenticate;
