@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useContext, useRef, useState } from "react";
-import { StyleSheet } from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { StyleSheet, View as RNView, TouchableOpacity } from "react-native";
 import { View, Text, SafeAreaView } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
@@ -12,6 +12,9 @@ import globalConstants from "src/constants/global.constants";
 import { ScreenTitle } from "./components/screentitle.component";
 import { AlertModal } from "src/components/modals/alert.modals";
 import { Modalize } from "react-native-modalize";
+import useAuthenticate from "src/hooks/useAuthentication";
+import { showToast } from "src/components/Toast";
+import layoutsConstants from "src/constants/layouts.constants";
 
 export default function OTPScreen({
   navigation,
@@ -19,6 +22,12 @@ export default function OTPScreen({
 }: RootStackScreenProps<"OTPScreen">) {
   const theme = useContext(AppThemeContext);
   const alertRef = useRef<Modalize>(null);
+
+  const { loading, verifyOTP, requestPasswordReset } = useAuthenticate();
+
+  const [otp, setOTP] = useState("");
+  const [counter, setCounter] = useState(0);
+
   const [alertData, setAlertData] = useState<any>({
     title: ``,
     message: ``,
@@ -29,10 +38,49 @@ export default function OTPScreen({
 
   const screenType: verificationType = route.params?.type;
 
+  const startCount = (seconds: number) => {
+    let x = setInterval(function() {
+      seconds = seconds - 1;
+      if (seconds <= 0) {
+        clearInterval(x);
+      }
+      setCounter(seconds);
+    }, 1000);
+  }
+  
+  const doRequestCode = async () => {
+    const req = await requestPasswordReset({
+      email: route.params.email,
+    });
+    if (req?.hasError)
+      showToast({
+        type:`error`,
+        title:`Password Reset`,
+        message: req?.message || req?.error || req?.statusText || "Unable to request password reset"
+      })
+    else startCount(60);
+  }
+
+  useEffect(() => {
+    startCount(60)
+  }, [])
+
   const doConfirmOTP = async () => {
     switch (screenType) {
       case "reset-password":
-        navigation.navigate("ResetPasswordScreen")
+        const req = await verifyOTP({
+          otp
+        });
+        if (req?.hasError)
+          showToast({
+            type:`error`,
+            title:`OTP Verification`,
+            message: req?.message || req?.error || req?.statusText || "Unable to verify OTP"
+          })
+        else
+          navigation.navigate("ResetPasswordScreen", {
+            email: route.params.email
+          })
         break;
       case "verify-email":
         setAlertData({
@@ -71,8 +119,24 @@ export default function OTPScreen({
             : ``
           }
         />
+        {counter > 0 ? (
+          <Text style={[styles.requestNewText, {
+            color: colorsConstants[theme].screenIntro
+          }]}>
+            {`Request new OTP in ${counter}`}
+          </Text>
+        ) : (
+          <TouchableOpacity disabled={loading} activeOpacity={layoutsConstants.activeOpacity} onPress={doRequestCode}>
+            <Text style={[styles.requestNewText, {
+              // color: colorsConstants[theme].screenIntro
+            }]}>
+              {`Request New OTP`}
+            </Text>
+          </TouchableOpacity>
+        )}
         <OtpInput
-          value="2501"
+          value={otp}
+          onChange={(code: string) => setOTP(code)}
           boxCount={4}
           containerStyle={{
             marginBottom: fontsConstants.h(20)
@@ -80,6 +144,8 @@ export default function OTPScreen({
         />
         <DefaultButton
           title={`Confirm`}
+          disabled={Number(otp) === 0 || otp === ""}
+          loading={loading}
           onPress={doConfirmOTP}
         />
         <DefaultButton
@@ -132,5 +198,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: fontsConstants.h(40),
     paddingHorizontal: globalConstants.mainViewHorizontalPadding
-  },
+  }, requestNewText: {
+    fontFamily: fontsConstants.Lora_Regular,
+    fontSize: fontsConstants.h(12)
+  }
 });

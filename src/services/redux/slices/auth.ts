@@ -34,6 +34,7 @@ export const authSlice = createSlice({
     },
     updateUserProfileData: (state, action) => {   
       state = produce(state, draft => {
+        draft.user = action?.payload || state.user
       })   
       return state;
     },

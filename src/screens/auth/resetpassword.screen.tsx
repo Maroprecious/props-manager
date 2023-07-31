@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
 import { View, Text, SafeAreaView } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
@@ -12,6 +12,9 @@ import { AlertModal } from "src/components/modals/alert.modals";
 import globalConstants from "src/constants/global.constants";
 import { ScreenTitle } from "./components/screentitle.component";
 import colorsConstants from "src/constants/colors.constants";
+import useAuthenticate from "src/hooks/useAuthentication";
+import IsValidPassword from "src/utils/IsPassword";
+import { showToast } from "src/components/Toast";
 
 export default function ResetPasswordScreen({
   navigation,
@@ -20,8 +23,33 @@ export default function ResetPasswordScreen({
   const theme = useContext(AppThemeContext);
   const alertRef = useRef<Modalize>(null);
 
+  const { loading, resetPassword } = useAuthenticate();
+
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const doResetPassword = async () => {
-    alertRef?.current?.open();
+    const validatePassword = IsValidPassword(password, 8);
+    if (!validatePassword.valid)
+      showToast({
+        type: `info`,
+        title: `Password`,
+        message: validatePassword.message
+      })
+    else {
+      const req = await resetPassword({
+        email: route.params.email,
+        newPassword: password
+      })
+      if (req?.hasError)
+        showToast({
+          type:`error`,
+          title:`Password Reset`,
+          message: req?.message || req?.error || req?.statusText || "Unable to verify OTP"
+        })
+      else alertRef?.current?.open();
+    }
+  
   }
 
   return (
@@ -42,14 +70,20 @@ export default function ResetPasswordScreen({
         <DefaultInput
           placeholder="Enter new password"
           secureTextEntry
+          value={password}
+          onChangeText={(t: string) => setPassword}
         />
         <DefaultInput
           placeholder="Confirm new password"
           secureTextEntry
+          value={confirmPassword}
+          onChangeText={(t: string) => setConfirmPassword}
         />
         <DefaultButton
           title={`Set Password`}
           onPress={doResetPassword}
+          disabled={password === "" || password !== confirmPassword}
+          loading={loading}
         />
       </View>
       <AlertModal

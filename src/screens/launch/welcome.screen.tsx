@@ -21,6 +21,20 @@ export default function WelcomeScreen({
   const slideRef = useRef<AppIntroSlider>(null);
 
   useEffect(() => {
+    let slide = index;
+    const interval = setInterval(function() {
+      if (slide < SliderData.length - 1)
+        slide++
+      else
+        slide = 0;
+      setIndex(slide)
+    }, 5000);
+
+    return () => 
+      clearInterval(interval)
+  }, [index])
+
+  useEffect(() => {
     slideRef?.current?.goToSlide(index)
   }, [index])
 

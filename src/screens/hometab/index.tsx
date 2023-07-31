@@ -17,6 +17,7 @@ import { RentalDetailItem } from "../rent/view.screen";
 import { LocationIcon } from "../rent/components";
 import { useContext } from "react";
 import AppThemeContext from "src/contexts/Theme.context";
+import { useAppSelector } from "src/hooks/useReduxHooks";
 
 export const RenderAddTenancyButton = ({
 
@@ -55,6 +56,8 @@ export default function HomeTabScreen({
 }: RootTabScreenProps<"HomeTabNavigator">) {
   const theme = useContext(AppThemeContext)
 
+  const user = useAppSelector((state) => state.auth.user)
+
   return (
     <ScrollView style={styles.container}>
       <ImageBackground
@@ -82,7 +85,7 @@ export default function HomeTabScreen({
         }}>
           <Avatar
             size={fontsConstants.w(60)}
-            title={`FE`}
+            title={`${user.firstName.substring(0,1)}${user.lastName.substring(0,1)}`}
             rounded
             titleStyle={{
               color: colorsConstants[theme].screenLabel,
@@ -108,13 +111,13 @@ export default function HomeTabScreen({
               fontSize: fontsConstants.h(16),
               color: colorsConstants[theme].screenLabel,
               marginBottom: fontsConstants.h(4),
-            }}>Fortune Ekezie</Text>
+            }}>{`${user.firstName} ${user.lastName}`}</Text>
             <Text style={[styles.textName, {
               color: colorsConstants[theme].screenLabel,
-            }]}>User ID: 0038</Text>
+            }]}>User ID: {user.id}</Text>
             <Text style={[styles.textName, {
               color: colorsConstants[theme].screenLabel,
-            }]}>{`Fortune.ekezie@gmail.com`}</Text>
+            }]}>{user.email}</Text>
           </RNView>
           <TouchableOpacity
             activeOpacity={layoutsConstants.activeOpacity}

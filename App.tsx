@@ -37,7 +37,8 @@ export default function App() {
       'VirtualizedLists should never be nested',
       'Key "cancelled" in the image picker result is deprecated and will be removed in SDK 48, use "canceled" instead',
       'This synthetic event is reused for performance reason',
-      'Possible Unhandled Promise Rejection'
+      'Possible Unhandled Promise Rejection',
+      'Constants.platform.ios.model has been deprecated'
     ]);
     try {
       SecureStoreManager.getInitialRouteName().then((route) => setInitialRouteName(route)) 

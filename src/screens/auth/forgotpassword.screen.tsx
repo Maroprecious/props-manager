@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet } from "react-native";
 import { View, SafeAreaView } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
@@ -10,19 +10,38 @@ import colorsConstants from "src/constants/colors.constants";
 import AppThemeContext from "src/contexts/Theme.context";
 import globalConstants from "src/constants/global.constants";
 import { ScreenTitle } from "./components/screentitle.component";
+import useAuthenticate from "src/hooks/useAuthentication";
+import { showToast } from "src/components/Toast";
+import IsEmail from "src/utils/IsEmail";
 
 export default function ForgotPasswordScreen({
   navigation,
   route
 }: RootStackScreenProps<"ForgotPasswordScreen">) {
   const theme = useContext(AppThemeContext);
-
+  const { loading, requestPasswordReset } = useAuthenticate();
   const screenType: verificationType = route.params?.type;
+
+
+  const [email, setEmail] = useState("")
 
   const doGetPin = async () => {
     switch (screenType) {
       case "reset-password":
-        navigation.navigate("OTPScreen", route.params)
+        const req = await requestPasswordReset({
+          email: email.toLocaleLowerCase()
+        });
+        if (req?.hasError)
+          showToast({
+            type:`error`,
+            title:`Password Reset`,
+            message: req?.message || req?.error || req?.statusText || "Unable to request password reset"
+          })
+        else
+          navigation.navigate("OTPScreen", {
+            type: screenType,
+            email: email.toLocaleLowerCase()
+          })
         break;
       case "verify-email": 
         navigation.navigate("OTPVerifyScreen", route.params)
@@ -58,12 +77,16 @@ export default function ForgotPasswordScreen({
         <DefaultInput
           placeholder="Enter email ID"
           keyboardType="email-address"
+          value={email}
+          onChangeText={(t: string) => setEmail(t)}
         />
         <DefaultButton
           title={screenType === "reset-password" ? `Send Reset PIN`
             : screenType === "verify-email" ? `Send Verification PIN`
             : `Verify`
           }
+          disabled={email === "" || !IsEmail(email)}
+          loading={loading}
           onPress={doGetPin}
         />
         <DefaultButton

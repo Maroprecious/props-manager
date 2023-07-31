@@ -65,7 +65,7 @@ export const AlertModal = ({
         backgroundColor: colorsConstants[theme].background,
         paddingHorizontal: globalConstants.mainViewHorizontalPadding,
         paddingBottom: fontsConstants.h(87),
-        paddingTop: fontsConstants.h(100)
+        paddingTop: fontsConstants.h(50)
       }, modalStyle]}
       childrenStyle={{
       }}
