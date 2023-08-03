@@ -41,7 +41,6 @@ export default function HomeTabScreen({
   route
 }: RootTabScreenProps<"HomeTabNavigator">) {
   const theme = useContext(AppThemeContext)
-
   const user = useAppSelector((state) => state.auth.user)
 
   return (
