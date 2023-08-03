@@ -11,6 +11,8 @@ export type NotificationProps = {
 
 export type NotificationType = "settings" | "bill" | "location" | "mail" | "invoice" | "award" 
 
+export type AlertModalType = "success" | "error" | "info" | "warning"
+
 export type ReduxAuthState = {
   token: string | undefined | null,
   user: AuthUserType
