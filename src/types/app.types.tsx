@@ -18,7 +18,7 @@ export type ReduxAuthState = {
 
 export type AuthUserType = {
   id: string | null
-  username: string
+  aliasName?: string
   email: string
   firstName: string
   lastName: string

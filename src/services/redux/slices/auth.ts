@@ -13,8 +13,9 @@ const initialAuthState: ReduxAuthState = {
     firstName: "",
     lastName: "",
     roles: [],
-    username: "",
-    verified: false
+    aliasName: "",
+    verified: false,
+    phoneNumber: ""
   }
 }
 
