@@ -9,11 +9,11 @@ import globalConstants, { Tenancies } from "src/constants/global.constants";
 import { ScreenTitle } from "../auth/components/screentitle.component";
 import colorsConstants from "src/constants/colors.constants";
 import layoutsConstants from "src/constants/layouts.constants";
-import { RenderAddTenancyButton } from "../hometab";
 import { DefaultRadiobox } from "src/components/inputs/checkbox.components";
 import { formatCurrency } from "src/utils/FormatNumber";
 import moment from "moment";
 import { LocationIcon } from "./components";
+import { RenderAddTenancyButton } from "../property/components";
 
 export default function PayRentScreen({
   navigation,

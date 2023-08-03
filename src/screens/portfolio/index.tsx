@@ -20,7 +20,9 @@ export default function PortfolioTabScreen({
 
   const menu = user.roles.length === 1 && user.roles[0] === "ROLE_TENANT" 
     ? TenanctPortfolioItems 
-    : LandlordPortfolioItems;
+    : user.roles.length === 1 && user.roles[0] === "ROLE_LANDLORD"
+    ? LandlordPortfolioItems
+    : [];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -43,7 +45,7 @@ export default function PortfolioTabScreen({
             marginTop: fontsConstants.h(20)
           }}
         >
-          {LandlordPortfolioItems.map((item: any, index: number) => (
+          {menu.map((item: any, index: number) => (
             <MenuItemCard
               key={index.toString()}
               label={item.label}
