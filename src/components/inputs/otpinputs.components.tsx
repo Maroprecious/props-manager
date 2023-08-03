@@ -26,6 +26,7 @@ const OtpInput = ({
   textStyle = {},
   otherProps= {},
   itemSpacing = 9,
+  boxSize = fontsConstants.w(60)
 }: {
   value: string;
   onChange?: (t: string) => void;
@@ -36,6 +37,7 @@ const OtpInput = ({
   inputStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   itemSpacing?: number;
+  boxSize?: number;
 }) => {
 
   const theme = useContext(AppThemeContext);
@@ -94,8 +96,8 @@ const OtpInput = ({
         <View
           key={index}
           style={[{
-            height: fontsConstants.w(60),
-            width: fontsConstants.w(60),
+            height: boxSize,
+            width: boxSize,
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: fontsConstants.h(20),
