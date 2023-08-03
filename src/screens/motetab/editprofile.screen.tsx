@@ -27,16 +27,16 @@ export default function EditProfileScreen({
 
   const [firstName, setFirstName] = useState(user.firstName)
   const [lastName, setLastName] = useState(user.lastName)
-  const [username, setUsername] = useState(user.username)
-  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber)
+  const [aliasName, setAliasName] = useState(user?.aliasName || "")
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber || "")
   
   const doUpdateProfile = async () => {
     const req = await updateProfile({
       userId: user?.id || "",
       firstName,
       lastName,
-      aliasName: username,
-      phoneNumber: phoneNumber || ""
+      aliasName,
+      phoneNumber
     })
     console.log(req)
     showToast({
@@ -49,7 +49,7 @@ export default function EditProfileScreen({
         ...user,
         firstName,
         lastName,
-        username,
+        aliasName,
         phoneNumber
       }));  
       navigation.goBack()
@@ -92,8 +92,8 @@ export default function EditProfileScreen({
         />
         <DefaultInput
           label={`Alias`}
-          value={username || ""}
-          onChangeText={(t: string) => setUsername(t)}
+          value={aliasName || ""}
+          onChangeText={(t: string) => setAliasName(t)}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultPhoneInput

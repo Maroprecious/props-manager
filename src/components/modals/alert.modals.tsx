@@ -16,6 +16,7 @@ import { useRef } from 'react';
 // import { Button } from 'src/components/buttons/button';
 import { useNavigation } from '@react-navigation/native';
 import { Platform, TextStyle } from 'react-native';
+import { AlertModalType } from "src/types/app.types"
 
 
 export const AlertModal = ({
@@ -32,6 +33,7 @@ export const AlertModal = ({
   cancelButtonContainerStyle = {},
   buttonContainerStyle = {},
   modalStyle = {},
+  ...props
 }: {
   modalRef?: any;
   withButton?: boolean;
@@ -41,12 +43,12 @@ export const AlertModal = ({
   onCancelButtonPress?: Function;
   title: string;
   cancelButtonTitle?: string;
-  type?: "success" | "error" | "info" | "warning"
+  type?: AlertModalType;
   body?: string | ReactElement<{}, string | JSXElementConstructor<any>>;
   cancelButtonContainerStyle?: StyleProp<ViewStyle>;
   buttonContainerStyle?: StyleProp<ViewStyle>;
   modalStyle?: StyleProp<ViewStyle>;
-}) => {
+} & ModalizeProps) => {
   const theme = useContext(AppThemeContext);
 
   return (
@@ -69,6 +71,7 @@ export const AlertModal = ({
       }, modalStyle]}
       childrenStyle={{
       }}
+      {...props}
     >
       <RNView style={{
       }}>

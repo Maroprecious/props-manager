@@ -10,11 +10,19 @@ import globalConstants from "src/constants/global.constants"
 import AppThemeContext from "src/contexts/Theme.context"
 import { Text } from "../Themed"
 
+const errorMessageStyle = {
+  marginTop: fontsConstants.h(0),
+  fontFamily: fontsConstants.space_mono,
+  fontSize: fontsConstants.h(12),
+  color: colorsConstants.colorDanger
+}
+
 export const DefaultInput = ({
   inputHeight = globalConstants.componentHeight,
   containerStyle = {},
   labelStyle = {},
   secureTextEntry = false,
+  errorMessage,
   ...props
 } : {
   inputHeight?: number
@@ -40,7 +48,9 @@ export const DefaultInput = ({
         height: inputHeight,
         backgroundColor: colorsConstants[theme].inputBackground,
         borderRadius: fontsConstants.h(10),
-        borderBottomWidth: 0
+        borderBottomWidth: errorMessage ? fontsConstants.h(1) : 0,
+        borderColor: errorMessage ? colorsConstants.colorDanger : undefined,
+        borderWidth: errorMessage ? fontsConstants.h(1) : undefined
       }}
       labelStyle={[{
         color: colorsConstants[theme].screenLabel,
@@ -67,7 +77,9 @@ export const DefaultInput = ({
         />
       ) : undefined}
       {...props}
+      errorMessage={errorMessage}
       secureTextEntry={showEntry}
+      errorStyle={errorMessageStyle}
     />
   )
 }
@@ -77,6 +89,7 @@ export const DefaultPhoneInput = ({
   containerStyle = {},
   labelStyle = {},
   onChangeNumber = () => null,
+  errorMessage,
   ...props
 } : {
   inputHeight?: number
@@ -121,6 +134,7 @@ export const DefaultPhoneInput = ({
             maxHeight: fontsConstants.h(250)
           }}
           listMode="MODAL"
+          showErrorMessage={false}
         />
       }
       value={mobile}
@@ -136,7 +150,9 @@ export const DefaultPhoneInput = ({
         height: inputHeight,
         backgroundColor: colorsConstants[theme].inputBackground,
         borderRadius: fontsConstants.h(10),
-        borderBottomWidth: 0
+        borderBottomWidth: errorMessage ? fontsConstants.h(1) : 0,
+        borderColor: errorMessage ? colorsConstants.colorDanger : undefined,
+        borderWidth: errorMessage ? fontsConstants.h(1) : undefined
       }}
       labelStyle={[{
         color: colorsConstants[theme].screenLabel,
@@ -151,6 +167,8 @@ export const DefaultPhoneInput = ({
         marginBottom: fontsConstants.w(30)
       }, containerStyle]}
       {...props}
+      errorMessage={errorMessage}
+      errorStyle={errorMessageStyle}
     />
   )
 }
@@ -178,6 +196,8 @@ export const DefaultSelectInput = ({
   wrapperStyle,
   label,
   labelStyle,
+  errorMessage,
+  showErrorMessage = true,
 } : {
   value: string | number
   items: {
@@ -201,6 +221,8 @@ export const DefaultSelectInput = ({
   wrapperStyle?: StyleProp<ViewStyle>
   label?: string
   labelStyle?: StyleProp<TextStyle>
+  errorMessage?: string
+  showErrorMessage?: boolean
 }) => {
 
   const theme = useContext(AppThemeContext);
@@ -244,8 +266,8 @@ export const DefaultSelectInput = ({
           borderRadius: fontsConstants.h(10),
           borderBottomLeftRadius: open ? fontsConstants.h(0) : undefined,
           borderBottomRightRadius:  open ? fontsConstants.h(0) : undefined,
-          borderColor: open ? colorsConstants[theme].borderLine : undefined,
-          borderWidth: open ? fontsConstants.h(1) : undefined
+          borderColor: open ? colorsConstants[theme].borderLine : errorMessage && showErrorMessage ? colorsConstants.colorDanger : undefined,
+          borderWidth: open || (errorMessage && showErrorMessage) ? fontsConstants.h(1) : undefined
         }, containerStyle]}
         textStyle={{
           fontFamily: fontsConstants.American_Typewriter_Regular,
@@ -281,6 +303,7 @@ export const DefaultSelectInput = ({
             name='chevron-down'
             type='ionicon'
             size={fontsConstants.w(13)}
+            color={errorMessage && showErrorMessage? colorsConstants.colorDanger : undefined}
           />
         }
         ArrowUpIconComponent={ ({style}) =>
@@ -291,6 +314,12 @@ export const DefaultSelectInput = ({
           />
         }
       />
+      {errorMessage && showErrorMessage && <Text style={[errorMessageStyle, {
+        marginTop: fontsConstants.h(-20),
+        marginBottom: fontsConstants.h(3)
+      }]}>
+        {errorMessage}
+      </Text>}
     </View>
   )
 }

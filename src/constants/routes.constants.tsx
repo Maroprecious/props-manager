@@ -246,11 +246,13 @@ export const UserAppRoutes = [
     initialParams: {},
   }, {
     name: "ChangePasswordScreen",
-    component: ChangePasswordScreen,
+    component: ResetPasswordScreen,
     options: {
       headerShown: false,
     },
-    initialParams: {},
+    initialParams: {
+      email: ""
+    },
   }, {
     name: "ChangePasswordOtpScreen",
     component: ChangePasswordOtpScreen,
@@ -345,7 +347,9 @@ const WelcomeAppRputes = [
     options: {
       headerShown: false,
     },
-    initialParams: {},
+    initialParams: {
+      email: ""
+    },
   },
 ];
 

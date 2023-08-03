@@ -64,7 +64,9 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   HelpAndSupportScreen: undefined
   TermsAndConditionScreen: undefined
   SettingScreen: undefined
-  ChangePasswordScreen: undefined
+  ChangePasswordScreen: {
+    email: string,
+  }
   ChangePasswordOtpScreen: undefined
   Setup2faScreen: undefined
   VerifyWithMobile: undefined
@@ -99,7 +101,7 @@ export type AuthStackParamList = {
     email: string
   };
   ResetPasswordScreen: {
-    email: string
+    email: string,
   };
 }
 

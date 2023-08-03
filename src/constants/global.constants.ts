@@ -207,7 +207,7 @@ export const PaymentsMenuItems = [{
   screen: "TransactionsScreen"
 }]
 
-export const PortfolioMenuItems = [{
+export const TenanctPortfolioItems = [{
   id: 1,
   label: "Rental",
   icon: require("src/assets/images/icons/rental.png"),
@@ -220,41 +220,28 @@ export const PortfolioMenuItems = [{
 }]
 
 export const LandlordPortfolioItems = [
+  ...TenanctPortfolioItems,
   {
-    id: 1,
+    id: 3,
     label: "Properties",
     icon: require("src/assets/images/icons/town.png"),
     screen: "RentalsScreen"
-  },
-  {
-    id: 2,
-    label: "Rental",
-    icon: require("src/assets/images/icons/rental.png"),
-    screen: "RentalsScreen"
-  },
-  {
-    id: 3,
+  }, {
+    id: 4,
     label: "Tenancy",
     icon: require("src/assets/images/icons/tenancy-icon.png"),
     screen: "TenancyScreen"
-  },
-  {
-    id: 4,
+  }, {
+    id: 5,
     label: "Property Managers",
     icon: require("src/assets/images/icons/Property-manager-icon.png"),
     screen: "PropertyManagerScreen"
-  },
-  {
-    id: 5,
-    label: "Documents",
-    icon: require("src/assets/images/icons/documents.png"),
-    screen: "DocumentsScreen"
   }, {
-    id: 6,
-    label: "Property Analytics",
-    icon: require("src/assets/images/icons/Property-analytics-icon.png"),
-    screen: "RentalsScreen"
-  },
+  id: 6,
+  label: "Property Analytics",
+  icon: require("src/assets/images/icons/Property-analytics-icon.png"),
+  screen: "RentalsScreen"
+  }
 ]
 
 export const DashboardSliderInfo = [{
