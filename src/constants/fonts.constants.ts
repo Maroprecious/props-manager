@@ -25,6 +25,8 @@ const Avenir_Medium = "Avenir-Medium";
 const Roboto_Regular = "Roboto-Regular";
 const Roboto_Medium = "Roboto-Medium";
 const Montserrat_Medium = "Montserrat-Medium";
+const Rubik_Medium = "Rubik-Medium";
+const Rubik_Regular = "Rubik-Regular"
 
 
 function normalize(size: number): number {
@@ -56,5 +58,7 @@ export default {
     Avenir_Medium,
     Roboto_Regular,
     Roboto_Medium,
-    Montserrat_Medium
+    Montserrat_Medium,
+    Rubik_Medium,
+    Rubik_Regular
 }

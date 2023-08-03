@@ -41,6 +41,7 @@ import PropertyManagerScreen from "src/screens/portfolio/property-manager";
 import AssignPropertyManager from "src/screens/portfolio/assign-property-mgr";
 import EditProfileScreen from "src/screens/motetab/editprofile.screen";
 import { AuthUserType } from "src/types/app.types";
+import YourFinancialsScreen from "src/screens/paymentstab/your-financials";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -290,6 +291,13 @@ export const UserAppRoutes = [
   }, {
     name: "EditProfileScreen",
     component: EditProfileScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "YourFinancialsScreen",
+    component: YourFinancialsScreen,
     options: {
       headerShown: false,
     },

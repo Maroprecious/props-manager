@@ -48,10 +48,10 @@ export default function ViewTenancyScreen({
                     }}>
 
                         <LocationIcon
-                            imageSize={fontsConstants.w(27)}
+                            imageSize={fontsConstants.w(25)}
                             containerStyle={{
-                                height: fontsConstants.w(50),
-                                width: fontsConstants.w(50),
+                                height: fontsConstants.w(48),
+                                width: fontsConstants.w(48),
                             }}
                         />
                         <View style={{
@@ -133,8 +133,8 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
     },
     icon: {
-        width: 30,
-        height: 30,
+        width: 20,
+        height: 20,
     },
     item_container: {
         height: 75,
@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     icon_container: {
-        width: 60,
-        height: 60,
+        width: 40,
+        height: 40,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 8,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     content: {
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        width: '75%'
+        width: '78%'
     },
     label: {
         fontSize: 15,
@@ -161,6 +161,6 @@ const styles = StyleSheet.create({
     },
     occupant: {
         fontFamily: fontsConstants.Lora_Regular,
-        fontSize: 13
+        fontSize: Platform.OS === 'android' ? 11 : 13
     }
 });

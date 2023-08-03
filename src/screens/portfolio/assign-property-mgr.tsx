@@ -256,6 +256,7 @@ console.log(errors)
                             <Select
                                 options={roles}
                                 placeholder='Kindly select your role'
+                                dynamicPlaceholder="Kindly select your role"
                                 onChange={(e) => setFieldValue('role', e.value)}
                                 containerStyles={{ backgroundColor: 'transparent', marginTop: 3 }}
                                 textstyle={{ marginBottom: -3, marginLeft: 10 }}
