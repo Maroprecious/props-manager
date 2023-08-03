@@ -2,51 +2,37 @@ import * as React from "react";
 import { StyleSheet, View as RNView, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { ScrollView, Text, View } from "src/components/Themed";
 import { NotificationItemCard } from "src/components/cards";
-import { Avatar, Icon, Image } from 'react-native-elements'
+import { Avatar, Image } from 'react-native-elements'
 import colorsConstants from "src/constants/colors.constants";
 import fontsConstants from "src/constants/fonts.constants";
-import { DashboardSliderInfo, RecentActivitiesData } from "src/constants/global.constants";
+import { DashboardSliderInfo, RecentActivitiesData, Tenancies } from "src/constants/global.constants";
 import layoutsConstants from "src/constants/layouts.constants";
 import { NotificationProps } from "src/types/app.types";
 import { RootTabScreenProps } from "src/types/navigations.types";
 import AppIntroSlider from "react-native-app-intro-slider";
 import moment from "moment";
 import { formatCurrency } from "src/utils/FormatNumber";
-import { useNavigation } from "@react-navigation/native";
 import { RentalDetailItem } from "../rent/view.screen";
 import { LocationIcon } from "../rent/components";
 import { useContext } from "react";
 import AppThemeContext from "src/contexts/Theme.context";
 import { useAppSelector } from "src/hooks/useReduxHooks";
+import { PropertiesListView, RenderAddTenancyButton } from "../property/components";
 
-export const RenderAddTenancyButton = ({
-
-} : {
-
-}) => {
-  const navigation = useNavigation();
-  const theme = useContext(AppThemeContext)
+export const RenderUserProperties = () => {
   return (
-    <TouchableOpacity
-      activeOpacity={layoutsConstants.activeOpacity}
-      style={{
-        flexDirection: "row",
-        alignItems: "center"
+    <PropertiesListView
+      data={Tenancies}
+      onViewPressed={(property: typeof Tenancies[0]) => {
+        console.log(property)
       }}
-    >
-      <Icon
-        name="playlist-add"
-        size={fontsConstants.w(20)}
-        color={colorsConstants[theme].darkText}
-      />
-      <Text style={{
-        fontFamily: fontsConstants.Avenir_Medium,
-        fontSize: fontsConstants.h(10),
-        color: colorsConstants[theme].darkText
-      }}>
-        {`Add`}
-      </Text>
-    </TouchableOpacity>
+      headerText={`My Properties`}
+      itemHeaderText={`Property Details`}
+      headerTextStyle={{
+        marginTop: fontsConstants.h(20),
+        fontSize: fontsConstants.h(12)
+      }}
+    />
   )
 }
 
@@ -244,6 +230,15 @@ export default function HomeTabScreen({
           showPrevButton={false}
           showSkipButton={false}
         />
+        {user.roles.length === 1 && user.roles[0] === "ROLE_LANDLORD" && <RenderUserProperties />}
+        <Text style={[{
+          fontFamily: fontsConstants.Lora_Bold,
+          fontSize: fontsConstants.h(12),
+          color: colorsConstants[theme].screenLabel,
+          marginBottom: fontsConstants.h(10)
+        }]}>
+          {`Tenancy Details`}
+        </Text>
         <RNView style={{
           borderWidth: fontsConstants.h(1),
           borderColor: colorsConstants.colorPrimary,
@@ -252,7 +247,6 @@ export default function HomeTabScreen({
           flexDirection: "row",
           alignItems: "center",
           marginBottom: fontsConstants.h(20),
-          marginTop: fontsConstants.h(20)
         }}>
           <LocationIcon/>
           <RNView style={{

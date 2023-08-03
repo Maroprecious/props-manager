@@ -65,7 +65,7 @@ export default {
     dropShadow: 'rgba(0, 0, 0, 0.10)',
     otptext: 'rgba(0, 0, 0, 0.85)',
     cardBg: "#fff",
-    modalBg: "#030303",
+    modalBg: "rgba(0, 0, 0, 0.9)",
     dateMonthColor: "#A3A3A3",
     darkText3: "#000B22",
     socialText: '#212121',
