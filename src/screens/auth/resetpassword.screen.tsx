@@ -87,7 +87,6 @@ export default function ResetPasswordScreen({
         title:`Password Reset`,
         message: req?.message || req?.error || req?.statusText || "Unable to reset password"
       })
-      
     }
     else {
       setActionResponseType("success")
