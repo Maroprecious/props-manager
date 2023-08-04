@@ -18,9 +18,9 @@ export default function PortfolioTabScreen({
 
   const user = useAppSelector((state) => state.auth.user)
 
-  const menu = user.roles.length === 1 && user.roles[0] === "ROLE_TENANT" 
+  const menu = user.roleType === "tenant"
     ? TenanctPortfolioItems 
-    : user.roles.length === 1 && user.roles[0] === "ROLE_LANDLORD"
+    : user.roleType === "landlord"
     ? LandlordPortfolioItems
     : [];
 
