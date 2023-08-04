@@ -343,3 +343,45 @@ export const MenuItemCard = ({
     </Card>
   )
 }
+
+export const NoPropertiesCard = () => {
+  const theme = useContext(AppThemeContext);
+  return (
+    <Card
+      containerStyle={[{
+        marginTop: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
+        paddingLeft: 0,
+        paddingRight: 0,
+        backgroundColor: colorsConstants[theme].cardBg,
+        borderRadius: fontsConstants.w(15),
+        borderWidth: 0,
+        elevation: 5,
+        alignItems: "center",
+        justifyContent: "center",
+        height: fontsConstants.h(180),
+        marginLeft: fontsConstants.w(10),
+        marginRight: fontsConstants.w(10)
+      }]
+      }
+    >
+      <Text style={{
+        fontFamily: fontsConstants.Lora_Medium,
+        fontSize: fontsConstants.h(20),
+        color: colorsConstants[theme].grey3,
+        marginBottom: fontsConstants.h(10)
+      }}>
+        {`No owned properties found`}
+      </Text>
+      <Text style={{
+        textAlign: "center",
+        fontFamily: fontsConstants.Lora_Regular,
+        fontSize: fontsConstants.h(12),
+        color: colorsConstants[theme].grey3,
+      }}>
+        {`Kindly add your owned property to effectively\nmanage them on your porfolio`}
+      </Text>
+    </Card>
+  )
+}

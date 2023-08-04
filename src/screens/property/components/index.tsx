@@ -13,6 +13,114 @@ import { Icon } from "react-native-elements";
 import { RentalDetailItem } from "src/screens/rent/view.screen";
 import { useNavigation } from "@react-navigation/native";
 
+export const RenderPropertyDetails = ({
+  item,
+  hasRightComponent = true,
+  detailsMaxifierNumber = 1,
+  containerStyle = {},
+  selectedId,
+  setSelected = () => null,
+  itemHeaderText,
+  selectable = false,
+  onViewPressed = () => null,
+  showItemId = true,
+  setOpenModal = () => null,
+  setViewItem = () => null
+} : {
+  item: {
+    id: string,
+    propertyName?: string
+    propertyLocation?: string,
+  }
+  hasRightComponent?: boolean
+  detailsMaxifierNumber?: number
+  containerStyle?: StyleProp<ViewStyle>
+  selectedId?: number | string
+  setSelected?: Function
+  itemHeaderText?: string
+  selectable?: boolean
+  onViewPressed?: Function
+  showItemId?: boolean
+  setViewItem?: Function
+  setOpenModal?: Function
+}) => {
+  const theme = useContext(AppThemeContext);
+
+  return (
+    <View
+      style={[{
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: fontsConstants.h(10)
+      }, containerStyle]}
+    >
+      <LocationIcon
+        imageSize={fontsConstants.w(20) * Math.pow(detailsMaxifierNumber, 2)}
+        containerStyle={{
+          height: fontsConstants.w(45) * detailsMaxifierNumber,
+          width: fontsConstants.w(45) * detailsMaxifierNumber,
+        }}
+      />
+      <View style={{
+        marginHorizontal: fontsConstants.w(10),
+        flex: 1
+      }}>
+        <Text style={{
+          fontFamily: fontsConstants.Lora_Bold,
+          fontSize: fontsConstants.h(15) * detailsMaxifierNumber,
+          color: colorsConstants[theme].screenLabel,
+        }}>
+          {itemHeaderText}
+        </Text>
+        {showItemId && <Text style={{
+          fontFamily: fontsConstants.Lora_Regular,
+          fontSize: fontsConstants.h(12),
+          color: colorsConstants[theme].darkText3,
+        }}>
+          {item?.propertyName ? item?.propertyName : `Propery ID: ${item.id}`}
+        </Text>}
+        <Text style={{
+          fontFamily: fontsConstants.Lora_Regular,
+          fontSize: fontsConstants.h(12),
+          color: colorsConstants[theme].darkText3,
+        }}>
+          {item.propertyLocation}
+        </Text>
+      </View>
+      {selectable && hasRightComponent ? (
+        <DefaultRadiobox
+          checked={selectedId === item.id}
+          checkedColor={colorsConstants.radioBoxActive}
+          size={fontsConstants.w(20)}
+          label={`Select`}
+          onPress={() => setSelected(item)}
+        />
+      ) : onViewPressed && hasRightComponent ? (
+        <TouchableOpacity 
+          activeOpacity={layoutsConstants.activeOpacity}
+          onPress={() => {
+            setViewItem(item)
+            setOpenModal(true)
+            onViewPressed(item)
+          }}
+        >
+          <Icon
+            name="eye-outline"
+            color={colorsConstants[theme].darkText3}
+            type="ionicon"
+            size={fontsConstants.h(12)}
+          />
+          <Text style={{
+            fontFamily: fontsConstants.Lora_Regular,
+            fontSize: fontsConstants.h(12),
+            color: colorsConstants[theme].darkText3,
+          }}>{`View`}</Text>
+        </TouchableOpacity>
+      ) : null}
+    </View>
+  )
+}
+
 export const PropertiesListView = ({
   data,
   selectedId,
@@ -25,7 +133,7 @@ export const PropertiesListView = ({
   headerTextStyle = {}
 } : {
   data: typeof Tenancies,
-  selectedId?: number
+  selectedId?: number | string
   setSelected?: Function
   headerText?: string
   itemHeaderText?: string
@@ -36,95 +144,10 @@ export const PropertiesListView = ({
 }) => {
   const theme = useContext(AppThemeContext);
 
-  const [viewItem, setViewItem] = useState<typeof Tenancies[0] | undefined>(undefined);
+  const [viewItem, setViewItem] = useState<typeof Tenancies[0] | undefined | any>(undefined);
   const [openModal, setOpenModal] = useState(false);
 
-  const RenderDetails = ({
-    item,
-    hasRightComponent = true,
-    detailsMaxifierNumber = 1,
-    containerStyle = {}
-  } : {
-    item: any
-    hasRightComponent?: boolean
-    detailsMaxifierNumber?: number
-    containerStyle?: StyleProp<ViewStyle>
-  }) => {
-    return (
-      <View
-        style={[{
-          flexDirection: "row",
-          alignItems: "center",
-          marginBottom: fontsConstants.h(10)
-        }, containerStyle]}
-      >
-        <LocationIcon
-          imageSize={fontsConstants.w(20) * Math.pow(detailsMaxifierNumber, 2)}
-          containerStyle={{
-            height: fontsConstants.w(45) * detailsMaxifierNumber,
-            width: fontsConstants.w(45) * detailsMaxifierNumber,
-          }}
-        />
-        <View style={{
-          marginHorizontal: fontsConstants.w(10),
-          flex: 1
-        }}>
-          <Text style={{
-            fontFamily: fontsConstants.Lora_Bold,
-            fontSize: fontsConstants.h(15) * detailsMaxifierNumber,
-            color: colorsConstants[theme].screenLabel,
-          }}>
-            {itemHeaderText}
-          </Text>
-          {showItemId && <Text style={{
-            fontFamily: fontsConstants.Lora_Regular,
-            fontSize: fontsConstants.h(12),
-            color: colorsConstants[theme].darkText3,
-          }}>
-            {`Propery ID: ${item.id}`}
-          </Text>}
-          <Text style={{
-            fontFamily: fontsConstants.Lora_Regular,
-            fontSize: fontsConstants.h(12),
-            color: colorsConstants[theme].darkText3,
-          }}>
-            {item.address}
-          </Text>
-        </View>
-        {selectable && hasRightComponent ? (
-          <DefaultRadiobox
-            checked={selectedId === item.id}
-            checkedColor={colorsConstants.radioBoxActive}
-            size={fontsConstants.w(20)}
-            label={`Select`}
-            onPress={() => setSelected(item)}
-          />
-        ) : onViewPressed && hasRightComponent ? (
-          <TouchableOpacity 
-            activeOpacity={layoutsConstants.activeOpacity}
-            onPress={() => {
-              setViewItem(item)
-              setOpenModal(true)
-              onViewPressed(item)
-            }}
-          >
-            <Icon
-              name="eye-outline"
-              color={colorsConstants[theme].darkText3}
-              type="ionicon"
-              size={fontsConstants.h(12)}
-            />
-            <Text style={{
-              fontFamily: fontsConstants.Lora_Regular,
-              fontSize: fontsConstants.h(12),
-              color: colorsConstants[theme].darkText3,
-            }}>{`View`}</Text>
-          </TouchableOpacity>
-        ) : null}
-      </View>
-    )
-  }
-
+  
   return (
     <View>
       <Text style={[{
@@ -142,10 +165,18 @@ export const PropertiesListView = ({
         padding: fontsConstants.w(14),
         marginBottom: fontsConstants.h(20)
       }}>
-        {data.map((item, index) => (
-          <RenderDetails
+        {data.map((item: any, index) => (
+          <RenderPropertyDetails
             item={item}
             key={index.toString()}
+            selectedId={selectedId}
+            itemHeaderText={itemHeaderText}
+            onViewPressed={onViewPressed}
+            setViewItem={setViewItem}
+            setOpenModal={setOpenModal}
+            selectable={selectable}
+            setSelected={setSelected}
+            showItemId={showItemId}
           />
         ))}
         <View style={{
@@ -187,7 +218,7 @@ export const PropertiesListView = ({
             paddingHorizontal: fontsConstants.w(20),
             paddingBottom: fontsConstants.h(30)
           }}>
-            <RenderDetails
+            <RenderPropertyDetails
               item={viewItem}
               hasRightComponent={false}
               detailsMaxifierNumber={1.3}

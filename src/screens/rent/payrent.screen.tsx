@@ -88,7 +88,7 @@ export default function PayRentScreen({
                 marginHorizontal: fontsConstants.w(10),
                 flex: 1
               }}>
-                {item.address}
+                {item.propertyLocation}
               </Text>
               <DefaultRadiobox
                 checked={selected?.id === item.id}

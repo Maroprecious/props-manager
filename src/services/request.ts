@@ -48,7 +48,10 @@ export const makeUrlKeyValuePaths = (json: {[key: string]: any}): string => {
       query +=
         encodeURIComponent(json[key]) + '/';
   }
-  return query.replace(/&$/g, '');
+  const finalQuery = query.replace(/&$/g, '');
+  if (finalQuery.substring(finalQuery.length - 1) === '/')
+    return finalQuery.substring(0, finalQuery.length - 1)
+  return finalQuery
 };
 
 type RequestObject = {
@@ -89,6 +92,7 @@ export async function makeApiRequest({
       'Content-Type': contentType
     });
 
+  console.log('✅ Making axios request', data, type, queryParams, pathParams, route, routePlusParams, isDefaultAuth);
   let reqStatus;
   try {
     const response = await axios({

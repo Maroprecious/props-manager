@@ -156,7 +156,7 @@ console.log(errors)
                                                 fontSize: fontsConstants.h(11.4),
                                                 color: colorsConstants[theme].address,
                                             }}>
-                                                {item.address}
+                                                {item.propertyLocation}
                                             </Text>
                                             <Text style={{
                                                 fontFamily: fontsConstants.Lora_Regular,

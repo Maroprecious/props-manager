@@ -93,3 +93,8 @@ export const splitPhoneNumber = (phone: string) => {
     phone: split.length === 2 ? split[1] : split[0]
   }
 }
+
+export const currencyToString = (num: string) => {
+  const str = num.split('.')[0].replace(",","");
+  return str !== "0" ? str : ""
+}

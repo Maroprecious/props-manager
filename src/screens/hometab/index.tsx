@@ -144,7 +144,7 @@ export default function HomeTabScreen({
                       navigation.navigate("InviteScreen")
                       break;
                     case 2: 
-                    navigation.navigate("AddProperty")
+                    navigation.navigate("AddPropertyScreen")
                       break;
                     default:
                       break;
@@ -199,7 +199,7 @@ export default function HomeTabScreen({
                               navigation.navigate("InviteScreen")
                               break;
                             case 2: 
-                            navigation.navigate("AddProperty")
+                            navigation.navigate("AddPropertyScreen")
                               break;
                             default:
                               break;

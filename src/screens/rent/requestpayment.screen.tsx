@@ -8,7 +8,7 @@ import AppThemeContext from "src/contexts/Theme.context";
 import globalConstants, { PaymentRequestTypes } from "src/constants/global.constants";
 import { ScreenTitle } from "../auth/components/screentitle.component";
 import layoutsConstants from "src/constants/layouts.constants";
-import { formatCurrency } from "src/utils/FormatNumber";
+import { currencyToString, formatCurrency } from "src/utils/FormatNumber";
 import colorsConstants from "src/constants/colors.constants";
 import { DefaultInput, DefaultSelectInput } from "src/components/inputs/inputs.components";
 
@@ -68,7 +68,10 @@ export default function RequestPaymentScreen({
           keyboardType="number-pad"
           value={amount}
           onChangeText={(v: string) => setAmount(v)}
-          onSubmitEditing={(e: any) => {
+          onFocus={(e: any) => {
+            setAmount(currencyToString(amount))
+          }}
+          onBlur={(e: any) => {
             setAmount(formatCurrency(Number(amount)))
           }}
           inputStyle={{
