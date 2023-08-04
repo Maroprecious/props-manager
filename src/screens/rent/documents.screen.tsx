@@ -9,10 +9,8 @@ import globalConstants, { DefaultDocuments, Tenancies } from "src/constants/glob
 import { ScreenTitle } from "../auth/components/screentitle.component";
 import colorsConstants from "src/constants/colors.constants";
 import layoutsConstants from "src/constants/layouts.constants";
-import { RenderAddTenancyButton } from "../hometab";
-import { DefaultRadiobox } from "src/components/inputs/checkbox.components";
-import { LocationIcon } from "./components";
 import { Entypo } from "@expo/vector-icons";
+import { PropertiesListView } from "../property/components";
 
 export default function DocumentsScreen({
   navigation,
@@ -50,83 +48,15 @@ export default function DocumentsScreen({
         />
         <View style={{
         }}>
-          <Text style={{
-            fontFamily: fontsConstants.Lora_Bold,
-            fontSize: fontsConstants.h(15),
-            color: colorsConstants[theme].screenLabel,
-            marginBottom: fontsConstants.h(20)
-          }}>
-            {`Linked Properties`}
-          </Text>
-          <View style={{
-            borderWidth: fontsConstants.h(1),
-            borderColor: colorsConstants.colorPrimary,
-            borderRadius: fontsConstants.w(20),
-            padding: fontsConstants.w(14),
-            marginBottom: fontsConstants.h(20)
-          }}>
-            {Tenancies.map((item, index) => (
-              <View
-                key={index.toString()}
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginBottom: fontsConstants.h(10)
-                }}
-              >
-                <LocationIcon
-                  imageSize={fontsConstants.w(20)}
-                  containerStyle={{
-                    height: fontsConstants.w(45),
-                    width: fontsConstants.w(45),
-                  }}
-                />
-                <View style={{
-                  marginHorizontal: fontsConstants.w(10),
-                  flex: 1
-                }}>
-                  <Text style={{
-                    fontFamily: fontsConstants.Lora_Bold,
-                    fontSize: fontsConstants.h(15),
-                    color: colorsConstants[theme].screenLabel,
-                  }}>
-                    {`Property Location`}
-                  </Text>
-                  <Text style={{
-                    fontFamily: fontsConstants.Lora_Regular,
-                    fontSize: fontsConstants.h(14),
-                    color: colorsConstants[theme].darkText3,
-                  }}>
-                    {item.address}
-                  </Text>
-                </View>
-                <DefaultRadiobox
-                  checked={selected?.id === item.id}
-                  checkedColor={colorsConstants.radioBoxActive}
-                  size={fontsConstants.w(20)}
-                  label={`Select`}
-                  onPress={() => setSelected(item)}
-                />
-              </View>
-            ))}
-            <View style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: fontsConstants.h(24)
-            }}>
-              <Text style={{
-                fontFamily: fontsConstants.Lora_Regular,
-                fontSize: fontsConstants.h(14),
-                color: colorsConstants[theme].darkText3
-              }}>
-                {`No additional property record found`}
-              </Text>
-              <RenderAddTenancyButton
-
-              />
-            </View>
-          </View>
+          <PropertiesListView
+            data={Tenancies}
+            selectedId={selected?.id}
+            setSelected={setSelected}
+            selectable={true}
+            showItemId={false}
+            headerText={`Linked Properties`}
+            itemHeaderText={`Property Location`}
+          />
           <View>
             <Text style={{
               fontFamily: fontsConstants.Lora_Bold,

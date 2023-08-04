@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "src/hooks/useReduxHooks";
 import useUser from "src/hooks/useUser";
 import { showToast } from "src/components/Toast";
 import { updateUserProfileData } from "src/services/redux/slices/auth";
+import { splitPhoneNumber } from "src/utils/FormatNumber";
 
 export default function EditProfileScreen({
   navigation,
@@ -27,18 +28,17 @@ export default function EditProfileScreen({
 
   const [firstName, setFirstName] = useState(user.firstName)
   const [lastName, setLastName] = useState(user.lastName)
-  const [username, setUsername] = useState(user.username)
-  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber)
+  const [aliasName, setAliasName] = useState(user?.aliasName || "")
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber || "")
   
   const doUpdateProfile = async () => {
     const req = await updateProfile({
       userId: user?.id || "",
       firstName,
       lastName,
-      aliasName: username,
-      phoneNumber: phoneNumber || ""
+      aliasName,
+      phoneNumber
     })
-    console.log(req)
     showToast({
       title: `Profile Update`,
       type: req?.hasError ? `error` : `info`,
@@ -49,7 +49,7 @@ export default function EditProfileScreen({
         ...user,
         firstName,
         lastName,
-        username,
+        aliasName,
         phoneNumber
       }));  
       navigation.goBack()
@@ -92,13 +92,14 @@ export default function EditProfileScreen({
         />
         <DefaultInput
           label={`Alias`}
-          value={username || ""}
-          onChangeText={(t: string) => setUsername(t)}
+          value={aliasName || ""}
+          onChangeText={(t: string) => setAliasName(t)}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultPhoneInput
           label={`Mobile`}
-          value={phoneNumber || ""}
+          value={splitPhoneNumber(phoneNumber).phone || ""}
+          selectedCode={splitPhoneNumber(phoneNumber).code}
           onChangeNumber={(t: string) => setPhoneNumber(t)}
           containerStyle={styles.inputContainerStyle}
         />

@@ -4,9 +4,10 @@ import { SafeAreaView } from "src/components/Themed";
 import { MenuItemCard } from "src/components/cards";
 import { TabScreenTitle } from "src/components/labels/screentitle.components";
 import fontsConstants from "src/constants/fonts.constants";
-import { PortfolioMenuItems, LandlordPortfolioItems } from "src/constants/global.constants";
+import { TenanctPortfolioItems, LandlordPortfolioItems } from "src/constants/global.constants";
 import layoutsConstants from "src/constants/layouts.constants";
 import useColorScheme from "src/hooks/useColorScheme";
+import { useAppSelector } from "src/hooks/useReduxHooks";
 import { RootTabScreenProps } from "src/types/navigations.types";
 
 export default function PortfolioTabScreen({
@@ -14,6 +15,14 @@ export default function PortfolioTabScreen({
   route
 }: RootTabScreenProps<"PortfolioTabNavigator">) {
   const theme = useColorScheme();
+
+  const user = useAppSelector((state) => state.auth.user)
+
+  const menu = user.roleType === "tenant"
+    ? TenanctPortfolioItems 
+    : user.roleType === "landlord"
+    ? LandlordPortfolioItems
+    : [];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,7 +37,7 @@ export default function PortfolioTabScreen({
         <TabScreenTitle
           title={`Portfolio`}
         />
-        {/* <RNView
+        <RNView
           style={{
             flexDirection: "row",
             justifyContent: "flex-start",
@@ -36,24 +45,7 @@ export default function PortfolioTabScreen({
             marginTop: fontsConstants.h(20)
           }}
         >
-          {PortfolioMenuItems.map((item: any, index) => (
-            <MenuItemCard
-              key={index.toString()}
-              label={item.label}
-              icon={item.icon}
-              onItemPress={() => navigation.navigate(item.screen)}
-            />
-          ))}
-        </RNView> */}
-        <RNView
-        style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            flexWrap: "wrap",
-            marginTop: fontsConstants.h(20)
-          }}
-        >
-          {LandlordPortfolioItems.map((item: any, index) => (
+          {menu.map((item: any, index: number) => (
             <MenuItemCard
               key={index.toString()}
               label={item.label}

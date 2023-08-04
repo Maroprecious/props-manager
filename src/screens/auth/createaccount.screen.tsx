@@ -50,10 +50,9 @@ export default function CreateAccountScreen({
         type: `error`
       })
     else {
-    alertRef.current?.open()
-      
+      setRegistrationSuccessful(true)
+      alertRef.current?.open()    
     }
-
   }
   const handleData = (value: string, name: string):void => {
     setData({...data, [name]: value})
@@ -107,7 +106,6 @@ export default function CreateAccountScreen({
         />
         <DefaultPhoneInput
           placeholder="Mobile number"
-          keyboardType="number-pad"
           onChangeNumber={(number: string) => {
             handleData(number, 'phoneNumber')
           }}
@@ -251,6 +249,9 @@ export default function CreateAccountScreen({
         title={alertData.title}
         buttonTitle={alertData.buttonTitle}
         type={alertData.type}
+        onClosed={() => {
+          if(registrationSuccessful) navigation.navigate("LoginScreen")
+        }}
         body={(
           <>
             <Text style={{

@@ -11,7 +11,7 @@ import { Input } from "src/components/inputs/input-box";
 import { useFormik } from "formik";
 import { ChangePasswordSchema } from "src/utils/schema";
 import { DefaultButton } from "src/components/buttons/buttons.components";
-import ChangePasswordOtpScreen from "./change-password-otp.screen";
+import ChangePasswordOtpScreen from "./changepasswordotp.screen";
 
 export default function ChangePasswordScreen({
     navigation,

@@ -9,18 +9,24 @@ import useColorScheme from 'src/hooks/useColorScheme';
 import { AntDesign } from '@expo/vector-icons';
 import { Switch } from 'react-native-switch';
 import { useState } from "react";
+import { useAppSelector } from "src/hooks/useReduxHooks";
 
 export default function SettingScreen({
     navigation,
     route
 }: RootStackScreenProps<"SettingScreen">) {
     const theme = useColorScheme()
+
+    const user = useAppSelector((state) => state.auth.user)
+
     const [value, setValue] = useState(false)
     return (
         <Layout goback={true} title='Settings'>
             <RNView style={styles.container}>
                 <RNView>
-                    <TouchableOpacity onPress={() => navigation.navigate('ChangePasswordScreen')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('ChangePasswordScreen', {
+                        email: user.email
+                    })}>
                         <RNView style={styles.text_container}>
                             <Text style={[styles.text, { color: colorsConstants[theme].socialText }]}>Change Password</Text>
                             <AntDesign name="right" size={16} color={colorsConstants[theme].borderLine} />

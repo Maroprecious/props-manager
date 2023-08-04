@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { loginEndpoint , requestOTPEndpoint, resetPasswordEndpoint, signUpEndpoint, verifyOTPEndpoint} from "src/constants/api.endpoints.constants";
+import { loginEndpoint , requestOTPEndpoint, resetPasswordEndpoint, signUpEndpoint, updatePasswordEndpoint, verifyOTPEndpoint} from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { LoginResponse, NetworkResponse } from "src/types/api.response.types";
 
@@ -92,6 +92,24 @@ const useAuthenticate = () => {
     }
   };
 
+  const updatePassword = async (data: {
+    userId: string,
+    oldPassword: string,
+    newPassword: string
+  }, cb = () => {}): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${updatePasswordEndpoint}`,
+      type: 'PUT',
+      data,
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
 
   const createAccount = async (data: {
     email: string, 
@@ -128,7 +146,7 @@ const useAuthenticate = () => {
     }
     return response;
   };
-  return { authenticate, loading, requestPasswordReset, createAccount, verifyOTP, resetPassword };
+  return { authenticate, loading, requestPasswordReset, createAccount, verifyOTP, resetPassword, updatePassword };
 };
 
 export default useAuthenticate;

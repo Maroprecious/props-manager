@@ -137,7 +137,12 @@ export default function OTPScreen({
         <OtpInput
           value={otp}
           onChange={(code: string) => setOTP(code)}
-          boxCount={4}
+          boxCount={6}
+          boxSize={fontsConstants.h(35)}
+          inputStyle={{
+            borderRadius: fontsConstants.w(10)
+          }}
+          itemSpacing={fontsConstants.w(5)}
           containerStyle={{
             marginBottom: fontsConstants.h(20)
           }}

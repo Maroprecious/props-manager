@@ -24,7 +24,7 @@ export default function IsValidPassword(str: string, minLength = 8): {
   else if (!IsContainLowerChar(str))
     return {
       valid: false,
-      message: `Must contain at least 1 character`
+      message: `Must contain at least 1 alphabet`
     }
   else if (!IsContainNumber(str))
     return {

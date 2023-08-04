@@ -17,7 +17,7 @@ import { DefaultRadiobox } from "src/components/inputs/checkbox.components";
 import { LocationIcon } from "../rent/components";
 import Layout from "src/components/layout/layout";
 import { object } from "yup";
-import ViewTenancyScreen from "./view-tenancy";
+import ViewTenancyScreen from "./viewtenancy.screen";
 import { Success } from "src/components/modals/alert.modals";
 import { RemoveModal } from "src/components/modals/remove-modal";
 

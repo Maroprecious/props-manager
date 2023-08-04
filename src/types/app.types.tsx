@@ -11,14 +11,18 @@ export type NotificationProps = {
 
 export type NotificationType = "settings" | "bill" | "location" | "mail" | "invoice" | "award" 
 
+export type AlertModalType = "success" | "error" | "info" | "warning"
+
 export type ReduxAuthState = {
   token: string | undefined | null,
   user: AuthUserType
 }
 
+export type roleTypes = "landlord" | "tenant" | "pro-manager" | null
+
 export type AuthUserType = {
   id: string | null
-  username: string
+  aliasName?: string
   email: string
   firstName: string
   lastName: string
@@ -26,4 +30,5 @@ export type AuthUserType = {
   completed: boolean
   verified: boolean
   phoneNumber?: string
+  roleType: roleTypes
 }
