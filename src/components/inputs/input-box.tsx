@@ -8,6 +8,7 @@ import useColorScheme from 'src/hooks/useColorScheme';
 import AppThemeContext from 'src/contexts/Theme.context';
 
 type inputProps = {
+    
     otherProps?: TextInputProps;
     onChange?: (e: string) => void;
     onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
