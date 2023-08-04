@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { View, Text } from '../Themed';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { StyleSheet, TextInput, TextInputProps, NativeSyntheticEvent, TextInputFocusEventData, StyleProp, ViewStyle, TextStyle, Platform } from 'react-native';
 import colorsConstants from 'src/constants/colors.constants';
 import fontsConstants from 'src/constants/fonts.constants';
 import useColorScheme from 'src/hooks/useColorScheme';
+import AppThemeContext from 'src/contexts/Theme.context';
 
 type inputProps = {
+    
     otherProps?: TextInputProps;
     onChange?: (e: string) => void;
     onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
@@ -28,13 +30,15 @@ export const Input = ({
     placeholder,
     textstyle,
     containerWidth = '82%' }: inputProps) => {
+        const theme = useContext(AppThemeContext)
     return (
         <View style={[styles.container, { width: containerWidth }]}>
             <TextInput
                 onBlur={onBlur}
                 onChangeText={onChange}
                 placeholder={placeholder}
-                style={[styles.inputField, extrastyles, textstyle]}
+                placeholderTextColor={colorsConstants[theme].success_message}
+                style={[styles.inputField, extrastyles, {color: colorsConstants[theme].textBlack}]}
                 {...otherProps}
             />
             {err && <Text style={[styles.error, textstyle]}>{errMsg}</Text>}
