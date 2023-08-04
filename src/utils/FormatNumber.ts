@@ -85,3 +85,11 @@ export const unFormatNumber = (val: any) => {
     return val.replace(/\./g, '');
   }
 };
+
+export const splitPhoneNumber = (phone: string) => {
+  const split = phone.split("(0)");
+  return {
+    code: split.length === 2 ? split[0] : "",
+    phone: split.length === 2 ? split[1] : split[0]
+  }
+}

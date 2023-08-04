@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "src/hooks/useReduxHooks";
 import useUser from "src/hooks/useUser";
 import { showToast } from "src/components/Toast";
 import { updateUserProfileData } from "src/services/redux/slices/auth";
+import { splitPhoneNumber } from "src/utils/FormatNumber";
 
 export default function EditProfileScreen({
   navigation,
@@ -38,7 +39,6 @@ export default function EditProfileScreen({
       aliasName,
       phoneNumber
     })
-    console.log(req)
     showToast({
       title: `Profile Update`,
       type: req?.hasError ? `error` : `info`,
@@ -98,7 +98,8 @@ export default function EditProfileScreen({
         />
         <DefaultPhoneInput
           label={`Mobile`}
-          value={phoneNumber || ""}
+          value={splitPhoneNumber(phoneNumber).phone || ""}
+          selectedCode={splitPhoneNumber(phoneNumber).code}
           onChangeNumber={(t: string) => setPhoneNumber(t)}
           containerStyle={styles.inputContainerStyle}
         />
