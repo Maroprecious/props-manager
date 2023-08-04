@@ -229,7 +229,7 @@ export default function HomeTabScreen({
           showPrevButton={false}
           showSkipButton={false}
         />
-        {user.roles.length === 1 && user.roles[0] === "ROLE_LANDLORD" && <RenderUserProperties />}
+        {user.roleType === "landlord" && <RenderUserProperties />}
         <Text style={[{
           fontFamily: fontsConstants.Lora_Bold,
           fontSize: fontsConstants.h(12),

@@ -18,6 +18,8 @@ export type ReduxAuthState = {
   user: AuthUserType
 }
 
+export type roleTypes = "landlord" | "tenant" | "pro-manager" | null
+
 export type AuthUserType = {
   id: string | null
   aliasName?: string
@@ -28,4 +30,5 @@ export type AuthUserType = {
   completed: boolean
   verified: boolean
   phoneNumber?: string
+  roleType: roleTypes
 }

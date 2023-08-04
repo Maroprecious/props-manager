@@ -106,7 +106,6 @@ export default function CreateAccountScreen({
         />
         <DefaultPhoneInput
           placeholder="Mobile number"
-          keyboardType="number-pad"
           onChangeNumber={(number: string) => {
             handleData(number, 'phoneNumber')
           }}

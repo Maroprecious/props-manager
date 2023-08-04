@@ -90,17 +90,21 @@ export const DefaultPhoneInput = ({
   labelStyle = {},
   onChangeNumber = () => null,
   errorMessage,
+  selectedCode,
+  value,
   ...props
 } : {
   inputHeight?: number
   containerStyle?: StyleProp<ViewStyle>
   labelStyle?: StyleProp<TextStyle>
   onChangeNumber?: Function
+  selectedCode?: string
+  value?: string
 } & InputProps) => {
 
   const theme = useContext(AppThemeContext);
-  const [code, setCode] = useState("+234");
-  const [mobile, setMobile] = useState("");
+  const [code, setCode] = useState(selectedCode || "+234");
+  const [mobile, setMobile] = useState(value || "");
   
   const onChangeText = (v: string) => {
     setMobile(v)
@@ -167,6 +171,7 @@ export const DefaultPhoneInput = ({
         marginBottom: fontsConstants.w(30)
       }, containerStyle]}
       {...props}
+      keyboardType="number-pad"
       errorMessage={errorMessage}
       errorStyle={errorMessageStyle}
     />
