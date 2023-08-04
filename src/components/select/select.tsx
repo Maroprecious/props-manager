@@ -51,12 +51,11 @@ export const Select = ({
 }: selectProps) => {
     const [value, setValue] = useState<string | null>(null);
     const [isFocus, setIsFocus] = useState(false);
-
     const renderItem = (item: optionProps) => {
         console.log(item)
         return (
             <View style={{ marginVertical: 17, }}>
-                <Text style={[styles.selectedTextStyle, { fontFamily: fontFamily }, {color: colorsConstants[theme].darkText,}]}>{item?.label}</Text>
+                <Text style={[styles.selectedTextStyle, { fontFamily: fontFamily, color: colorsConstants[theme].success_message }]}>{item?.label}</Text>
             </View>
         );
     };
@@ -71,8 +70,8 @@ export const Select = ({
         <View style={[{ width: "100%", marginBottom: 20 }, extraStyles]}>
             <Dropdown
                 style={[styles.dropdown, {backgroundColor: colorsConstants[theme].inputBackground},{ width: containerWidth }, isFocus && { borderColor: colorsConstants.light.black }, containerStyles]}
-                placeholderStyle={[styles.placeholderStyle, { fontFamily: fontFamily }, textstyle, {color: colorsConstants[theme].darkText,}]}
-                selectedTextStyle={[styles.selectedTextStyle, { fontFamily: fontFamily }, textstyle]}
+                placeholderStyle={[styles.placeholderStyle, { fontFamily: fontFamily, color: colorsConstants[theme].success_message}, textstyle]}
+                selectedTextStyle={[styles.selectedTextStyle, { fontFamily: fontFamily, color: colorsConstants[theme].success_message } ]}
                 data={options}
                 maxHeight={300}
                 search={search}
@@ -119,7 +118,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingLeft: 10,
         fontFamily: fontsConstants.American_Typewriter_Regular,
-        
         alignSelf: 'center',
         // marginBottom: 20,
     },
@@ -141,14 +139,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: "LoraBold",
         paddingLeft: 25,
-        opacity: 0.40,
+        opacity: 0.80,
     },
     selectedTextStyle: {
         fontSize: 14,
         fontFamily: "AmericanTypewriterBold",
         paddingLeft: 20,
-        color: colorsConstants.light.black
-        
     },
     icon: {
         width: 20,
