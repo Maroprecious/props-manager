@@ -18,11 +18,31 @@ import { useContext } from "react";
 import AppThemeContext from "src/contexts/Theme.context";
 import { useAppSelector } from "src/hooks/useReduxHooks";
 import { PropertiesListView, RenderAddTenancyButton } from "../property/components";
+import useProperty from "src/hooks/useProperties";
+import { useNavigation } from "@react-navigation/native";
 
 export const RenderUserProperties = () => {
+  const user = useAppSelector((state) => state.auth.user)
+  const navigation = useNavigation()
+  const { loading, getProperties } = useProperty();
+
+  const [properties, setProperties] = React.useState<any>([{}, {}]);
+
+  const fetchProperties = async () => {
+    const req = await getProperties({
+      userId: `${user.id}`
+    })
+    if (req?.hasError === false) setProperties(req?.data?.message)
+  } 
+
+  React.useEffect(() => {
+    fetchProperties()
+  }, [navigation])
+
   return (
     <PropertiesListView
-      data={Tenancies}
+      data={properties}
+      itemsLoading={loading}
       onViewPressed={(property: typeof Tenancies[0]) => {
         console.log(property)
       }}

@@ -115,8 +115,11 @@ export default function AddUnitsScreen({
   }
 
   const removeUnit = (index: number) => {
-    const _newUnits = units.splice(index, 1)
-    setUnits(_newUnits)
+    const _units = units.filter(function(item: any, i: number) {
+      return index !== i
+    });
+    console.log(_units)
+    setUnits(_units)
   }
 
   const renderCurrency = (currency: string) => {
@@ -148,7 +151,7 @@ export default function AddUnitsScreen({
     );
 
     return () => backHandler.remove();
-  }, []);
+  }, [units]);
 
   return (
     <ScrollView style={styles.container}
@@ -304,22 +307,26 @@ export default function AddUnitsScreen({
           justifyContent: "space-between",
           marginTop: fontsConstants.h(10)
         }}>
-          <TouchableOpacity
-            onPress={doAddUnit}
-            disabled={
-              unitName === ""
-              || unitTypeId === ''
-              || Number(unitRent) === 0
-            }
-            activeOpacity={layoutsConstants.activeOpacity}
-            children={
-              <Text style={{
-                color: colorsConstants.colorSuccess,
-                fontFamily: fontsConstants.American_Typewriter_Bold,
-                fontSize: fontsConstants.h(15)
-              }}>{`Add Unit`}</Text>
-            }
-          />
+          {unitName !== ""
+              || unitTypeId !== ''
+              || Number(unitRent) !== 0 ? (
+                <TouchableOpacity
+                  onPress={doAddUnit}
+                  disabled={
+                    unitName === ""
+                    || unitTypeId === ''
+                    || Number(unitRent) === 0
+                  }
+                  activeOpacity={layoutsConstants.activeOpacity}
+                  children={
+                    <Text style={{
+                      color: colorsConstants.colorSuccess,
+                      fontFamily: fontsConstants.American_Typewriter_Bold,
+                      fontSize: fontsConstants.h(15)
+                    }}>{`Add Unit`}</Text>
+                  }
+                />
+              ) : <></>}
           {units.length > 0 && 
           <TouchableOpacity
             onPress={() => modalRef?.current?.open()}

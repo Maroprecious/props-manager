@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext, useState } from "react";
-import { View, ImageBackground, StyleSheet, TouchableOpacity } from "react-native";
+import { View, ImageBackground, StyleSheet, TouchableOpacity, BackHandler, Alert } from "react-native";
 import { SafeAreaView, Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -38,6 +38,27 @@ export default function AddPropertyScreen({
     } 
   }, [created])
 
+  React.useEffect(() => {
+    const backAction = () => {
+      if (!showAddNewBtn){
+        Alert.alert(`Hold On!`, `You haven't added any unit to created property`, [{
+          text: `Cancel`,
+        }, {
+          text: `Yes, Go back`,
+          onPress: () => navigation.goBack()
+        }]) 
+        return true;
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [showAddNewBtn]);
+  
   const doCreateProperty = async () => {
     const req = await createProperty({
       occupationalStatus: `${user.roleType}`,

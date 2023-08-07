@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext, useState } from "react";
-import { FlatList, ImageBackground, StyleSheet } from "react-native";
+import { FlatList, ImageBackground, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -13,6 +13,8 @@ import { ScreenTitle } from "../auth/components/screentitle.component";
 import { NoPropertiesCard } from "src/components/cards";
 import useProperty from "src/hooks/useProperties";
 import { RenderPropertyDetails } from "./components";
+import { Icon } from "react-native-elements";
+import colorsConstants from "src/constants/colors.constants";
 
 export default function PropertiesScreen({
   navigation,
@@ -61,25 +63,41 @@ export default function PropertiesScreen({
           onRefresh={() => fetchProperties()}
           renderItem={({ item, index }) => {
             return (
-              <RenderPropertyDetails
-                item={item}
-                itemHeaderText="Property Details"
-                showItemId={false}
-                containerStyle={{
-                  marginBottom: fontsConstants.h(20)
-                }}
-                onViewPressed={() => {
-                  console.log(item)
-                }}
-              />
+              <TouchableOpacity
+                activeOpacity={layoutsConstants.activeOpacity}
+              >
+                <RenderPropertyDetails
+                  item={item}
+                  itemHeaderText="Property Details"
+                  showItemId={false}
+                  containerStyle={{
+                    marginBottom: fontsConstants.h(20)
+                  }}
+                  hasRightComponent={false}
+                  rightIcon={
+                    <Icon
+                      name="chevron-forward"
+                      type="ionicon"
+                      color={colorsConstants[theme].text}
+                      iconStyle={{
+                        opacity: 0.4
+                      }}
+                      size={fontsConstants.h(20)}
+                      activeOpacity={layoutsConstants.activeOpacity}
+                    />
+                  }
+                />
+              </TouchableOpacity>
             )
           }}
           ListEmptyComponent={
             <NoPropertiesCard/>
           }
           contentContainerStyle={{
-            flex: 1
+            // flex: 1,
+            paddingBottom: fontsConstants.h(10)
           }}
+          showsVerticalScrollIndicator={false}
         />
         <DefaultButton
           title={`Add Property`}

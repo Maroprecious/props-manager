@@ -15,6 +15,7 @@ import { Modalize } from "react-native-modalize";
 import { AlertModal } from "src/components/modals/alert.modals";
 import useAuthenticate from "src/hooks/useAuthentication";
 import { showToast } from "src/components/Toast";
+import layoutsConstants from "src/constants/layouts.constants";
 
 export default function CreateAccountScreen({
   navigation,
@@ -152,7 +153,10 @@ export default function CreateAccountScreen({
           marginBottom: fontsConstants.h(10),
           zIndex: -1
         }}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={layoutsConstants.activeOpacity}
+            onPress={() => navigation.navigate("TermsAndConditionScreen")}
+          >
             <Text style={[styles.noteText, {
               textDecorationLine: "underline"
             }]}>

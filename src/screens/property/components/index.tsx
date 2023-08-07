@@ -12,6 +12,7 @@ import { DefaultButton } from "src/components/buttons/buttons.components";
 import { Icon } from "react-native-elements";
 import { RentalDetailItem } from "src/screens/rent/view.screen";
 import { useNavigation } from "@react-navigation/native";
+import { List } from 'react-content-loader/native';
 
 export const RenderPropertyDetails = ({
   item,
@@ -25,7 +26,9 @@ export const RenderPropertyDetails = ({
   onViewPressed = () => null,
   showItemId = true,
   setOpenModal = () => null,
-  setViewItem = () => null
+  setViewItem = () => null,
+  loading = false,
+  rightIcon
 } : {
   item: {
     id: string,
@@ -43,8 +46,15 @@ export const RenderPropertyDetails = ({
   showItemId?: boolean
   setViewItem?: Function
   setOpenModal?: Function
+  loading?: boolean
+  rightIcon?: JSX.Element
 }) => {
   const theme = useContext(AppThemeContext);
+  
+  if (loading)
+    return (
+      <List />
+    )
 
   return (
     <View
@@ -116,7 +126,7 @@ export const RenderPropertyDetails = ({
             color: colorsConstants[theme].darkText3,
           }}>{`View`}</Text>
         </TouchableOpacity>
-      ) : null}
+      ) : rightIcon ? rightIcon : null}
     </View>
   )
 }
@@ -130,7 +140,8 @@ export const PropertiesListView = ({
   selectable = false,
   onViewPressed = () => null,
   showItemId = true,
-  headerTextStyle = {}
+  headerTextStyle = {},
+  itemsLoading = false
 } : {
   data: typeof Tenancies,
   selectedId?: number | string
@@ -141,6 +152,7 @@ export const PropertiesListView = ({
   onViewPressed?: Function
   showItemId?: boolean
   headerTextStyle?: StyleProp<TextStyle>
+  itemsLoading?: boolean
 }) => {
   const theme = useContext(AppThemeContext);
 
@@ -177,6 +189,7 @@ export const PropertiesListView = ({
             selectable={selectable}
             setSelected={setSelected}
             showItemId={showItemId}
+            loading={itemsLoading}
           />
         ))}
         <View style={{
@@ -220,6 +233,7 @@ export const PropertiesListView = ({
           }}>
             <RenderPropertyDetails
               item={viewItem}
+              itemHeaderText={`Property Details`}
               hasRightComponent={false}
               detailsMaxifierNumber={1.3}
               containerStyle={{

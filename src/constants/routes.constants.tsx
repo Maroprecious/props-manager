@@ -48,6 +48,29 @@ import AddUnitsScreen from "src/screens/property/addunits.screen";
  * https://reactnavigation.org/docs/modal
  */
 
+export const CommonRoutes = [{
+  name: "FaqScreen",
+  component: FaqScreen,
+  options: {
+    headerShown: false,
+  },
+  initialParams: {},
+}, {
+  name: "HelpAndSupportScreen",
+  component: HelpAndSupportScreen,
+  options: {
+    headerShown: false,
+  },
+  initialParams: {},
+}, {
+  name: "TermsAndConditionScreen",
+  component: TermsAndConditionScreen,
+  options: {
+    headerShown: false,
+  },
+  initialParams: {},
+}]
+
 export const UserAppRoutes = [
   {
     name: "App",
@@ -225,27 +248,6 @@ export const UserAppRoutes = [
     },
     initialParams: {},
   }, {
-    name: "FaqScreen",
-    component: FaqScreen,
-    options: {
-      headerShown: false,
-    },
-    initialParams: {},
-  }, {
-    name: "HelpAndSupportScreen",
-    component: HelpAndSupportScreen,
-    options: {
-      headerShown: false,
-    },
-    initialParams: {},
-  }, {
-    name: "TermsAndConditionScreen",
-    component: TermsAndConditionScreen,
-    options: {
-      headerShown: false,
-    },
-    initialParams: {},
-  }, {
     name: "SettingScreen",
     component: SettingScreen,
     options: {
@@ -317,7 +319,8 @@ export const UserAppRoutes = [
       headerShown: false
     },
     initialParams: {},
-  }
+  },
+  ...CommonRoutes
 ];
 
 const WelcomeAppRputes = [
@@ -366,6 +369,7 @@ const WelcomeAppRputes = [
       email: ""
     },
   },
+  ...CommonRoutes
 ];
 
 const AppRoutes = (user: AuthUserType) => {
