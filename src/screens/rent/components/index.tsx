@@ -81,7 +81,7 @@ export const RentalItem = ({
           color: colorsConstants[theme].darkText3,
           opacity: 0.6
         }]}>
-          {item.address || ""}
+          {item.propertyLocation || ""}
         </Text>
       </RNView>
       {onViewPress ? (

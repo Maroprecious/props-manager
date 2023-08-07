@@ -11,4 +11,4 @@ export const updatePasswordEndpoint = `/accounts/change-password`;
 export const createPropertEndpoint = `/properties/create-property`;
 export const createUnitEndpoint = `/properties/create-property-unit`;
 export const getUnitsTypesEndpoint = `/properties/unit-management/get-all-unit-type`;
-export const getPropertiesEndpoint = `/properties/get-property-by-userid`;
+export const getPropertiesEndpoint = `/properties/get-owner-based-property`;
