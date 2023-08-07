@@ -107,6 +107,7 @@ export default function AddPropertyScreen({
         <DefaultSelectInput
           value={propertyState}
           items={NigerisStates}
+          placeholder="State"
           setValue={setPropertyState}
           listMode="MODAL"
           searchable
