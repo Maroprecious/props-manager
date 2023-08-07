@@ -22,7 +22,6 @@ import RequestPaymentScreen from "src/screens/rent/requestpayment.screen";
 import ConfirmRequestPaymentScreen from "src/screens/rent/confirmpaymentrequest.screen";
 import BillsPaymentScreen from "src/screens/bills";
 import AirtimeTopUpScreen from "src/screens/bills/airtimetopup.screen";
-import AddProperty  from "src/screens/property/addproperty.screen";
 import AddTenancyDetails from "src/screens/property/addtenancydetails.screen";
 import FaqScreen from "src/screens/motetab/faq.screen";
 import HelpAndSupportScreen from "src/screens/motetab/support.screen";
@@ -41,6 +40,9 @@ import AssignPropertyManager from "src/screens/portfolio/assignpropertymgr.scree
 import EditProfileScreen from "src/screens/motetab/editprofile.screen";
 import { AuthUserType } from "src/types/app.types";
 import YourFinancialsScreen from "src/screens/paymentstab/yourfinancials.screen";
+import PropertiesScreen from "src/screens/property";
+import AddPropertyScreen from "src/screens/property/addproperty.screen";
+import AddUnitsScreen from "src/screens/property/addunits.screen";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -202,8 +204,15 @@ export const UserAppRoutes = [
     },
     initialParams: {},
   }, {
-    name: "AddProperty",
-    component: AddProperty,
+    name: "AddPropertyScreen",
+    component: AddPropertyScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "AddUnitsScreen",
+    component: AddUnitsScreen,
     options: {
       headerShown: false,
     },
@@ -299,6 +308,13 @@ export const UserAppRoutes = [
     component: YourFinancialsScreen,
     options: {
       headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "PropertiesScreen",
+    component: PropertiesScreen,
+    options: {
+      headerShown: false
     },
     initialParams: {},
   }

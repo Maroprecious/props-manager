@@ -1,94 +1,187 @@
-import * as React from 'react';
-import Layout from 'src/components/layout/layout';
-import { Text, View, ScrollView, } from 'src/components/Themed';
-import colorsConstants from 'src/constants/colors.constants';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
+import * as React from "react";
+import { useContext, useState } from "react";
+import { View, ImageBackground, StyleSheet, TouchableOpacity } from "react-native";
+import { SafeAreaView, Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
-import { InputAddress } from 'src/components/inputs/address-input';
-import { Select } from 'src/components/select/select';
-import { optionProps } from 'src/components/select/select';
-import { useNavigation } from '@react-navigation/native';
-import { AntDesign } from '@expo/vector-icons';
-import { AddPropertyValidationSchema } from 'src/utils/schema';
-import styles from './styles/add-property.styles';
-import fontsConstants from 'src/constants/fonts.constants';
-import { View as RNView} from 'react-native';
+import AppThemeContext from "src/contexts/Theme.context";
+import { useAppSelector } from "src/hooks/useReduxHooks";
+import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
+import fontsConstants from "src/constants/fonts.constants";
+import globalConstants, { screenBG } from "src/constants/global.constants";
+import layoutsConstants from "src/constants/layouts.constants";
+import { ScreenTitle } from "../auth/components/screentitle.component";
+import colorsConstants from "src/constants/colors.constants";
+import { DefaultInput, DefaultSelectInput } from "src/components/inputs/inputs.components";
+import { LocationIcon } from "../rent/components";
+import { NigerisStates } from "src/constants/nigerianstates.constants";
+import useProperty from "src/hooks/useProperties";
+import { showToast } from "src/components/Toast";
 
-const options: optionProps[] = [
-  {
-    label: 'Occupying as tenant',
-    value: '2'
-  },
-  {
-    label: 'Registering as owner',
-    value: '3'
-  },
-  {
-    label: 'Registering as manager or caretaker',
-    value: '4'
+export default function AddPropertyScreen({
+  navigation,
+  route
+}: RootStackScreenProps<"AddPropertyScreen">) {
+  const theme = useContext(AppThemeContext);
+
+  const user = useAppSelector((state) => state.auth.user)
+  const { loading, createProperty, created } = useProperty()
+
+  const [propertyAddress, setProperyAddress] = useState("")
+  const [propertyName, setPropertyName] = useState("")
+  const [propertyState, setPropertyState] = useState("")
+  const [showAddNewBtn, setShowAddNewBtn] = useState(true)
+  const [propertyId, setPropertyId] = useState("")
+
+  React.useEffect(() => {
+    if (created) {
+      setShowAddNewBtn(false)
+    } 
+  }, [created])
+
+  const doCreateProperty = async () => {
+    const req = await createProperty({
+      occupationalStatus: `${user.roleType}`,
+      propertyLocation: propertyAddress,
+      propertyName,
+      propertyState,
+      userId: `${user.id}`
+    })
+    if (req?.hasError === false) {
+      showToast({
+        title: "Add Property",
+        type: "success",
+        message: req?.data?.message?.message || "Property created successfully"
+      })
+      setPropertyId(req?.data?.message?.propertyId || "")
+    } else showToast({
+      type: "error",
+      title: "Add Property",
+      message: req?.message || req?.statusText || "Unknown error has occred"
+    })
   }
-]
 
-
-export default function AddProperty({
-    navigation,
-    route
-  }: RootStackScreenProps<"AddProperty">)  {
-
-  const {
-    handleSubmit,
-    handleChange,
-    handleBlur,
-    isSubmitting,
-    errors,
-    touched,
-    setFieldValue
-  } = useFormik({
-    initialValues: {
-      address: '',
-      status: '',
-      rent: '',
-      landlords_name: '',
-      landlords_mobile: '',
-    },
-    validationSchema: AddPropertyValidationSchema,
-    onSubmit: async (values) => {
-
-    },
-  });
   return (
-    <Layout goback={true} title='Add Property'>
-      <RNView style={styles.container}>
-        <RNView style={styles.input}>
-          <InputAddress
-            onChange={handleChange("address")}
-            onBlur={handleBlur("address")}
-            placeholder='Enter Property Address'
-            err={!!errors.address && touched.address}
-            errMsg={errors.address}
-          />
-        </RNView>
-        <RNView style={styles.select_Container}>
-          <Select
-            options={options}
-            placeholder='Select Occupational Status'
-            dynamicPlaceholder='Select Occupational Status'
-            onChange={(e) => {
-              // setFieldValue('status', e.value)
-              if (e.value === '2') {
-                navigation.navigate('AddTenancyDetails')
+    <SafeAreaView style={styles.container}>
+      <ImageBackground
+        source={screenBG}
+        style={{
+          flex: 1,
+          paddingTop: fontsConstants.h(40),
+          paddingHorizontal: globalConstants.mainViewHorizontalPadding / 2,
+          paddingBottom: layoutsConstants.tabBarHeight / 2
+        }}
+      >
+        <HeaderBackButton/>
+        <ScreenTitle
+          title={`Add Property`}
+          containerStyle={{
+            marginTop: fontsConstants.h(12),
+            marginBottom: fontsConstants.h(35)
+          }}
+        />
+        <DefaultInput
+          placeholder={`Location`}
+          value={propertyAddress}
+          onChangeText={(t: string) => setProperyAddress(t)}
+          leftIcon={
+            <LocationIcon
+              imageSize={fontsConstants.h(20)}
+              containerStyle={{
+                height: fontsConstants.h(40),
+                width: fontsConstants.h(40),
+                marginLeft: fontsConstants.w(10)
+              }}
+            />
+          }
+          inputContainerStyle={styles.inputContainerStyle}
+          inputStyle={{marginLeft: fontsConstants.w(-15)}}
+          containerStyle={styles.containerStyle}
+        />
+        <DefaultInput
+          placeholder={`Title or Name`}
+          value={propertyName}
+          onChangeText={(t: string) => setPropertyName(t)}
+          inputContainerStyle={styles.inputContainerStyle}
+          containerStyle={styles.containerStyle}
+        />
+        <DefaultSelectInput
+          value={propertyState}
+          items={NigerisStates}
+          placeholder="State"
+          setValue={setPropertyState}
+          listMode="MODAL"
+          searchable
+          containerStyle={styles.inputContainerStyle}
+        />
+        {showAddNewBtn && <DefaultButton
+          title={`Create`}
+          onPress={doCreateProperty}
+          loading={loading}
+          disabled={propertyAddress === "" || propertyName === ""}
+        />}
+        {!showAddNewBtn && created && (
+          <View style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: fontsConstants.h(10)
+          }}>
+            {[{
+              label: 'Add Units',
+              color: colorsConstants.colorSuccess,
+              onPress: () => {
+                const propertyDetails = {
+                  propertyAddress,
+                  propertyName
+                }
+                setShowAddNewBtn(true)
+                setPropertyName("")
+                setProperyAddress("")
+                setPropertyState("")
+                navigation.navigate("AddUnitsScreen", {
+                  propertyId,
+                  propertyDetails
+                })
               }
-            }}
-            err={!!errors.status && touched.status}
-            errMsg={errors.status}
-            containerWidth='94%'
-            fontFamily={fontsConstants.Lora_Regular}
-            bgColor='rgba(200, 200, 201, 0.4)'
-          />
-        </RNView>
-      </RNView>
-    </Layout>
-  )
+            }, {
+              label: 'Create New Propery',
+              color: colorsConstants.colorPrimary,
+              onPress: () => {
+                setShowAddNewBtn(true)
+                setProperyAddress('')
+                setPropertyName('')
+                setPropertyState('')
+              }
+            }].map((item, index) => (
+              <TouchableOpacity
+                key={index.toString()}
+                onPress={item.onPress}
+                activeOpacity={layoutsConstants.activeOpacity}
+                children={
+                  <Text style={{
+                    color: item.color,
+                    fontFamily: fontsConstants.American_Typewriter_Bold,
+                    fontSize: fontsConstants.h(15)
+                  }}>{item.label}</Text>
+                }
+              />
+            ))}
+          </View>
+        )}
+      </ImageBackground>
+    </SafeAreaView>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  }, inputContainerStyle: {
+    borderWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colorsConstants.colorPrimary,
+    backgroundColor: "transparent",
+  }, containerStyle: {
+    marginBottom: fontsConstants.h(20)
+  }
+});

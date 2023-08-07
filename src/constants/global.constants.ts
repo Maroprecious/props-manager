@@ -225,7 +225,7 @@ export const LandlordPortfolioItems = [
     id: 3,
     label: "Properties",
     icon: require("src/assets/images/icons/town.png"),
-    screen: "RentalsScreen"
+    screen: "PropertiesScreen"
   }, {
     id: 4,
     label: "Tenancy",
@@ -262,12 +262,12 @@ export const DashboardSliderInfo = [{
 
 export const Tenancies = [{
   id: 1,
-  address: '10 Alake Street, Victoria Island. Lagos',
+  propertyLocation: '10 Alake Street, Victoria Island. Lagos',
   rentAmount: 1350000,
   dueDate: `2023-02-25`
 }, {
   id: 2,
-  address: '14 Akeju Street, Victoria Island. Lagos',
+  propertyLocation: '14 Akeju Street, Victoria Island. Lagos',
   rentAmount: 1750000,
   dueDate: `2023-01-14`,
   landlord: 'Mr Money',
@@ -468,3 +468,5 @@ export default {
   activeOpacity: 0.6,
   APP_THEME,
 }
+
+export const screenBG = require("src/assets/images/backgrounds/background.png")

@@ -88,7 +88,7 @@ export const CustomToast = () => {
       bottom: position === "bottom" ? fontsConstants.h(displacement) : undefined,
       left: fontsConstants.w(12),
       right: fontsConstants.w(12),
-      zIndex: 1000,
+      zIndex: 9000,
     }, containerStyle]}>
       <Icon
         type='ionicon'

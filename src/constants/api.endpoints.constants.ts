@@ -5,3 +5,10 @@ export const verifyOTPEndpoint = `/auth/token/verify-otp`;
 export const resetPasswordEndpoint = `/accounts/forgot-password`;
 export const updateProfileEndpoint = `/accounts/update-account`;
 export const updatePasswordEndpoint = `/accounts/change-password`;
+
+
+//properties
+export const createPropertEndpoint = `/properties/create-property`;
+export const createUnitEndpoint = `/properties/create-property-unit`;
+export const getUnitsTypesEndpoint = `/properties/unit-management/get-all-unit-type`;
+export const getPropertiesEndpoint = `/properties/get-property-by-userid`;

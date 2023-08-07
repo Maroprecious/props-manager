@@ -59,7 +59,7 @@ export default function RentalsScreen({
             marginTop: fontsConstants.h(20),
             marginHorizontal: fontsConstants.w(20)
           }}
-          onPress={() => navigation.navigate('AddProperty')}
+          onPress={() => navigation.navigate('AddPropertyScreen')}
         />
       </ImageBackground>
     </ScrollView>

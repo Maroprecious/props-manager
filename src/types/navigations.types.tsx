@@ -58,7 +58,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   };
   BillsPaymentScreen: undefined
   AirtimeTopUpScreen: undefined
-  AddProperty: undefined
+  AddPropertyScreen: undefined
   AddTenancyDetails: undefined
   FaqScreen: undefined
   HelpAndSupportScreen: undefined
@@ -73,6 +73,14 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   VerifyWithEmail: undefined
   PayBillsScreen: undefined
   EditProfileScreen: undefined
+  PropertiesScreen: undefined
+  AddUnitsScreen: {
+    propertyId: string,
+    propertyDetails?: {
+      propertyName: string,
+      propertyAddress: string
+    }
+  }
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

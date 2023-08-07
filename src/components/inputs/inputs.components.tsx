@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { TextProps, TextStyle, View, ViewStyle } from "react-native"
+import { ActivityIndicator, TextProps, TextStyle, View, ViewStyle } from "react-native"
 import { StyleProp } from "react-native"
 import DropDownPicker from "react-native-dropdown-picker"
 import { Icon, Input, InputProps } from "react-native-elements"
@@ -23,6 +23,8 @@ export const DefaultInput = ({
   labelStyle = {},
   secureTextEntry = false,
   errorMessage,
+  inputContainerStyle = {},
+  inputStyle = {},
   ...props
 } : {
   inputHeight?: number
@@ -37,21 +39,21 @@ export const DefaultInput = ({
   return (
     <Input
       placeholderTextColor={colorsConstants[theme].inputPlaceHolderColor}
-      inputStyle={{
+      inputStyle={[{
         fontFamily: fontsConstants.American_Typewriter_Regular,
         paddingHorizontal: fontsConstants.w(20),
         fontSize: fontsConstants.w(14),
         color: colorsConstants[theme].darkText
-      }}
+      }, inputStyle]}
       cursorColor={colorsConstants[theme].screenIntro}
-      inputContainerStyle={{
+      inputContainerStyle={[{
         height: inputHeight,
         backgroundColor: colorsConstants[theme].inputBackground,
         borderRadius: fontsConstants.h(10),
         borderBottomWidth: errorMessage ? fontsConstants.h(1) : 0,
         borderColor: errorMessage ? colorsConstants.colorDanger : undefined,
         borderWidth: errorMessage ? fontsConstants.h(1) : undefined
-      }}
+      }, inputContainerStyle]}
       labelStyle={[{
         color: colorsConstants[theme].screenLabel,
         fontFamily: fontsConstants.Lora_Bold,
@@ -203,6 +205,7 @@ export const DefaultSelectInput = ({
   labelStyle,
   errorMessage,
   showErrorMessage = true,
+  loading = false
 } : {
   value: string | number
   items: {
@@ -228,6 +231,7 @@ export const DefaultSelectInput = ({
   labelStyle?: StyleProp<TextStyle>
   errorMessage?: string
   showErrorMessage?: boolean
+  loading?: boolean
 }) => {
 
   const theme = useContext(AppThemeContext);
@@ -248,6 +252,7 @@ export const DefaultSelectInput = ({
         open={open}
         value={value}
         searchable={searchable}
+        activityIndicatorColor={colorsConstants.colorPrimary}
         searchPlaceholder={searchPlaceholder}
         items={items}
         setOpen={setOpen}
@@ -304,18 +309,25 @@ export const DefaultSelectInput = ({
           />
         }
         ArrowDownIconComponent={ ({style}) =>
+          !loading ? 
           <Icon
             name='chevron-down'
             type='ionicon'
             size={fontsConstants.w(13)}
-            color={errorMessage && showErrorMessage? colorsConstants.colorDanger : undefined}
+          /> : <ActivityIndicator
+            color={colorsConstants.colorPrimary}
+            size={fontsConstants.h(20)}
           />
         }
         ArrowUpIconComponent={ ({style}) =>
+          !loading ? 
           <Icon
             name='chevron-up'
             type='ionicon'
             size={fontsConstants.w(13)}
+          /> : <ActivityIndicator
+            color={colorsConstants.colorPrimary}
+            size={fontsConstants.h(20)}
           />
         }
       />

@@ -13,7 +13,6 @@ import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
 import globalConstants, { DefaultDocuments, Tenancies } from "src/constants/global.constants";
 import colorsConstants from "src/constants/colors.constants";
-import { RenderAddTenancyButton } from "../hometab";
 import { DefaultRadiobox } from "src/components/inputs/checkbox.components";
 import Layout from "src/components/layout/layout";
 import { Input } from "src/components/inputs/input-box";
@@ -22,6 +21,7 @@ import { AssignManagerSchema } from "src/utils/schema";
 import * as Yup from 'yup';
 import { Success } from "src/components/modals/alert.modals";
 import { Select } from "src/components/select/select";
+import { RenderAddTenancyButton } from "../property/components";
 
 
 
@@ -156,7 +156,7 @@ console.log(errors)
                                                 fontSize: fontsConstants.h(11.4),
                                                 color: colorsConstants[theme].address,
                                             }}>
-                                                {item.address}
+                                                {item.propertyLocation}
                                             </Text>
                                             <Text style={{
                                                 fontFamily: fontsConstants.Lora_Regular,
