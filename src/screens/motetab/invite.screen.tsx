@@ -12,6 +12,7 @@ import { TouchableOpacity } from "react-native";
 import layoutsConstants from "src/constants/layouts.constants";
 import colorsConstants from "src/constants/colors.constants";
 import { Image } from "react-native-elements";
+import ShareApp from "src/utils/ShareApp";
 
 export default function InviteScreen({
   navigation,
@@ -37,7 +38,9 @@ export default function InviteScreen({
       />
       <TouchableOpacity
         activeOpacity={layoutsConstants.activeOpacity}
-        onPress={() => null}
+        onPress={async () => {
+          await ShareApp(`Fortune0038`)
+        }}
         style={{
           backgroundColor: `rgba(182, 251, 0, 0.25)`,
           height: fontsConstants.h(86),
