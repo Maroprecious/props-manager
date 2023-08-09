@@ -59,6 +59,9 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   BillsPaymentScreen: undefined
   AirtimeTopUpScreen: undefined
   AddPropertyScreen: undefined
+  PropertyScreen: {
+    id: string
+  },
   AddTenancyDetails: undefined
   FaqScreen: undefined
   HelpAndSupportScreen: undefined

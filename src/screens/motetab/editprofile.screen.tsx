@@ -98,6 +98,7 @@ export default function EditProfileScreen({
         />
         <DefaultPhoneInput
           label={`Mobile`}
+          disabled
           value={splitPhoneNumber(phoneNumber).phone || ""}
           selectedCode={splitPhoneNumber(phoneNumber).code}
           onChangeNumber={(t: string) => setPhoneNumber(t)}
