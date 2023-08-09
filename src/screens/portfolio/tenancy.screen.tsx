@@ -1,19 +1,16 @@
 import React, { useContext, useState } from "react";
-import { ImageBackground, StyleSheet, TouchableOpacity, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { Text } from "src/components/Themed";
-import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
+import { DefaultButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
-import globalConstants, { DefaultDocuments, Tenancies } from "src/constants/global.constants";
-import { ScreenTitle } from "../auth/components/screentitle.component";
+import { Tenancies } from "src/constants/global.constants";
 import colorsConstants from "src/constants/colors.constants";
-import layoutsConstants from "src/constants/layouts.constants";
-import { RenderAddTenancyButton } from "../hometab";
 import { DefaultRadiobox } from "src/components/inputs/checkbox.components";
 import { LocationIcon } from "../rent/components";
-import { Entypo } from "@expo/vector-icons";
 import Layout from "src/components/layout/layout";
+import { RenderAddTenancyButton } from "../property/components";
 
 export default function TenancyScreen({
     navigation,
@@ -82,7 +79,7 @@ export default function TenancyScreen({
                                             fontSize: fontsConstants.h(11.4),
                                             color: colorsConstants[theme].address,
                                         }}>
-                                            {item.address}
+                                            {item.propertyLocation}
                                         </Text>
                                     </View>
                                     <DefaultRadiobox

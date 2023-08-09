@@ -43,6 +43,7 @@ import YourFinancialsScreen from "src/screens/paymentstab/yourfinancials.screen"
 import PropertiesScreen from "src/screens/property";
 import AddPropertyScreen from "src/screens/property/addproperty.screen";
 import AddUnitsScreen from "src/screens/property/addunits.screen";
+import PropertyScreen from "src/screens/property/property.screen";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -226,6 +227,15 @@ export const UserAppRoutes = [
       headerShown: false,
     },
     initialParams: {},
+  }, {
+    name: "PropertyScreen",
+    component: PropertyScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {
+      id: "-1"
+    },
   }, {
     name: "AddPropertyScreen",
     component: AddPropertyScreen,

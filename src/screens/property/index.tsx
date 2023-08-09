@@ -91,7 +91,9 @@ export default function PropertiesScreen({
             )
           }}
           ListEmptyComponent={
-            <NoPropertiesCard/>
+            !loading ?
+              <NoPropertiesCard/>
+              : <></>
           }
           contentContainerStyle={{
             // flex: 1,

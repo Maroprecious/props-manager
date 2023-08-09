@@ -102,6 +102,7 @@ export default function AddUnitsScreen({
     if (req?.data?.hasError === false) {
       setUnits([])
       showToast({
+        title: "Units",
         type: "success",
         message: req?.message || req?.message?.message?.message || "Units added successfully"
       })
@@ -423,7 +424,7 @@ export default function AddUnitsScreen({
           }}>{`Added Units`}</Text>,
           ListFooterComponent: 
             <DefaultButton
-              title={`Create Units`}
+              title={`Add Units`}
               onPress={doCreateUnits}
               loading={loading}
             />,

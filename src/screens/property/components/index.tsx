@@ -155,6 +155,7 @@ export const PropertiesListView = ({
   itemsLoading?: boolean
 }) => {
   const theme = useContext(AppThemeContext);
+  const navigation = useNavigation()
 
   const [viewItem, setViewItem] = useState<typeof Tenancies[0] | undefined | any>(undefined);
   const [openModal, setOpenModal] = useState(false);
@@ -192,23 +193,40 @@ export const PropertiesListView = ({
             loading={itemsLoading}
           />
         ))}
-        <View style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: fontsConstants.h(24)
-        }}>
-          <Text style={{
-            fontFamily: fontsConstants.Lora_Regular,
-            fontSize: fontsConstants.h(14),
-            color: colorsConstants[theme].darkText3
+        {data.length > 0 ? (
+          <TouchableOpacity style={{
+            marginTop: fontsConstants.h(0)
+          }}
+            activeOpacity={layoutsConstants.activeOpacity}
+            onPress={() => navigation.navigate("PropertiesScreen")}
+          >
+            <Text style={{
+              fontFamily: fontsConstants.Lora_Regular,
+              fontSize: fontsConstants.h(14),
+              color: colorsConstants[theme].darkText3
+            }}>
+              {`View More...`}
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: fontsConstants.h(0)
           }}>
-            {`No additional property record found`}
-          </Text>
-          <RenderAddTenancyButton
-
-          />
-        </View>
+            <Text style={{
+              fontFamily: fontsConstants.Lora_Regular,
+              fontSize: fontsConstants.h(14),
+              color: colorsConstants[theme].darkText3
+            }}>
+              {`No additional property record found`}
+            </Text>
+            <RenderAddTenancyButton
+  
+            />
+          </View>
+        )}
       </View>
 
       <Modal 
