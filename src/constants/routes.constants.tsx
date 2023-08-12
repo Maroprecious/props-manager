@@ -44,6 +44,9 @@ import PropertiesScreen from "src/screens/property";
 import AddPropertyScreen from "src/screens/property/addproperty.screen";
 import AddUnitsScreen from "src/screens/property/addunits.screen";
 import PropertyScreen from "src/screens/property/property.screen";
+import PropertyDetailsScreen from "src/screens/property/properttydetails.screen";
+import ViewUnitsScreen from "src/screens/property/viewunits.screen";
+import UnitDetailsScreen from "src/screens/property/unitdetails.screen";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -327,6 +330,27 @@ export const UserAppRoutes = [
     component: PropertiesScreen,
     options: {
       headerShown: false
+    },
+    initialParams: {},
+  }, {
+    name: "PropertyDetailsScreen",
+    component: PropertyDetailsScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "ViewUnitsScreen",
+    component: ViewUnitsScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "UnitDetailsScreen",
+    component: UnitDetailsScreen,
+    options: {
+      headerShown: false,
     },
     initialParams: {},
   },

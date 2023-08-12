@@ -18,6 +18,8 @@ import AppThemeContext from "src/contexts/Theme.context";
 import { ConfirmModal } from "src/components/modals/confirm.modals";
 import { CustomToast } from "src/components/Toast";
 import SecureStoreManager from "src/utils/SecureStoreManager";
+import { PropertyProvider } from "src/contexts/property.context";
+import { UnitProvider } from "src/contexts/unit.context";
 
 enableMapSet()
 
@@ -31,7 +33,7 @@ export default function App() {
   useEffect(() => {
     useAppTheme().then((theme) => setAppTheme(theme)).catch((e) => console.log(e))
   }, [])
-  
+
   useEffect(() => {
     LogBox.ignoreLogs([
       'VirtualizedLists should never be nested',
@@ -41,8 +43,8 @@ export default function App() {
       'Constants.platform.ios.model has been deprecated'
     ]);
     try {
-      SecureStoreManager.getInitialRouteName().then((route) => setInitialRouteName(route)) 
-    } catch (error) {}
+      SecureStoreManager.getInitialRouteName().then((route) => setInitialRouteName(route))
+    } catch (error) { }
   }, [])
 
   if (!isLoadingComplete) {
@@ -50,33 +52,37 @@ export default function App() {
   }
   return (
     <GestureHandlerRootView
-        style={{
-          flex: 1
-        }}
-      >
+      style={{
+        flex: 1
+      }}
+    >
       <AppThemeContext.Provider value={appTheme || colorScheme}>
-        <SafeAreaProvider>
-        <Provider
-          store={store}
-        >
-          <PersistGate 
-            loading={null} 
-            persistor={persistor}
-          >
-          <StatusBar />
-          <Navigation 
-            colorScheme={appTheme || colorScheme} 
-            initialRouteName={initialRouteName}
-          />
-          <ConfirmModal
-            
-          />
-          <CustomToast
-            
-          />
-          </PersistGate>
-        </Provider>
-        </SafeAreaProvider>
+        <PropertyProvider>
+          <UnitProvider>
+            <SafeAreaProvider>
+              <Provider
+                store={store}
+              >
+                <PersistGate
+                  loading={null}
+                  persistor={persistor}
+                >
+                  <StatusBar />
+                  <Navigation
+                    colorScheme={appTheme || colorScheme}
+                    initialRouteName={initialRouteName}
+                  />
+                  <ConfirmModal
+
+                  />
+                  <CustomToast
+
+                  />
+                </PersistGate>
+              </Provider>
+            </SafeAreaProvider>
+          </UnitProvider>
+        </PropertyProvider>
       </AppThemeContext.Provider>
     </GestureHandlerRootView>
   );

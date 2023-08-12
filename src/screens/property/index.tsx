@@ -15,6 +15,7 @@ import useProperty from "src/hooks/useProperties";
 import { RenderPropertyDetails } from "./components";
 import { Icon } from "react-native-elements";
 import colorsConstants from "src/constants/colors.constants";
+import { useProperties } from "src/contexts/property.context";
 
 export default function PropertiesScreen({
   navigation,
@@ -27,6 +28,7 @@ export default function PropertiesScreen({
 
   const [properties, setProperties] = useState<any>([]);
 
+  const {setProperty} = useProperties()
   const fetchProperties = async () => {
     const req = await getProperties({
       userId: `${user.id}`
@@ -37,7 +39,7 @@ export default function PropertiesScreen({
   React.useEffect(() => {
     fetchProperties()
   }, [navigation])
-
+// console.log(properties, 'propssss')
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -65,6 +67,10 @@ export default function PropertiesScreen({
             return (
               <TouchableOpacity
                 activeOpacity={layoutsConstants.activeOpacity}
+                onPress={() => {
+                  setProperty(item)
+                  navigation.navigate('PropertyDetailsScreen')
+                }}
               >
                 <RenderPropertyDetails
                   item={item}

@@ -62,7 +62,7 @@ export default function HomeTabScreen({
 }: RootTabScreenProps<"HomeTabNavigator">) {
   const theme = useContext(AppThemeContext)
   const user = useAppSelector((state) => state.auth.user)
-
+console.log(user)
   return (
     <ScrollView style={styles.container}>
       <ImageBackground
