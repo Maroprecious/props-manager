@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createPropertEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint } from "src/constants/api.endpoints.constants";
+import { createPropertyEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -34,7 +34,7 @@ const useProperty = () => {
     setCreated(false);
     setLoading(true);
     const request = await makeApiRequest({
-      route: `${createPropertEndpoint}`,
+      route: `${createPropertyEndpoint}`,
       type: 'POST',
       data
     });

@@ -17,6 +17,13 @@ const defaultErrorMessageStyle = {
   color: colorsConstants.colorDanger
 }
 
+export type defaultInputProps = {
+  inputHeight?: number
+  containerStyle?: StyleProp<ViewStyle>
+  labelStyle?: StyleProp<TextStyle>
+  secureTextEntry?: boolean
+} & InputProps
+
 export const DefaultInput = ({
   inputHeight = globalConstants.componentHeight,
   containerStyle = {},
@@ -26,12 +33,7 @@ export const DefaultInput = ({
   inputContainerStyle = {},
   inputStyle = {},
   ...props
-} : {
-  inputHeight?: number
-  containerStyle?: StyleProp<ViewStyle>
-  labelStyle?: StyleProp<TextStyle>
-  secureTextEntry?: boolean
-} & InputProps) => {
+} : defaultInputProps) => {
 
   const theme = useContext(AppThemeContext);
   const [showEntry, setShowEntry] = useState(secureTextEntry);
