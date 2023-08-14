@@ -185,7 +185,7 @@ export default function AddPropertyScreen({
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            marginBottom: fontsConstants.h(10)
+            marginTop: fontsConstants.h(10),
           }}>
             {[{
               label: 'Add Units',

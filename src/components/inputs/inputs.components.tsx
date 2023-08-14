@@ -10,12 +10,19 @@ import globalConstants from "src/constants/global.constants"
 import AppThemeContext from "src/contexts/Theme.context"
 import { Text } from "../Themed"
 
-const errorMessageStyle = {
+const defaultErrorMessageStyle = {
   marginTop: fontsConstants.h(0),
   fontFamily: fontsConstants.space_mono,
   fontSize: fontsConstants.h(12),
   color: colorsConstants.colorDanger
 }
+
+export type defaultInputProps = {
+  inputHeight?: number
+  containerStyle?: StyleProp<ViewStyle>
+  labelStyle?: StyleProp<TextStyle>
+  secureTextEntry?: boolean
+} & InputProps
 
 export const DefaultInput = ({
   inputHeight = globalConstants.componentHeight,
@@ -26,12 +33,7 @@ export const DefaultInput = ({
   inputContainerStyle = {},
   inputStyle = {},
   ...props
-} : {
-  inputHeight?: number
-  containerStyle?: StyleProp<ViewStyle>
-  labelStyle?: StyleProp<TextStyle>
-  secureTextEntry?: boolean
-} & InputProps) => {
+} : defaultInputProps) => {
 
   const theme = useContext(AppThemeContext);
   const [showEntry, setShowEntry] = useState(secureTextEntry);
@@ -81,7 +83,7 @@ export const DefaultInput = ({
       {...props}
       errorMessage={errorMessage}
       secureTextEntry={showEntry}
-      errorStyle={errorMessageStyle}
+      errorStyle={defaultErrorMessageStyle}
     />
   )
 }
@@ -175,7 +177,7 @@ export const DefaultPhoneInput = ({
       {...props}
       keyboardType="number-pad"
       errorMessage={errorMessage}
-      errorStyle={errorMessageStyle}
+      errorStyle={defaultErrorMessageStyle}
     />
   )
 }
@@ -205,7 +207,8 @@ export const DefaultSelectInput = ({
   labelStyle,
   errorMessage,
   showErrorMessage = true,
-  loading = false
+  loading = false,
+  errorMessageStyle = {}
 } : {
   value: string | number
   items: {
@@ -232,6 +235,7 @@ export const DefaultSelectInput = ({
   errorMessage?: string
   showErrorMessage?: boolean
   loading?: boolean
+  errorMessageStyle?: StyleProp<TextStyle>
 }) => {
 
   const theme = useContext(AppThemeContext);
@@ -331,10 +335,10 @@ export const DefaultSelectInput = ({
           />
         }
       />
-      {errorMessage && showErrorMessage && <Text style={[errorMessageStyle, {
+      {errorMessage && showErrorMessage && <Text style={[defaultErrorMessageStyle, {
         marginTop: fontsConstants.h(-20),
         marginBottom: fontsConstants.h(3)
-      }]}>
+      }, errorMessageStyle]}>
         {errorMessage}
       </Text>}
     </View>

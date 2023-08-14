@@ -18,6 +18,7 @@ import { Modalize } from "react-native-modalize";
 import { showToast } from "src/components/Toast";
 import { useUnit } from "src/contexts/unit.context";
 import { useProperties } from "src/contexts/property.context";
+import { Icon } from "react-native-elements";
 
 export default function AddUnitsScreen({
   navigation,
@@ -39,7 +40,15 @@ export default function AddUnitsScreen({
   const [unitLegalCharge, setUnitLegalCharge] = useState('0.00')
   const [unitAgreementCharge, setUnitAgreementCharge] = useState('0.00')
   const [unitCommissionCharge, setUnitCommissionCharge] = useState('0.00')
+  const [unitOtherCharges, setUnitOtherCharges] = useState('0.00')
   const [totalReps, setTotalReps] = useState('1');
+  const [fieldErros, setFieldErrors] = useState({
+    unitName: "",
+    unitTypeId: "",
+    unitRent: "",
+  });
+
+  const [expandedUnit, setExpandedUnit] = useState(-1);
 
   const modalRef = React.useRef<Modalize>(null)
 
@@ -58,29 +67,65 @@ export default function AddUnitsScreen({
     })
   }, [])
 
+  const getErrors = () => {
+    if (unitName === "")
+      setFieldErrors({...fieldErros, unitName: "Enter Unit Title"})
+    else if (unitTypeId === "")
+      setFieldErrors({...fieldErros, unitTypeId: "Select Unit Type"})
+    else if (Number(unitRent) < 1)
+      setFieldErrors({...fieldErros, unitRent: "Enter Unit Rent Fee"})
+    
+    if (unitName === "" || (Number(unitRent) < 1) || unitTypeId === "")
+      return true
+    else
+      return false
+  }
+
+  React.useEffect(() => {
+    setFieldErrors({
+      unitName: "",
+      unitTypeId: "",
+      unitRent: "",
+    })
+  }, [unitName, unitRent, unitTypeId])
+
   const doAddUnit = () => {
-    setUnits([
-      ...units,
-      {
-        propertyId: route?.params?.propertyId,
-        unitName,
-        unitRent: Number(currencyToString(unitRent)),
-        unitServiceCharge: Number(currencyToString(unitServiceCharge)),
-        unitLegalCharge: Number(currencyToString(unitLegalCharge)),
-        unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
-        unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
-        totalReps,
-        unitTypeId
+    if (!getErrors()){
+      try {
+        setUnits([
+          ...units,
+          {
+            propertyId: route?.params?.propertyId,
+            unitName,
+            unitRent: Number(currencyToString(unitRent)),
+            unitServiceCharge: Number(currencyToString(unitServiceCharge)),
+            unitLegalCharge: Number(currencyToString(unitLegalCharge)),
+            unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
+            unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
+            unitOtherCharges: Number(currencyToString(unitOtherCharges)),
+            totalReps,
+            unitTypeId
+          }
+        ])
+        setUnitAgreementCharge('0.00')
+        setUnitLegalCharge('0.00')
+        setUnitName('')
+        setUnitRent('0.00')
+        setUnitServiceCharge('0.00')
+        setunitTypeId('')
+        setUnitCommissionCharge('0.00')
+        setUnitOtherCharges('0.00')
+        setTotalReps('1')
+      } catch (error) {
+        console.log(error)
+      } finally {
+        showToast({
+          title: `Unit`,
+          message: `Unit added to list`,
+          type: `info`
+        })
       }
-    ])
-    setUnitAgreementCharge('0.00')
-    setUnitLegalCharge('0.00')
-    setUnitName('')
-    setUnitRent('0.00')
-    setUnitServiceCharge('0.00')
-    setunitTypeId('')
-    setUnitCommissionCharge('0.00')
-    setTotalReps('1')
+    }
   }
 
   const getUnitTypeLabel = (id: string) => {
@@ -161,11 +206,20 @@ export default function AddUnitsScreen({
   }
 
   const removeUnit = (index: number) => {
-    const _units = units.filter(function (item: any, i: number) {
-      return index !== i
-    });
-    console.log(_units)
-    setUnits(_units)
+    try {
+      const _units = units.filter(function(item: any, i: number) {
+        return index !== i
+      });
+      setUnits(_units)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      showToast({
+        title: `Unit`,
+        message: `Unit ${units[index].unitName} removed from list`,
+        type: `info`
+      })
+    }
   }
 
   const renderCurrency = (currency: string) => {
@@ -237,24 +291,31 @@ export default function AddUnitsScreen({
         <DefaultInput
           placeholder={`Title or Name`}
           value={unitName}
-          label={`Title or Name`}
-          labelStyle={styles.labelStyle}
+          label={fieldErros.unitName || `Title or Name`}
+          labelStyle={[styles.labelStyle, {
+            color: fieldErros.unitName !== "" ? colorsConstants.colorDanger : undefined
+          }]}
           onChangeText={(t: string) => setUnitName(t)}
-          inputContainerStyle={styles.inputContainerStyle}
+          inputContainerStyle={[styles.inputContainerStyle, {
+            borderColor: fieldErros.unitName === "" ? colorsConstants.colorPrimary : colorsConstants.colorDanger
+          }]}
           containerStyle={styles.containerStyle}
         />
         <DefaultSelectInput
           value={unitTypeId}
           setValue={setunitTypeId}
-          label={`Unit Type`}
-          labelStyle={styles.labelStyle}
+          label={fieldErros.unitTypeId || `Unit Type`}
+          labelStyle={[styles.labelStyle, {
+            color: fieldErros.unitTypeId !== "" ? colorsConstants.colorDanger : undefined
+          }]}
           items={unitTypes}
           listMode="MODAL"
           placeholder="Unit Type"
           searchable
           loading={fetchingTypes}
           containerStyle={[styles.inputContainerStyle, {
-            marginBottom: fontsConstants.h(12)
+            marginBottom: fontsConstants.h(12),
+            borderColor: fieldErros.unitTypeId === "" ? colorsConstants.colorPrimary : colorsConstants.colorDanger
           }]}
         />
         <DefaultInput
@@ -263,8 +324,10 @@ export default function AddUnitsScreen({
           }
           keyboardType="number-pad"
           value={unitRent}
-          label={`Rent Amount`}
-          labelStyle={styles.labelStyle}
+          label={fieldErros.unitRent || `Rent Amount`}
+          labelStyle={[styles.labelStyle, {
+            color: fieldErros.unitRent !== "" ? colorsConstants.colorDanger : undefined
+          }]}
           onChangeText={(v: string) => setUnitRent(v)}
           onFocus={(e: any) => {
             setUnitRent(currencyToString(unitRent))
@@ -272,7 +335,9 @@ export default function AddUnitsScreen({
           onBlur={(e: any) => {
             setUnitRent(formatCurrency(Number(unitRent)))
           }}
-          inputContainerStyle={styles.inputContainerStyle}
+          inputContainerStyle={[styles.inputContainerStyle, {
+            borderColor: fieldErros.unitRent === "" ? colorsConstants.colorPrimary : colorsConstants.colorDanger
+          }]}
           containerStyle={styles.containerStyle}
         />
         <View style={{
@@ -349,45 +414,62 @@ export default function AddUnitsScreen({
             />
           ))}
         </View>
-        <DefaultInput
-          value={totalReps}
-          onChangeText={(t: string) => setTotalReps(t)}
-          label={`How Many?`}
-          keyboardType="number-pad"
-          labelStyle={styles.labelStyle}
-          inputContainerStyle={styles.inputContainerStyle}
-          containerStyle={styles.containerStyle}
-        />
+        <View style={{
+          flexDirection: "row",
+        }}>
+          <DefaultInput
+            label={`Other Charges`}
+            labelStyle={styles.labelStyle}
+            leftIcon={
+              renderCurrency(`₦`)
+            }
+            keyboardType="number-pad"
+            value={unitOtherCharges}
+            onChangeText={(v: string) => setUnitOtherCharges(v)}
+            onFocus={(e: any) => {
+              setUnitOtherCharges(currencyToString(unitOtherCharges))
+            }}
+            onBlur={(e: any) => {
+              setUnitOtherCharges(formatCurrency(Number(unitOtherCharges)))
+            }}
+            inputContainerStyle={styles.inputContainerStyle}
+            containerStyle={[styles.containerStyle, {
+              flex: 1,
+              marginRight: fontsConstants.w(5)
+            }]}
+          />
+          <DefaultInput
+            value={totalReps}
+            onChangeText={(t: string) => setTotalReps(t)}
+            label={`How Many?`}
+            keyboardType="number-pad"
+            labelStyle={styles.labelStyle}
+            inputContainerStyle={styles.inputContainerStyle}
+            containerStyle={[styles.containerStyle, {
+              flex: 1,
+              marginLeft: fontsConstants.w(5)
+            }]}
+          />
+        </View>
         <View style={{
           flexDirection: "row",
           justifyContent: "space-between",
           marginTop: fontsConstants.h(10)
         }}>
-          {unitName !== ""
-            || unitTypeId !== ''
-            || Number(unitRent) !== 0 ? (
+          <TouchableOpacity
+            onPress={() => route.params?.actionType === 'edit' ? doEditUnit() : doAddUnit() }
+            activeOpacity={layoutsConstants.activeOpacity}
+            children={
+              <Text style={{
+                color: colorsConstants.colorSuccess,
+                fontFamily: fontsConstants.American_Typewriter_Bold,
+                fontSize: fontsConstants.h(15)
+              }}>{`Add to List`}</Text>
+            }
+          />
+          {units.length > 0 && 
             <TouchableOpacity
-              onPress={() => route.params.actionType === 'edit' ? doEditUnit() : doAddUnit}
-              disabled={
-                unitName === ""
-                || unitTypeId === ''
-                || Number(unitRent) === 0
-              }
-              activeOpacity={layoutsConstants.activeOpacity}
-              children={
-                <Text style={{
-                  color: colorsConstants.colorSuccess,
-                  fontFamily: fontsConstants.American_Typewriter_Bold,
-                  fontSize: fontsConstants.h(15)
-                }}>{`${route.params.actionType === 'edit' ? 'Edit' : 'Add'} Unit`}</Text>
-              }
-            />
-          ) : <></>}
-          {units.length > 0 &&
-            <TouchableOpacity
-              onPress={() => {
-                modalRef?.current?.open()
-              }}
+              onPress={() => modalRef?.current?.open()}
               activeOpacity={layoutsConstants.activeOpacity}
               children={
                 <Text style={{
@@ -406,7 +488,7 @@ export default function AddUnitsScreen({
         modalStyle={{
           minHeight: '100%',
           borderTopLeftRadius: 0,
-          borderTopRightRadius: 0
+          borderTopRightRadius: 0,
         }}
         flatListProps={{
           data: units,
@@ -420,11 +502,16 @@ export default function AddUnitsScreen({
                 padding: fontsConstants.h(10),
                 marginBottom: fontsConstants.h(20)
               }}>
-                <View style={{
+                <TouchableOpacity style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
+                  alignItems: "center",
                   marginBottom: fontsConstants.h(5)
-                }}>
+                }} activeOpacity={layoutsConstants.activeOpacity}
+                  onPress={() => {
+                    setExpandedUnit(index)
+                  }}
+                >
                   <Text style={{
                     fontFamily: fontsConstants.Lora_Bold,
                     fontSize: fontsConstants.h(15),
@@ -433,44 +520,54 @@ export default function AddUnitsScreen({
                   }}>
                     {`${item?.unitName} x ${item?.totalReps}`}
                   </Text>
-                  <Text
-                    style={{
-                      color: colorsConstants.criticalRed,
-                      fontSize: fontsConstants.h(12)
-                    }}
-                    onPress={() => removeUnit(index)}
-                  >
-                    Remove
-                  </Text>
-                </View>
-                <Text style={styles.unitDetailTextStyle2}>
-                  {`Type\n`}<Text style={styles.unitDetailTextStyle}>{getUnitTypeLabel(item?.unitTypeId)}</Text>
-                </Text>
-                <Text style={styles.unitDetailTextStyle2}>
-                  {`Rent\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitRent)}</Text>
-                </Text>
-                <View style={{
-                  flexDirection: "row",
-                  justifyContent: "space-evenly"
-                }}>
+                  {expandedUnit !== -1 && expandedUnit === index ? (
+                    <Text
+                      style={{
+                        color: colorsConstants.criticalRed,
+                        fontSize: fontsConstants.h(12)
+                      }}
+                      onPress={() => removeUnit(index)}
+                    >
+                      Remove
+                    </Text>
+                  ) : (
+                    <Icon
+                      name={expandedUnit === index ? 'chevron-up' : 'chevron-down'}
+                      type='ionicon'
+                      size={fontsConstants.w(13)}
+                    /> 
+                  )}
+                </TouchableOpacity>
+                {expandedUnit === index && 
+                <>
                   <Text style={styles.unitDetailTextStyle2}>
-                    {`Service Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitServiceCharge)}</Text>
+                    {`Type\n`}<Text style={styles.unitDetailTextStyle}>{getUnitTypeLabel(item?.unitTypeId)}</Text>
                   </Text>
-                  <Text style={styles.unitDetailTextStyle2}>
-                    {`Legal Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitLegalCharge)}</Text>
-                  </Text>
-                </View>
-                <View style={{
-                  flexDirection: "row",
-                  justifyContent: "space-evenly"
-                }}>
-                  <Text style={styles.unitDetailTextStyle2}>
-                    {`Agreement Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitAgreementCharge)}</Text>
-                  </Text>
-                  <Text style={styles.unitDetailTextStyle2}>
-                    {`Commission Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitCommissionCharge)}</Text>
-                  </Text>
-                </View>
+                  <View style={styles.listViewRows}>
+                    <Text style={styles.unitDetailTextStyle2}>
+                      {`Rent\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitRent)}</Text>
+                    </Text>
+                    <Text style={styles.unitDetailTextStyle2}>
+                      {`Other Charges\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitOtherCharges)}</Text>
+                    </Text>
+                  </View>
+                  <View style={styles.listViewRows}>
+                    <Text style={styles.unitDetailTextStyle2}>
+                      {`Service Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitServiceCharge)}</Text>
+                    </Text>
+                    <Text style={styles.unitDetailTextStyle2}>
+                      {`Legal Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitLegalCharge)}</Text>
+                    </Text>
+                  </View>
+                  <View style={styles.listViewRows}>
+                    <Text style={styles.unitDetailTextStyle2}>
+                      {`Agreement Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitAgreementCharge)}</Text>
+                    </Text>
+                    <Text style={styles.unitDetailTextStyle2}>
+                      {`Commission Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitCommissionCharge)}</Text>
+                    </Text>
+                  </View>
+                </>}
               </View>
             )
           },
@@ -479,12 +576,12 @@ export default function AddUnitsScreen({
             fontSize: fontsConstants.h(20),
             marginBottom: fontsConstants.h(20)
           }}>{`Added Units`}</Text>,
-          ListFooterComponent:
-            <DefaultButton
-              title={`Add Units`}
+          ListFooterComponent: 
+            units.length > 0 ? <DefaultButton
+              title={`Add Unit${units.length > 1 ? 's' : ''} to Property`}
               onPress={doCreateUnits}
               loading={loading}
-            />,
+            /> : <></>,
           contentContainerStyle: {
             paddingHorizontal: fontsConstants.w(15),
             paddingTop: fontsConstants.h(10)
@@ -503,8 +600,8 @@ const styles = StyleSheet.create({
   }, inputContainerStyle: {
     borderWidth: 1,
     borderBottomWidth: 1,
-    borderColor: colorsConstants.colorPrimary,
     backgroundColor: "transparent",
+    borderColor: colorsConstants.colorPrimary
   }, containerStyle: {
     marginBottom: fontsConstants.h(30)
   }, labelStyle: {
@@ -517,5 +614,8 @@ const styles = StyleSheet.create({
     fontSize: fontsConstants.h(13),
     flex: 1,
     marginTop: fontsConstants.h(10)
+  }, listViewRows: {
+    flexDirection: "row",
+    justifyContent: "space-evenly"
   }
 });
