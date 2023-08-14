@@ -87,6 +87,13 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   PropertyDetailsScreen: undefined
   ViewUnitsScreen: undefined
   UnitDetailsScreen: undefined
+  AddTenantScreen: {
+    data: {
+      unit: {
+        id: string,
+      } & any
+    }
+  }
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

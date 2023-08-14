@@ -127,7 +127,11 @@ export default function UnitDetailsScreen({
                         title={`Add Tenant`}
                         onPress={() => {
 
-                            navigation.navigate("ViewUnitsScreen")
+                            navigation.navigate("AddTenantScreen", {
+                                data: {
+                                    unit: oneUnit
+                                }
+                            })
                         }}
                         containerStyle={{
                             marginHorizontal: fontsConstants.w(30),
