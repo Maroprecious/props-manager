@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -14,6 +14,7 @@ import Layout from "src/components/layout/layout";
 import { useProperties } from "src/contexts/property.context";
 import { useUnit } from "src/contexts/unit.context";
 import { formatNumber } from "src/utils/FormatNumber";
+import { formatCurrency } from "src/utils/FormatNumber";
 
 
 export default function UnitDetailsScreen({
@@ -41,44 +42,50 @@ export default function UnitDetailsScreen({
                         <Text style={styles.address}>{oneUnit.unitType.description}</Text>
                     </View>
                 </View>
+                <TouchableOpacity onPress={() => navigation.navigate('AddUnitsScreen', {
+                    actionType: 'edit',
+                    propertyId: property.id
+                })}>
+                    <Text style={styles.edit}>Edit Unit</Text>
+                </TouchableOpacity>
                 <View>
                     <View style={{
                         backgroundColor: colorsConstants[theme]["grey0.13"],
                         padding: fontsConstants.w(14),
                         borderRadius: fontsConstants.h(10),
-                        marginTop: 45
+                        marginTop: 25
                     }}>
                         {[{
                             id: 1,
                             label: 'Unit Rent:',
-                            value: oneUnit.unitRent === null ? '0.00' : formatNumber(oneUnit.unitRent).concat('.00'),
+                            value: oneUnit.unitRent === null ? '0.00' : formatCurrency(Number(oneUnit.unitRent)),
                             valueTextOpacity: 1
                         }, {
                             id: 2,
                             label: 'Service Charge:',
-                            value: oneUnit.unitServiceCharge,
+                            value: formatCurrency(Number(oneUnit.unitServiceCharge)),
                             valueTextOpacity: 1
                         }, {
                             id: 3,
                             label: 'Legal Fee:',
-                            value: oneUnit.unitLegalFee === null ? '0.00' : oneUnit.unitLegalFee,
+                            value: oneUnit.unitLegalFee === null ? '0.00' : formatCurrency(Number(oneUnit.unitLegalFee)),
                             valueTextOpacity: 1
                         }, {
                             id: 4,
                             label: 'Agreement Charge:',
-                            value: oneUnit.unitAgreementCharge === null ? '0.00' : oneUnit.unitAgreementCharge,
+                            value: oneUnit.unitAgreementCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitAgreementCharge)),
                             valueTextOpacity: 1
                         }, {
                             id: 5,
                             label: 'Commission Charge:',
-                            value: oneUnit.unitCommissionCharge === null ? '0.00' : oneUnit.unitCommissionCharge,
+                            value: oneUnit.unitCommissionCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitCommissionCharge)),
                             valueTextOpacity: 1
                         },
                         {
                             id: 6,
                             label: 'Other Charges:',
                             value:
-                                oneUnit.otherCharges === null ? '0.00' : oneUnit.otherCharges,
+                                oneUnit.otherCharges === null ? '0.00' : formatCurrency(Number(oneUnit.otherCharges)),
                             valueTextOpacity: 1
                         }, {
                             id: 7,
@@ -171,5 +178,15 @@ const styles = StyleSheet.create({
         fontFamily: fontsConstants.Lora_Regular,
         fontSize: 16,
         color: colorsConstants.light.darkText
+    },
+    edit: {
+       
+        textAlign: 'right',
+        textDecorationColor: colorsConstants.colorPrimary,
+        textDecorationLine: 'underline',
+        textDecorationStyle: 'solid',
+        color: colorsConstants.colorPrimary,
+        fontFamily: fontsConstants.Lora_Regular,
+        paddingTop: 30
     }
 });

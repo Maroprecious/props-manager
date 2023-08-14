@@ -63,7 +63,9 @@ export default function ViewUnitsScreen({
                     ListEmptyComponent={() =>
                         <View style={styles.center}>
                             <Text style={{fontFamily: fontsConstants.Lora_Regular, fontSize: 15}}>No Units,</Text>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigation.navigate('AddUnitsScreen', {
+                                propertyId: property.id
+                            })}>
                                 <Text style={styles.link}> Add Units</Text>
                             </TouchableOpacity>
                         </View>}

@@ -58,7 +58,9 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   };
   BillsPaymentScreen: undefined
   AirtimeTopUpScreen: undefined
-  AddPropertyScreen: undefined
+  AddPropertyScreen: {
+    actionType?: 'add' | 'edit'
+  } | undefined
   PropertyScreen: {
     id: string
   },
@@ -79,6 +81,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   PropertiesScreen: undefined
   AddUnitsScreen: {
     propertyId: string,
+    actionType?: 'add' | 'edit',
     propertyDetails?: {
       propertyName: string,
       propertyAddress: string
