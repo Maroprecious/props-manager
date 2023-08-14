@@ -18,7 +18,7 @@ export type ReduxAuthState = {
   user: AuthUserType
 }
 
-export type roleTypes = "landlord" | "tenant" | "pro-manager" | null
+export type roleTypes = "landlord" | "tenant" | "property-manager" | null
 
 export type AuthUserType = {
   id: string | null

@@ -5,7 +5,7 @@ import { API_BASE_URL } from 'src/constants';
 axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.headers.common['Authorization'] = `Bearer ${API_BEARER_TOKEN}`;
 axios.defaults.timeout = 60 * 1000; //60secs timeout
-console.log(API_BASE_URL, 'hello')
+
 export const buildHeader = async (isDefaultAuth?: boolean): Promise<any> => {
   const headers = {
     'Content-Type': 'application/json',

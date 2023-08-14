@@ -93,7 +93,8 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
         id: string,
       } & any
     }
-  }
+  }, 
+  CompleteAccountCreationScreen: undefined 
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

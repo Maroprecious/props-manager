@@ -361,6 +361,13 @@ export const UserAppRoutes = [
       headerShown: false,
     },
     initialParams: {},
+  }, {
+    name: "CompleteAccountCreationScreen",
+    component: CreateAccountScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
   },
   ...CommonRoutes
 ];

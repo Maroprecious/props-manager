@@ -45,7 +45,7 @@ export default function MoreTabScreen({
           }]}>
             <Avatar
               size={fontsConstants.w(70)}
-              title={`${user.firstName.substring(0,1)}${user.lastName.substring(0,1)}`}
+              title={`${user?.firstName?.substring(0,1) || ''}${user?.lastName?.substring(0,1) || ''}`}
               rounded
               titleStyle={{
                 color: colorsConstants[theme].screenLabel,
@@ -71,7 +71,7 @@ export default function MoreTabScreen({
                 fontSize: fontsConstants.h(16),
                 color: colorsConstants[theme].screenLabel,
                 marginBottom: fontsConstants.h(4),
-              }}>{`${user.firstName} ${user.lastName}`}</Text>
+              }}>{`${user?.firstName || 'John'} ${user?.lastName || 'Doe'}`}</Text>
               <Text style={{
                 fontFamily: fontsConstants.Lora_Regular,
                 fontSize: fontsConstants.h(12),
