@@ -1,9 +1,5 @@
 import { useState } from "react";
-<<<<<<< HEAD
-import { createPropertEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint, editPropertyEndpoint, editeUnitEndpoint } from "src/constants/api.endpoints.constants";
-=======
-import { createPropertyEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint } from "src/constants/api.endpoints.constants";
->>>>>>> 436ad7ad50a94a4451669a547f4c20104a10f144
+import { createPropertyEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint, editPropertyEndpoint, editeUnitEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
