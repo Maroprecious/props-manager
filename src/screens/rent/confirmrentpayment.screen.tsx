@@ -1,6 +1,6 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { ImageBackground, View, StyleSheet } from "react-native";
-import { ScrollView, Text } from "src/components/Themed";
+import { SafeAreaView, Text } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
@@ -10,24 +10,55 @@ import { ScreenTitle } from "../auth/components/screentitle.component";
 import layoutsConstants from "src/constants/layouts.constants";
 import { formatCurrency } from "src/utils/FormatNumber";
 import colorsConstants from "src/constants/colors.constants";
-import { DefaultInput, DefaultSelectInput } from "src/components/inputs/inputs.components";
+import { DefaultInput } from "src/components/inputs/inputs.components";
 import { AlertModal } from "src/components/modals/alert.modals";
 import { Modalize } from "react-native-modalize";
-import { Avatar, Icon, Image } from "react-native-elements";
+import { Icon, Image } from "react-native-elements";
 import { currencySymbol } from "src/constants/currencies.constants";
 import moment from "moment";
+import  { Paystack, paystackProps }  from 'react-native-paystack-webview';
+import { useAppSelector } from "src/hooks/useReduxHooks";
+import { PAYSTACK_PUBLIC_KEY } from "@env";
+import usePayments from "src/hooks/usePayments";
+import { showToast } from "src/components/Toast";
+import { PAYMENT_OPTIONS } from "src/constants";
 
 export default function ConfirmRentPayment({
   navigation,
   route
 }: RootStackScreenProps<"ConfirmRentPayment">) {
   const theme = useContext(AppThemeContext);
+  const user = useAppSelector((state) => state.auth.user)
+  const { loading: inititating, initiatePayment } = usePayments();
+  
   const alertRef = useRef<Modalize>(null);
+  const paystackWebViewRef = useRef<paystackProps.PayStackRef>(null); 
+  
+  const [paymentRefNumber, setPaymentRefNumber] = useState(`-1`);
+  const [paymentRes, setPaymentRes] = useState<{
+    transactionRef?: any,
+    status: string,
+    data?: any
+  }>({transactionRef: {}, data: {}, status: ''});
+
+  const preparePayment = async () => {
+    const req = await initiatePayment({
+      amount: 30000,
+      email: user.email,
+      userId: `${user.id}`
+    })
+    paystackWebViewRef?.current?.startTransaction();
+    setPaymentRefNumber(`${Math.floor((Math.random() * 1000000000) + 1)}`)
+  }
+
+  const completePayment = async () => {
+    alertRef?.current?.close()
+    navigation.navigate("RentalsScreen")
+  }
 
   return (
-    <ScrollView
+    <SafeAreaView
       style={styles.container}
-      contentContainerStyle={{minHeight: "100%"}}
     >
       <ImageBackground
         source={require("src/assets/images/backgrounds/background.png")}
@@ -76,7 +107,7 @@ export default function ConfirmRentPayment({
           }}
           containerStyle={{marginBottom: fontsConstants.h(20)}}
         />
-        <DefaultSelectInput
+        {/* <DefaultSelectInput
           items={[{
             label: "First Bank",
             value: "first bank"
@@ -87,12 +118,13 @@ export default function ConfirmRentPayment({
           value={`first bank`}
           containerStyle={{marginBottom: fontsConstants.h(20), maxHeight: fontsConstants.h(350)}}
           dropDownDirection="BOTTOM"      
-        />
+        /> */}
         <DefaultInput
-          placeholder={`Account Number`}
+          placeholder={`Property ID`}
+          disabled
           containerStyle={styles.inputContainerStyle}
         />
-        <DefaultInput
+        {/* <DefaultInput
           placeholder={`Landlord's Name`}
           containerStyle={styles.inputContainerStyle}
         />
@@ -102,8 +134,8 @@ export default function ConfirmRentPayment({
           numberOfLines={4}
           inputHeight={fontsConstants.h(90)}
           containerStyle={styles.inputContainerStyle}
-        />
-        <View style={{
+        /> */}
+        {/* <View style={{
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center"
@@ -114,15 +146,47 @@ export default function ConfirmRentPayment({
           <Text style={[styles.chargeText, {color: colorsConstants[theme].darkText}]}>
             {`₦${formatCurrency(5)}`}
           </Text>
-        </View>
+        </View> */}
         <DefaultButton
-          title={`Next`}
+          title={`Pay Now`}
+          loading={inititating}
           // disabled
           containerStyle={{
             marginTop: fontsConstants.h(50),
-            marginHorizontal: fontsConstants.w(20)
           }}
-          onPress={() => alertRef.current?.open()}
+          onPress={preparePayment}
+        />
+        <Paystack
+          paystackKey={PAYSTACK_PUBLIC_KEY}
+          billingEmail={user.email}
+          billingName={`${user.firstName || ''} ${user.lastName|| ''}`}
+          amount={`${route.params?.amount.toFixed(2)}`}
+          firstName={user.firstName || ''}
+          lastName={user.lastName || ''}
+          phone={user.phoneNumber || ''}
+          activityIndicatorColor={colorsConstants.colorPrimary}
+          refNumber={paymentRefNumber}
+          channels={PAYMENT_OPTIONS}
+          onCancel={(e) => {
+            // handle response here
+            showToast({
+              title: `Payment`,
+              type: `info`,
+              message: `Payment cancelled`,
+            })
+          }}
+          onSuccess={(res) => {
+            console.log(res)
+            setPaymentRes(res)
+            res?.status === 'success'
+              ? alertRef.current?.open()
+              : showToast({
+                title: `Payment`,
+                message: `Payment Failed`,
+                type: `error`,
+              })
+          }}
+          ref={paystackWebViewRef}
         />
         <AlertModal
           modalRef={alertRef}
@@ -135,6 +199,7 @@ export default function ConfirmRentPayment({
           title="Payment Successful"
           buttonTitle="Finish"
           type={undefined}
+          onButtonPress={completePayment}
           body={
             <View style={{
               alignItems: "center",
@@ -153,15 +218,15 @@ export default function ConfirmRentPayment({
               }, {
                 id: 2,
                 label: 'Transaction ID:',
-                value: 'TXN8890452GT02'
+                value: `TNX${paymentRes?.transactionRef?.trxref}`
               }, {
                 id: 3,
                 label: 'Reference:',
-                value: 'MPM/RENT/676012'
+                value: `MPM/RENT/${paymentRes?.transactionRef?.trxref}`
               }, {
                 id: 4,
                 label: 'Date / Time:',
-                value: moment('2023-05-23 08:46').format("DD/MM/YYYY hh:mm a")
+                value: moment(new Date()).format("DD/MM/YYYY hh:mm a")
               },{
                 id: 5,
                 label: 'Download Receipt',
@@ -207,7 +272,7 @@ export default function ConfirmRentPayment({
           }
         />
       </ImageBackground>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
 

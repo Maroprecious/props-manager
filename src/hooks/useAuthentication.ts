@@ -118,16 +118,17 @@ const useAuthenticate = () => {
     phoneNumber: string,
     password: string,
     role: string,
-    isCompleteAccountReg: boolean
+    isCompleteAccountReg: boolean,
+    userId?: string
   }, cb = () => {}): Promise<LoginResponse> => {
     let response: LoginResponse;
     try {
       setLoading(true);
       const request = await makeApiRequest({
         route: data.isCompleteAccountReg ? `${completeSignUpEndpoint}` : `${signUpEndpoint}`,
-        type: 'POST',
+        type: data.isCompleteAccountReg ? 'PUT' : 'POST',
         data,
-        isDefaultAuth: true,
+        isDefaultAuth: !data?.isCompleteAccountReg,
       });
       response = {
         ...request,

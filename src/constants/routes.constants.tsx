@@ -368,7 +368,14 @@ export const UserAppRoutes = [
       headerShown: false,
     },
     initialParams: {},
-  },
+  }, {
+    name: "ReLoginScreen",
+    component: LoginScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, 
   ...CommonRoutes
 ];
 

@@ -26,6 +26,9 @@ export default function PayRentScreen({
   return (
     <ScrollView
       style={styles.container}
+      contentContainerStyle={{
+        minHeight: '100%'
+      }}
     >
       <ImageBackground
         source={require("src/assets/images/backgrounds/background.png")}
@@ -185,9 +188,9 @@ export default function PayRentScreen({
           onPress={() => navigation.navigate("ConfirmRentPayment", {
             amount: selected?.rentAmount
           })}
+          disabled={selected?.id === -1}
           containerStyle={{
-            marginTop: fontsConstants.h(100),
-            marginHorizontal: fontsConstants.w(20)
+            marginTop: fontsConstants.h(100)
           }}
         />
       </ImageBackground>

@@ -208,6 +208,11 @@ export default function ViewRentalScreen({
         <DefaultButton
           title={`Pay Rent`}
           containerStyle={styles.btnContainerStyle}
+          onPress={() => {
+            navigation.navigate("ConfirmRentPayment", {
+              amount: 1350000
+            })
+          }}
         />
         <DefaultButton
           title={`End Tenancy`}
@@ -230,6 +235,5 @@ const styles = StyleSheet.create({
     flex: 1,
   }, btnContainerStyle: {
     marginVertical: fontsConstants.h(10),
-    marginHorizontal: fontsConstants.w(20)
   }
 });
