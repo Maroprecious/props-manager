@@ -62,7 +62,7 @@ export default function HomeTabScreen({
 }: RootTabScreenProps<"HomeTabNavigator">) {
   const theme = useContext(AppThemeContext)
   const user = useAppSelector((state) => state.auth.user)
-console.log(user)
+ 
   return (
     <ScrollView style={styles.container}>
       <ImageBackground
@@ -90,7 +90,7 @@ console.log(user)
         }}>
           <Avatar
             size={fontsConstants.w(60)}
-            title={`${user.firstName.substring(0,1)}${user.lastName.substring(0,1)}`}
+            title={`${user?.firstName?.substring(0,1) || ''}${user?.lastName?.substring(0,1) || ''}`}
             rounded
             titleStyle={{
               color: colorsConstants[theme].screenLabel,
@@ -116,7 +116,7 @@ console.log(user)
               fontSize: fontsConstants.h(16),
               color: colorsConstants[theme].screenLabel,
               marginBottom: fontsConstants.h(4),
-            }}>{`${user.firstName} ${user.lastName}`}</Text>
+            }}>{`${user?.firstName || 'John'} ${user?.lastName || 'Doe'}`}</Text>
             <Text style={[styles.textName, {
               color: colorsConstants[theme].screenLabel,
             }]}>User ID: {user.id}</Text>
