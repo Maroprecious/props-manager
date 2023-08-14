@@ -12,6 +12,7 @@ import { LocationIcon } from "../rent/components";
 import useProperty from "src/hooks/useProperties";
 import Layout from "src/components/layout/layout";
 import { useProperties } from "src/contexts/property.context";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function PropertyDetailsScreen({
     navigation,
@@ -38,7 +39,14 @@ export default function PropertyDetailsScreen({
                         <Text style={styles.address}>{property.propertyLocation}</Text>
                     </View>
                 </View>
-                <Text style={[styles.title, { marginTop: 30, marginBottom: 12 }]}>Property Record</Text>
+                <View style={[styles.flex, { marginTop: 30, marginBottom: 12 }]}>
+                    <Text style={[styles.title]}>Property Record</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('AddPropertyScreen', {
+                        actionType: 'edit'
+                    })}>
+                        <Text style={styles.edit}>Edit Property</Text>
+                    </TouchableOpacity>
+                </View>
                 <View>
                     <View style={{
                         backgroundColor: colorsConstants[theme]["grey0.13"],
@@ -94,7 +102,7 @@ export default function PropertyDetailsScreen({
                     <DefaultButton
                         title={`View Units`}
                         onPress={() => {
-                            
+
                             navigation.navigate("ViewUnitsScreen")
                         }}
                         containerStyle={{
@@ -135,5 +143,17 @@ const styles = StyleSheet.create({
         fontFamily: fontsConstants.Lora_Regular,
         fontSize: 13,
         color: colorsConstants.light.grey3
+    },
+    flex:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    edit:{
+        fontFamily: fontsConstants.Lora_Regular,
+        color: colorsConstants.light.primary,
+        textDecorationStyle: 'solid',
+        textDecorationColor: colorsConstants.light.primary,
+        textDecorationLine: 'underline'
     }
 });

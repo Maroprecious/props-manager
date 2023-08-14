@@ -16,15 +16,19 @@ import { useUnits } from "src/hooks/useProperties";
 import { currencyToString, formatCurrency } from "src/utils/FormatNumber";
 import { Modalize } from "react-native-modalize";
 import { showToast } from "src/components/Toast";
+import { useUnit } from "src/contexts/unit.context";
+import { useProperties } from "src/contexts/property.context";
 
 export default function AddUnitsScreen({
   navigation,
   route
 }: RootStackScreenProps<"AddUnitsScreen">) {
   const theme = useContext(AppThemeContext);
+  const { oneUnit, setOneUnit } = useUnit()
+  const { property } = useProperties()
 
   const user = useAppSelector((state) => state.auth.user)
-  const { loading, getTypes, createUnit, fetchingTypes } = useUnits()
+  const { loading, getTypes, createUnit, fetchingTypes, editUnit } = useUnits()
 
   const [units, setUnits] = useState<any>([])
   const [unitTypes, setUnitTypes] = useState<any>([]);
@@ -41,14 +45,14 @@ export default function AddUnitsScreen({
 
   React.useEffect(() => {
     getTypes().then((res) => {
-      if(res?.hasError === false ) {
+      if (res?.hasError === false) {
         const data = [];
         for (const type of res?.data || []) {
           data.push({
             label: type?.description,
             value: type?.id
           })
-        } 
+        }
         setUnitTypes(data)
       }
     })
@@ -114,9 +118,50 @@ export default function AddUnitsScreen({
       })
     }
   }
+  const doEditUnit = async () => {
+    
+    const req: any = await editUnit({
+      unitName,
+      unitRent: Number(currencyToString(unitRent)),
+      unitServiceCharge: Number(currencyToString(unitServiceCharge)),
+      unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
+      unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
+      unitLegalCharge: Number(currencyToString(unitLegalCharge)),
+      propertyId: property.id,
+      unitTypeId: unitTypeId.toString()
+    }, oneUnit.id)
+    if (req?.data?.hasError === false) {
+     setOneUnit({
+      unitName,
+      unitRent,
+      unitServiceCharge,
+      unitAgreementCharge,
+      unitCommissionCharge,
+      unitLegalFee: unitLegalCharge.toString(),
+      id: oneUnit.id,
+      unitType: {
+        id: unitTypeId, 
+      },
+      occupyingStatus: oneUnit.occupyingStatus,
+      otherCharges: oneUnit.otherCharges
+     })
+      showToast({
+        title: "Units",
+        type: "success",
+        message: req?.message || req?.message?.message?.message || "Units Edited successfully"
+      })
+      navigation.goBack()
+    } else {
+      showToast({
+        title: "Edit Units",
+        type: "error",
+        message: req?.message || req?.data?.message?.message || "Unknown error occured"
+      })
+    }
+  }
 
   const removeUnit = (index: number) => {
-    const _units = units.filter(function(item: any, i: number) {
+    const _units = units.filter(function (item: any, i: number) {
       return index !== i
     });
     console.log(_units)
@@ -131,17 +176,27 @@ export default function AddUnitsScreen({
       marginLeft: fontsConstants.w(15),
       marginRight: fontsConstants.w(-10)
     }}>{currency}</Text>
-  } 
+  }
+  React.useEffect(() => {
+    if (route.params.actionType === 'edit' && Object.keys(oneUnit).length) {
+      setUnitName(oneUnit.unitName)
+      setUnitRent(Object.is(oneUnit.unitRent, null) ? '0.00': oneUnit.unitRent.toString())
+      setUnitServiceCharge(Object.is(oneUnit.unitServiceCharge, null) ? '0.00': oneUnit.unitServiceCharge.toString())
+      setUnitAgreementCharge(Object.is(oneUnit.unitAgreementCharge, null) ? '0.00' : oneUnit.unitAgreementCharge?.toString() as string)
+      setUnitCommissionCharge(Object.is(oneUnit.unitCommissionCharge, null) ? '0.00':  oneUnit.unitCommissionCharge?.toString() as string)
+      setUnitLegalCharge(Object.is(oneUnit.unitLegalFee, null) ? '0.00' : oneUnit.unitLegalFee?.toString() as string)
+    }
+  }, [oneUnit, route])
 
   React.useEffect(() => {
     const backAction = () => {
-      if (units.length > 0){
+      if (units.length > 0) {
         Alert.alert(`Hold On!`, `You have units pending for upload.\nAre you sure you want to go back?`, [{
           text: `Cancel`,
         }, {
           text: `Yes`,
           onPress: () => navigation.goBack()
-        }]) 
+        }])
         return true;
       }
     };
@@ -156,7 +211,7 @@ export default function AddUnitsScreen({
 
   return (
     <ScrollView style={styles.container}
-      contentContainerStyle={{minHeight: "100%"}}
+      contentContainerStyle={{ minHeight: "100%" }}
     >
       <ImageBackground
         source={screenBG}
@@ -167,10 +222,10 @@ export default function AddUnitsScreen({
           paddingBottom: layoutsConstants.tabBarHeight / 2
         }}
       >
-        <HeaderBackButton/>
+        <HeaderBackButton />
         <ScreenTitle
-          title={`Add Units`}
-          intro={`Add units to property: ${route?.params?.propertyDetails?.propertyName}`}
+          title={`${route.params.actionType === 'edit' ? 'Edit' : 'Add'} Units`}
+          intro={`${route.params.actionType === 'edit' ? 'Edit' : 'Add'} units to property: ${route?.params?.propertyDetails?.propertyName || property.propertyName}`}
           containerStyle={{
             marginTop: fontsConstants.h(12),
             marginBottom: fontsConstants.h(35)
@@ -309,37 +364,39 @@ export default function AddUnitsScreen({
           marginTop: fontsConstants.h(10)
         }}>
           {unitName !== ""
-              || unitTypeId !== ''
-              || Number(unitRent) !== 0 ? (
-                <TouchableOpacity
-                  onPress={doAddUnit}
-                  disabled={
-                    unitName === ""
-                    || unitTypeId === ''
-                    || Number(unitRent) === 0
-                  }
-                  activeOpacity={layoutsConstants.activeOpacity}
-                  children={
-                    <Text style={{
-                      color: colorsConstants.colorSuccess,
-                      fontFamily: fontsConstants.American_Typewriter_Bold,
-                      fontSize: fontsConstants.h(15)
-                    }}>{`Add Unit`}</Text>
-                  }
-                />
-              ) : <></>}
-          {units.length > 0 && 
-          <TouchableOpacity
-            onPress={() => modalRef?.current?.open()}
-            activeOpacity={layoutsConstants.activeOpacity}
-            children={
-              <Text style={{
-                color: colorsConstants.colorPrimary,
-                fontFamily: fontsConstants.American_Typewriter_Bold,
-                fontSize: fontsConstants.h(15)
-              }}>{`View Added Units`}</Text>
-            }
-          />}
+            || unitTypeId !== ''
+            || Number(unitRent) !== 0 ? (
+            <TouchableOpacity
+              onPress={() => route.params.actionType === 'edit' ? doEditUnit() : doAddUnit}
+              disabled={
+                unitName === ""
+                || unitTypeId === ''
+                || Number(unitRent) === 0
+              }
+              activeOpacity={layoutsConstants.activeOpacity}
+              children={
+                <Text style={{
+                  color: colorsConstants.colorSuccess,
+                  fontFamily: fontsConstants.American_Typewriter_Bold,
+                  fontSize: fontsConstants.h(15)
+                }}>{`${route.params.actionType === 'edit' ? 'Edit' : 'Add'} Unit`}</Text>
+              }
+            />
+          ) : <></>}
+          {units.length > 0 &&
+            <TouchableOpacity
+              onPress={() => {
+                modalRef?.current?.open()
+              }}
+              activeOpacity={layoutsConstants.activeOpacity}
+              children={
+                <Text style={{
+                  color: colorsConstants.colorPrimary,
+                  fontFamily: fontsConstants.American_Typewriter_Bold,
+                  fontSize: fontsConstants.h(15)
+                }}>{`View ${route.params.actionType === 'edit' ? 'edited' : 'added'} Units`}</Text>
+              }
+            />}
         </View>
       </ImageBackground>
       <Modalize
@@ -422,7 +479,7 @@ export default function AddUnitsScreen({
             fontSize: fontsConstants.h(20),
             marginBottom: fontsConstants.h(20)
           }}>{`Added Units`}</Text>,
-          ListFooterComponent: 
+          ListFooterComponent:
             <DefaultButton
               title={`Add Units`}
               onPress={doCreateUnits}

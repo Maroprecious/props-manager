@@ -9,7 +9,9 @@ export const updatePasswordEndpoint = `/accounts/change-password`;
 
 //properties
 export const createPropertEndpoint = `/properties/create-property`;
+export const editPropertyEndpoint = `/properties/update-property`;
 export const createUnitEndpoint = `/properties/create-property-unit`;
+export const editeUnitEndpoint = `/properties/update-unit`;
 export const getUnitsTypesEndpoint = `/properties/unit-management/get-all-unit-type`;
 export const getPropertiesEndpoint = `/properties/get-owner-based-property`;
 export const getUnitsEndpoint = `/properties/get-property-units`;

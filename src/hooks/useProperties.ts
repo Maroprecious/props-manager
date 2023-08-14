@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createPropertEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint } from "src/constants/api.endpoints.constants";
+import { createPropertEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint, editPropertyEndpoint, editeUnitEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -46,7 +46,30 @@ const useProperty = () => {
       hasError: request?.status !== 200
     }
   };
-  return { loading, createProperty, created, getProperties };
+
+  const editProperty = async (data: {
+    propertyName: string,
+    propertyLocation: string,
+    occupationalStatus: string,
+    propertyState: string,
+    propertyId: string,
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setCreated(false);
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${editPropertyEndpoint}`,
+      type: 'POST',
+      data
+    });
+    setLoading(false);
+    cb();
+    setCreated(request?.status === 200)
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+  return { loading, createProperty, created, getProperties, editProperty };
 };
 
 export default useProperty;
@@ -93,12 +116,12 @@ export const useUnits = () => {
     }
   };
   const getUnits = async (
-  id: string, cb = () => { }): Promise<NetworkResponse> => {
+    id: string, cb = () => { }): Promise<NetworkResponse> => {
     setLoading(true);
     const request = await makeApiRequest({
       route: `${getUnitsEndpoint}/${id}`,
       type: 'GET',
-      
+
     });
     setLoading(false);
     cb();
@@ -107,5 +130,29 @@ export const useUnits = () => {
       hasError: request?.status !== 200
     }
   };
-  return { loading, getTypes, createUnit, fetchingTypes, getUnits };
+  const editUnit = async (data: {
+    unitTypeId: string,
+    unitName: string,
+    unitRent: number,
+    unitServiceCharge: number,
+    unitLegalCharge: number,
+    unitAgreementCharge: number,
+    unitCommissionCharge: number,
+    propertyId: string,
+  }, id: string, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    console.log(data, 'hello--')
+    const request = await makeApiRequest({
+      route: `${editeUnitEndpoint}/${id}`,
+      type: 'PUT',
+      data: data
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+  return { loading, getTypes, createUnit, fetchingTypes, getUnits, editUnit };
 }

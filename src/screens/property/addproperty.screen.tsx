@@ -16,15 +16,17 @@ import { LocationIcon } from "../rent/components";
 import { NigerisStates } from "src/constants/nigerianstates.constants";
 import useProperty from "src/hooks/useProperties";
 import { showToast } from "src/components/Toast";
+import { useProperties } from "src/contexts/property.context";
 
 export default function AddPropertyScreen({
   navigation,
   route
 }: RootStackScreenProps<"AddPropertyScreen">) {
   const theme = useContext(AppThemeContext);
+  const { property, setProperty } = useProperties()
 
   const user = useAppSelector((state) => state.auth.user)
-  const { loading, createProperty, created } = useProperty()
+  const { loading, createProperty, created, editProperty } = useProperty()
 
   const [propertyAddress, setProperyAddress] = useState("")
   const [propertyName, setPropertyName] = useState("")
@@ -35,18 +37,26 @@ export default function AddPropertyScreen({
   React.useEffect(() => {
     if (created) {
       setShowAddNewBtn(false)
-    } 
+    }
   }, [created])
 
   React.useEffect(() => {
+    if (route.params?.actionType === 'edit' && Object.keys(property).length) {
+      setProperyAddress(property.propertyLocation)
+      setPropertyName(property.propertyName)
+      setPropertyState(property.propertyState)
+    }
+  }, [property, route])
+
+  React.useEffect(() => {
     const backAction = () => {
-      if (!showAddNewBtn){
+      if (!showAddNewBtn) {
         Alert.alert(`Hold On!`, `You haven't added any unit to created property`, [{
           text: `Cancel`,
         }, {
           text: `Yes, Go back`,
           onPress: () => navigation.goBack()
-        }]) 
+        }])
         return true;
       }
     };
@@ -58,7 +68,7 @@ export default function AddPropertyScreen({
 
     return () => backHandler.remove();
   }, [showAddNewBtn]);
-  
+
   const doCreateProperty = async () => {
     const req = await createProperty({
       occupationalStatus: `${user.roleType}`,
@@ -80,6 +90,36 @@ export default function AddPropertyScreen({
       message: req?.message || req?.statusText || "Unknown error has occred"
     })
   }
+  const doEditProperty = async () => {
+    const req = await editProperty({
+      occupationalStatus: `${user.roleType}`,
+      propertyLocation: propertyAddress,
+      propertyName,
+      propertyState,
+      propertyId: `${property.id}`
+    })
+    if (req?.hasError === false) {
+      showToast({
+        title: "Edit Property",
+        type: "success",
+        message: req?.data?.message?.message || "Property edited successfully"
+      })
+      setPropertyId(req?.data?.message?.propertyId || "")
+      setProperty({
+        id: property.id,
+        propertyName,
+        propertyLocation: propertyAddress,
+        userId: property.userId,
+        occupationalStatus: property.occupationalStatus,
+        propertyState
+      })
+      navigation.goBack()
+    } else showToast({
+      type: "error",
+      title: "Add Property",
+      message: req?.message || req?.statusText || "Unknown error has occred"
+    })
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -92,9 +132,9 @@ export default function AddPropertyScreen({
           paddingBottom: layoutsConstants.tabBarHeight / 2
         }}
       >
-        <HeaderBackButton/>
+        <HeaderBackButton />
         <ScreenTitle
-          title={`Add Property`}
+          title={`${route.params?.actionType === 'edit' ? 'Edit' : 'Add'} Property`}
           containerStyle={{
             marginTop: fontsConstants.h(12),
             marginBottom: fontsConstants.h(35)
@@ -115,7 +155,7 @@ export default function AddPropertyScreen({
             />
           }
           inputContainerStyle={styles.inputContainerStyle}
-          inputStyle={{marginLeft: fontsConstants.w(-15)}}
+          inputStyle={{ marginLeft: fontsConstants.w(-15) }}
           containerStyle={styles.containerStyle}
         />
         <DefaultInput
@@ -135,8 +175,8 @@ export default function AddPropertyScreen({
           containerStyle={styles.inputContainerStyle}
         />
         {showAddNewBtn && <DefaultButton
-          title={`Create`}
-          onPress={doCreateProperty}
+          title={`${route.params?.actionType === 'edit' ? 'Edit' : 'Create'}`}
+          onPress={() => route.params?.actionType === 'edit' ? doEditProperty() : doCreateProperty()}
           loading={loading}
           disabled={propertyAddress === "" || propertyName === ""}
         />}

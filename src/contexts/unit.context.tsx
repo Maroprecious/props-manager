@@ -4,17 +4,17 @@ import { useState, useContext, createContext, useMemo, Dispatch, SetStateAction 
 type oneUnitType = {
     id: string,
     occupyingStatus: boolean,
-    otherCharges: null | number,
-    unitAgreementCharge: null | number,
-    unitCommissionCharge: null | number,
-    unitLegalFee: null | number,
+    otherCharges: null | number | string,
+    unitAgreementCharge: null | number | string,
+    unitCommissionCharge: null | number | string,
+    unitLegalFee: null | number | string,
     unitName: string,
-    unitRent: number,
-    unitServiceCharge: number,
+    unitRent: number | string,
+    unitServiceCharge: number | string,
     unitType:{
-        category: string,
-        description: string,
-        id: number
+        category?: string,
+        description?: string,
+        id: number | string
     }
 }
 type unittype = {
