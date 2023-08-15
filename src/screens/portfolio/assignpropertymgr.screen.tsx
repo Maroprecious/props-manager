@@ -67,9 +67,8 @@ export default function AssignPropertyManager({
         },
     });
 
-console.log(errors)
     return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
 
             <Layout title="Assign Property Manager" goback={true}>
             {visible &&

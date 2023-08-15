@@ -99,6 +99,11 @@ export default function PropertyDetailsScreen({
                             </View>
                         ))}
                     </View>
+                    <TouchableOpacity style={{marginTop: 10}} onPress={() => navigation.navigate('AddUnitsScreen', {
+                        propertyId: property.id
+                    })}>
+                        <Text style={styles.edit}>Add Units</Text>
+                    </TouchableOpacity>
                     <DefaultButton
                         title={`View Units`}
                         onPress={() => {
