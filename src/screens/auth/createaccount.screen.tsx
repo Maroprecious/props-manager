@@ -17,6 +17,7 @@ import useAuthenticate from "src/hooks/useAuthentication";
 import { showToast } from "src/components/Toast";
 import layoutsConstants from "src/constants/layouts.constants";
 import { useAppSelector } from "src/hooks/useReduxHooks";
+import SecureStoreManager from "src/utils/SecureStoreManager";
 
 export default function CreateAccountScreen({
   navigation,
@@ -41,13 +42,14 @@ export default function CreateAccountScreen({
     lastName: '',
     password: '',
     phoneNumber: '',
-    role: user?.roleType?.toUpperCase() || ""
+    role: user?.roleType?.toUpperCase() || "",
   })
   const [accountType, setAccountType] = useState('-1');
 
   const doSignUp = async () => {
     const req = await createAccount({
       ...data,
+      userId: user.id,
       isCompleteAccountReg: user.email !== ''
     })
     if (req.hasError && req.status !== 200)
@@ -58,6 +60,7 @@ export default function CreateAccountScreen({
       })
     else {
       setRegistrationSuccessful(true)
+      SecureStoreManager.setInitialRouteName("LoginScreen")
       alertRef.current?.open()    
     }
   }
@@ -267,7 +270,7 @@ export default function CreateAccountScreen({
         buttonTitle={alertData.buttonTitle}
         type={alertData.type}
         onClosed={() => {
-          if(registrationSuccessful) navigation.navigate("LoginScreen")
+          if(registrationSuccessful) navigation.navigate(user.email ? "ReLoginScreen" : "LoginScreen")
         }}
         body={(
           <>
@@ -289,7 +292,7 @@ export default function CreateAccountScreen({
             </Text>
           </>
         )}
-        onButtonPress={() => registrationSuccessful ? navigation.navigate("LoginScreen") : alertRef?.current?.close()}
+        onButtonPress={() => registrationSuccessful ? navigation.navigate(user.email ? "ReLoginScreen" : "LoginScreen") : alertRef?.current?.close()}
       />
     </ScrollView>
   );

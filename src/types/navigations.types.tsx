@@ -117,6 +117,7 @@ export type LaunchStackParamList = {
 
 export type AuthStackParamList = {
   LoginScreen: undefined;
+  ReLoginScreen: undefined;
   ForgotPasswordScreen: {
     type: verificationType
   };
