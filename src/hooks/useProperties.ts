@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createPropertyEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint, editPropertyEndpoint, editeUnitEndpoint  } from "src/constants/api.endpoints.constants";
+import { createPropertyEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint, editPropertyEndpoint, editeUnitEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -141,7 +141,6 @@ export const useUnits = () => {
     propertyId: string,
   }, id: string, cb = () => { }): Promise<NetworkResponse> => {
     setLoading(true);
-    console.log(data, 'hello--')
     const request = await makeApiRequest({
       route: `${editeUnitEndpoint}/${id}`,
       type: 'PUT',

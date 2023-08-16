@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { loginEndpoint , requestOTPEndpoint, resetPasswordEndpoint, signUpEndpoint, updatePasswordEndpoint, verifyOTPEndpoint} from "src/constants/api.endpoints.constants";
+import { completeSignUpEndpoint, loginEndpoint , requestOTPEndpoint, resetPasswordEndpoint, signUpEndpoint, updatePasswordEndpoint, verifyOTPEndpoint} from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { LoginResponse, NetworkResponse } from "src/types/api.response.types";
 
@@ -117,13 +117,14 @@ const useAuthenticate = () => {
     lastName: string,
     phoneNumber: string,
     password: string,
-    role: string
+    role: string,
+    isCompleteAccountReg: boolean
   }, cb = () => {}): Promise<LoginResponse> => {
     let response: LoginResponse;
     try {
       setLoading(true);
       const request = await makeApiRequest({
-        route: `${signUpEndpoint}`,
+        route: data.isCompleteAccountReg ? `${completeSignUpEndpoint}` : `${signUpEndpoint}`,
         type: 'POST',
         data,
         isDefaultAuth: true,

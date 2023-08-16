@@ -1,5 +1,6 @@
 export const loginEndpoint = `/auth/login`;
 export const signUpEndpoint = `/accounts/create-user`;
+export const completeSignUpEndpoint = `/accounts/create-user`;
 export const requestOTPEndpoint = `/auth/token/generate-otp`;
 export const verifyOTPEndpoint = `/auth/token/verify-otp`;
 export const resetPasswordEndpoint = `/accounts/forgot-password`;
@@ -8,6 +9,8 @@ export const updatePasswordEndpoint = `/accounts/change-password`;
 
 
 //properties
+export const createPropertEndpoint = `/properties/create-property`;
+export const editPropertyEndpoint = `/properties/update-property`;
 export const createPropertyEndpoint = `/properties/create-property`;
 export const createUnitEndpoint = `/properties/create-property-unit`;
 export const editeUnitEndpoint = `/properties/update-unit`;

@@ -47,7 +47,10 @@ export default function LoginScreen({
         token,
         user
       }));
-      navigation.navigate("App")
+      if (user?.completed === true)
+        navigation.navigate("App")
+      else
+        navigation.navigate("CompleteAccountCreationScreen")
     }
   }
   return (
