@@ -22,3 +22,5 @@ export const getUnitsEndpoint = `/properties/get-property-units`;
 
 //tenant
 export const addTenantToPropertyEndpoint = `/properties/tenancy/create-tenancy`;
+export const getOccupiedPropertiesEndpoint = `/properties/tenancy/get-tenant-occupied-details`;
+export const endTenancyEndpoint = `/properties/tenancy/remove-tenancy`;

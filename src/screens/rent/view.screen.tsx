@@ -12,6 +12,9 @@ import { DefaultRadiobox } from "src/components/inputs/checkbox.components";
 import { formatCurrency } from "src/utils/FormatNumber";
 import { currencySymbol } from "src/constants/currencies.constants";
 import { RentalItem } from "./components";
+import useTenant from "src/hooks/useTenant";
+import { showConfirm } from "src/components/modals/confirm.modals";
+import { showToast } from "src/components/Toast";
 
 export const RentalDetailItem = ({
   value = "",
@@ -75,6 +78,28 @@ export default function ViewRentalScreen({
   route
 }: RootStackScreenProps<"ViewRentalScreen">) {
   const theme = useContext(AppThemeContext);
+  const rentalDetails = route?.params?.rental
+
+  const { loading, endTenancy } = useTenant();
+
+  const doEndTenancy = async () => {
+    showConfirm({
+      title: `End Tenancy`,
+      message: `Are you sure you want to end your tenancy for propery ${rentalDetails.property.id}. \nLocated at ${rentalDetails.property.address}`,
+      type: `info`,
+      onConfirm: async () => {
+        const req = await endTenancy({
+          tenancyId: rentalDetails?.tenancy?.id
+        })
+        showToast({
+          title: `End Tenancy`,
+          message: req?.message || `Tenancy ended successfully`,
+          type: req?.hasError === false ? "success" : "error"
+        })
+        if (req?.hasError === false) navigation.navigate("RentalsScreen")
+      }
+    })
+  }
 
   return (
     <SafeAreaView
@@ -101,7 +126,10 @@ export default function ViewRentalScreen({
           }}
         />
         <RentalItem
-          item={route.params.rental}
+          item={{
+            id: rentalDetails.id,
+            propertyLocation: rentalDetails.property.address
+          }}
           containerStyle={{marginBottom: fontsConstants.h(20)}}
         />
         <View style={{
@@ -118,12 +146,12 @@ export default function ViewRentalScreen({
             {[{
               id: 1,
               label: 'Last Rent Paid',
-              value: `2023-05-23`,
+              value: rentalDetails.lastPaymentDate,
               color: colorsConstants.colorPrimary
             }, {
               id: 2,
               label: 'Next Rent Due Date',
-              value: `2024-05-23`,
+              value: rentalDetails.nextDueDate,
               color: colorsConstants.criticalRed
             }].map((item, index) => (
               <RentalDetailItem
@@ -150,12 +178,12 @@ export default function ViewRentalScreen({
             {[{
               id: 1,
               label: 'Next Rent Amount',
-              value: `${currencySymbol['ngn']}${formatCurrency(1350000)}`,
+              value: `${currencySymbol['ngn']}${formatCurrency(Number(rentalDetails.nextRentAmount))}`,
               color: "#FF9401"
             }, {
               id: 2,
               label: 'Tenancy Duration',
-              value: `12 months`,
+              value: `${rentalDetails.duration} months`,
               color: "#633EFF"
             }].map((item, index) => (
               <RentalDetailItem
@@ -182,12 +210,12 @@ export default function ViewRentalScreen({
             {[{
               id: 1,
               label: 'Landlord\'s Name',
-              value: `Harry Adebola`,
+              value: rentalDetails.landlord?.fullName || '',
               color: colorsConstants.colorWhite
             }, {
               id: 2,
               label: 'Landlord\'s Mobile',
-              value: `07034578945`,
+              value: rentalDetails?.landlord?.mobile || '',
               color: colorsConstants.colorWhite
             }].map((item, index) => (
               <RentalDetailItem
@@ -210,12 +238,15 @@ export default function ViewRentalScreen({
           containerStyle={styles.btnContainerStyle}
           onPress={() => {
             navigation.navigate("ConfirmRentPayment", {
-              amount: 1350000
+              amount: rentalDetails?.nextRentAmount,
+              property: rentalDetails?.property
             })
           }}
         />
         <DefaultButton
           title={`End Tenancy`}
+          onPress={doEndTenancy}
+          loading={loading}
           type="outline"
           titleStyle={[{
             color: colorsConstants.criticalRed

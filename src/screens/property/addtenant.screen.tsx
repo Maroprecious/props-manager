@@ -38,8 +38,8 @@ export default function AddTenantScreen({
       unitId: route.params.data.unit.id,
       tenantDuration: `${tenantDuration} months`,
       tenantEmail,
-      moveInDate: `${moment(moveInDate).format("MMM, YYYY")}`,
-      lastPaymentDate: `${moment(lastPaymentDate).format("YY-MM-DD")}`
+      moveInDate: `${moment(moveInDate).format("YYYY-MM-DD")}`,
+      lastPaymentDate: `${moment(lastPaymentDate).format("YYYY-MM-DD")}`
     })
     if (req?.data?.hasError === false) {
       showToast({

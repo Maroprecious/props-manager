@@ -20,6 +20,138 @@ import { useAppSelector } from "src/hooks/useReduxHooks";
 import { PropertiesListView, RenderAddTenancyButton } from "../property/components";
 import useProperty from "src/hooks/useProperties";
 import { useNavigation } from "@react-navigation/native";
+import useTenant from "src/hooks/useTenant";
+
+export const RenderLatestOccupiedProperty = () => {
+  const theme = useContext(AppThemeContext)
+  const user = useAppSelector((state) => state.auth.user)
+  const navigation = useNavigation()
+  
+  const { loading, getOccupiedProperties } = useTenant();
+
+  const [propertiesOccupied, setPropertiesOccupied] = React.useState<any>([]);
+
+  const fetchOccupiedProperties = async () => {
+    const req = await getOccupiedProperties({
+      tenantId: `${user.id}`
+    });
+    if (req?.hasError === false) setPropertiesOccupied(req?.data?.message || [])
+    else setPropertiesOccupied([]) 
+  }
+
+  React.useEffect(() => {
+    fetchOccupiedProperties()
+  }, [navigation])
+
+  if (propertiesOccupied.length === 0)
+    return <></>
+
+  return (
+    <View>
+      <Text style={[{
+        fontFamily: fontsConstants.Lora_Bold,
+        fontSize: fontsConstants.h(12),
+        color: colorsConstants[theme].screenLabel,
+        marginBottom: fontsConstants.h(10)
+      }]}>
+        {`Tenancy Details`}
+      </Text>
+      <RNView style={{
+        borderWidth: fontsConstants.h(1),
+        borderColor: colorsConstants.colorPrimary,
+        borderRadius: fontsConstants.w(20),
+        padding: fontsConstants.w(10),
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: fontsConstants.h(20),
+      }}>
+        <LocationIcon/>
+        <RNView style={{
+          flex: 1,
+          marginLeft: fontsConstants.w(15)
+        }}>
+          <Text style={[styles.addressText, {
+            fontSize: fontsConstants.h(12),
+            color: colorsConstants[theme].darkText,
+            marginBottom: fontsConstants.w(10)
+          }]}>{`Tenancy Location`}</Text>
+          <Text style={[styles.addressText, {
+            fontSize: fontsConstants.h(11),
+            color: colorsConstants[theme].darkText3,
+            opacity: 0.6
+          }]}>
+            {propertiesOccupied[0].property_details?.propertyLocation}
+          </Text>
+        </RNView>
+        {/* <RenderAddTenancyButton/> */}
+      </RNView>
+      <RNView
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between"
+        }}
+      >
+        {[{
+          id: 1,
+          label: 'Last Payment Date',
+          value: moment(new Date(propertiesOccupied[0]?.tenancy?.lastPaymentDate)).format("YYYY-MM-DD"),
+          color: "#3E64FF"
+        }, {
+          id: 2,
+          label: 'Next Rent Due Date',
+          value: moment(new Date(propertiesOccupied[0]?.tenancy?.lastPaymentDate)).add((propertiesOccupied[0]?.tenancy?.tenantDuration?.split(" ")[0]), "months").format("YYYY-MM-DD"),
+          color: "#FE4A5E"
+        }].map((item, index) => (
+          <RentalDetailItem
+            key={index.toString()}
+            label={item.label}
+            value={item.value}
+            radioColor={item.color}
+            labelStyle={{color: colorsConstants[theme].darkText}}
+            valueStyle={{color: colorsConstants[theme].darkText3}}
+            // button={index === 0 ? <RenderAddTenancyButton/> : null}
+            containerStyle={{
+              marginLeft: index === 1 ? fontsConstants.w(5) : 0,
+              marginRight: index === 1 ? 0 : fontsConstants.w(5)
+            }}
+          />
+        ))}
+      </RNView>
+      <RNView
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: fontsConstants.w(10)
+        }}
+      >
+        {[{
+          id: 1,
+          label: 'Next Rent Amount',
+          value: `₦${formatCurrency(propertiesOccupied[0]?.unit?.unitRent)}`,
+          color: "#FF9401"
+        }, {
+          id: 2,
+          label: 'Tenancy Duration',
+          value: `${propertiesOccupied[0]?.unit?.tenantDuration}`,
+          color: "#633EFF"
+        }].map((item, index) => (
+          <RentalDetailItem
+            key={index.toString()}
+            label={item.label}
+            value={item.value}
+            radioColor={item.color}
+            labelStyle={{color: colorsConstants[theme].darkText}}
+            valueStyle={{color: colorsConstants[theme].darkText3}}
+            containerStyle={{
+              marginLeft: index === 1 ? fontsConstants.w(5) : 0,
+              marginRight: index === 1 ? 0 : fontsConstants.w(5)
+            }}
+          />
+        ))}
+      </RNView>
+    </View>
+  )
+}
 
 export const RenderUserProperties = () => {
   const user = useAppSelector((state) => state.auth.user)
@@ -62,7 +194,7 @@ export default function HomeTabScreen({
 }: RootTabScreenProps<"HomeTabNavigator">) {
   const theme = useContext(AppThemeContext)
   const user = useAppSelector((state) => state.auth.user)
- 
+  
   return (
     <ScrollView style={styles.container}>
       <ImageBackground
@@ -250,108 +382,8 @@ export default function HomeTabScreen({
           showSkipButton={false}
         />
         {user.roleType === "landlord" && <RenderUserProperties />}
-        <Text style={[{
-          fontFamily: fontsConstants.Lora_Bold,
-          fontSize: fontsConstants.h(12),
-          color: colorsConstants[theme].screenLabel,
-          marginBottom: fontsConstants.h(10)
-        }]}>
-          {`Tenancy Details`}
-        </Text>
-        <RNView style={{
-          borderWidth: fontsConstants.h(1),
-          borderColor: colorsConstants.colorPrimary,
-          borderRadius: fontsConstants.w(20),
-          padding: fontsConstants.w(10),
-          flexDirection: "row",
-          alignItems: "center",
-          marginBottom: fontsConstants.h(20),
-        }}>
-          <LocationIcon/>
-          <RNView style={{
-            flex: 1,
-            marginLeft: fontsConstants.w(15)
-          }}>
-            <Text style={[styles.addressText, {
-              fontSize: fontsConstants.h(12),
-              color: colorsConstants[theme].darkText,
-              marginBottom: fontsConstants.w(10)
-            }]}>{`Tenancy Location`}</Text>
-            <Text style={[styles.addressText, {
-              fontSize: fontsConstants.h(11),
-              color: colorsConstants[theme].darkText3,
-              opacity: 0.6
-            }]}>
-              {`10 Alake Street, Victoria Island. Lagos`}
-            </Text>
-          </RNView>
-          <RenderAddTenancyButton/>
-        </RNView>
-        <RNView
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between"
-          }}
-        >
-          {[{
-            id: 1,
-            label: 'Active Tenancy',
-            value: 1,
-            color: "#3E64FF"
-          }, {
-            id: 2,
-            label: 'Next Rent Due Date',
-            value: moment('2023-02-25').format("DD/MM/YYYY"),
-            color: "#FE4A5E"
-          }].map((item, index) => (
-            <RentalDetailItem
-              key={index.toString()}
-              label={item.label}
-              value={item.value}
-              radioColor={item.color}
-              labelStyle={{color: colorsConstants[theme].darkText}}
-              valueStyle={{color: colorsConstants[theme].darkText3}}
-              button={index === 0 ? <RenderAddTenancyButton/> : null}
-              containerStyle={{
-                marginLeft: index === 1 ? fontsConstants.w(5) : 0,
-                marginRight: index === 1 ? 0 : fontsConstants.w(5)
-              }}
-            />
-          ))}
-        </RNView>
-        <RNView
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: fontsConstants.w(10)
-          }}
-        >
-          {[{
-            id: 1,
-            label: 'Next Rent Amount',
-            value: `₦${formatCurrency(1350000)}`,
-            color: "#FF9401"
-          }, {
-            id: 2,
-            label: 'Tenancy Duration',
-            value: `12 months`,
-            color: "#633EFF"
-          }].map((item, index) => (
-            <RentalDetailItem
-              key={index.toString()}
-              label={item.label}
-              value={item.value}
-              radioColor={item.color}
-              labelStyle={{color: colorsConstants[theme].darkText}}
-              valueStyle={{color: colorsConstants[theme].darkText3}}
-              containerStyle={{
-                marginLeft: index === 1 ? fontsConstants.w(5) : 0,
-                marginRight: index === 1 ? 0 : fontsConstants.w(5)
-              }}
-            />
-          ))}
-        </RNView>
-        <RNView>
+        {user.roleType === "tenant" && <RenderLatestOccupiedProperty />}
+        {/* <RNView>
           <Text style={{
             fontFamily: fontsConstants.Lora_Bold,
             fontSize: fontsConstants.h(14),
@@ -377,7 +409,7 @@ export default function HomeTabScreen({
               }}
             />
           ))}
-        </RNView>
+        </RNView> */}
       </ImageBackground>
     </ScrollView>
   );
