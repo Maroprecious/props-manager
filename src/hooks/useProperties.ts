@@ -141,7 +141,6 @@ export const useUnits = () => {
     propertyId: string,
   }, id: string, cb = () => { }): Promise<NetworkResponse> => {
     setLoading(true);
-    console.log(data, 'hello--')
     const request = await makeApiRequest({
       route: `${editeUnitEndpoint}/${id}`,
       type: 'PUT',

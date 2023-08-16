@@ -31,7 +31,7 @@ export default function ViewTenant({
     const [remove, setRemove] = useState(false)
     const [show, setShow] = useState(false)
     return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <Layout title="View Tenant Details" goback={true}>
                 {visible &&
                     <Success

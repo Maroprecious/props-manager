@@ -21,7 +21,7 @@ export default function TenancyScreen({
     const [selected, setSelected] = useState<any>({ id: -1 })
 
     return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
 
         <Layout title="Tenancy" goback={true}>
                 <View style={styles.container}>
