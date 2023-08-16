@@ -26,6 +26,7 @@ export default function PayRentScreen({
   return (
     <ScrollView
       style={styles.container}
+      showsVerticalScrollIndicator={false}
     >
       <ImageBackground
         source={require("src/assets/images/backgrounds/background.png")}

@@ -43,7 +43,7 @@ export default function ViewUnitsScreen({
             }}>
                 <View style={styles.details}>
                     <View>
-                        <Text style={[styles.title, {color: colorsConstants[theme].darkText}]}>Unit Details</Text>
+                        <Text style={[styles.title, {color: colorsConstants[theme].darkText}]}>{item.unitName}</Text>
                         <Text style={[styles.label, {color: colorsConstants[theme].grey3}]}>{item.unitType.description}</Text>
                     </View>
                     <FontAwesome name="angle-right" size={20} color="black" />
@@ -55,9 +55,8 @@ export default function ViewUnitsScreen({
         <Layout title="Units" goback={true}>
             <View style={styles.container}>
                 <FlatList
-
+                refreshing={loading}
                     data={units}
-                    
                     contentContainerStyle={{ width: '98%', alignSelf: 'center', marginTop: 20 }}
                     renderItem={({ item }) => <Item item={item}  />}
                     ListEmptyComponent={() =>
