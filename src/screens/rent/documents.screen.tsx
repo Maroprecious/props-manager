@@ -133,9 +133,6 @@ export default function DocumentsScreen({
         </View>
         <DefaultButton
           title={`Upload Document`}
-          onPress={() => navigation.navigate("ConfirmRentPayment", {
-            amount: selected?.rentAmount
-          })}
           containerStyle={{
             marginTop: fontsConstants.h(50),
             marginHorizontal: fontsConstants.w(20)

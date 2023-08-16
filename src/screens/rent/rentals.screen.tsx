@@ -1,15 +1,18 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { ImageBackground, StyleSheet, View as RNView } from "react-native";
 import { ScrollView } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
-import globalConstants, { Tenancies } from "src/constants/global.constants";
+import globalConstants from "src/constants/global.constants";
 import { ScreenTitle } from "../auth/components/screentitle.component";
 import layoutsConstants from "src/constants/layouts.constants";
 import { Modalize } from "react-native-modalize";
 import { RentalItem } from "./components";
+import useTenant from "src/hooks/useTenant";
+import { useAppSelector } from "src/hooks/useReduxHooks";
+import moment from "moment";
 
 export default function RentalsScreen({
   navigation,
@@ -17,6 +20,24 @@ export default function RentalsScreen({
 }: RootStackScreenProps<"RentalsScreen">) {
   const theme = useContext(AppThemeContext);
   const alertRef = useRef<Modalize>(null);
+  const user = useAppSelector((state) => state.auth.user);
+
+  const { loading, getOccupiedProperties } = useTenant();
+
+  const [properties, setProperties] = useState<any>([]);
+
+  const fetchProperties = async () => {
+    const req = await getOccupiedProperties({
+      tenantId: `${user.id}`
+    });
+    if (req?.hasError === false) setProperties(req?.data?.message || [])
+    else setProperties([]) 
+  }
+
+  useEffect(() => {
+    fetchProperties()
+  }, [navigation])
+
 
   return (
     <ScrollView
@@ -43,24 +64,47 @@ export default function RentalsScreen({
         <RNView style={{
           flex: 1
         }}>
-          {Tenancies.map((item, index) => (
+          {properties.map((item: any, index: number) => (
             <RentalItem
               key={index.toString()}
-              item={item}
+              item={{
+                id: properties?.unit?.id || '',
+                propertyLocation: item?.property_details?.propertyLocation,
+              }}
               onViewPress={() => navigation.navigate("ViewRentalScreen", {
-                rental: item
+                rental: {
+                  duration: item?.unit?.tenantDuration?.split(" ")[0] || 12,
+                  id: item?.unit?.id,
+                  tenancy: {
+                    id: item?.tenancy?.id
+                  },
+                  lastPaymentDate: moment(item?.tenancy?.lastPaymentDate).format("YYYY-MM-DD"),
+                  nextDueDate: moment(new Date(item?.tenancy?.lastPaymentDate)).add(item?.tenancy?.tenantDuration?.split(" ")[0], "months").format("YYYY-MM-DD"),
+                  nextRentAmount: item?.unit?.unitRent,
+                  property: {
+                    id: item?.property_details?.id,
+                    address: item?.property_details?.propertyLocation
+                  },
+                  landlord: {
+                    fullName: `${item?.landlord_detail?.firstName} ${item?.landlord_detail?.lastName}`,
+                    id: `${item?.landlord_detail?.userId}`,
+                    mobile: `${item?.landlord_detail?.phoneNumber}`
+                  }
+                }
               })}
             />
           ))}
         </RNView>
-        <DefaultButton
-          title={`Add Tenancy`}
-          containerStyle={{
-            marginTop: fontsConstants.h(20),
-            marginHorizontal: fontsConstants.w(20)
-          }}
-          onPress={() => navigation.navigate('AddPropertyScreen')}
-        />
+        {user.roleType !== "tenant" && 
+          <DefaultButton
+            title={`Add Tenancy`}
+            containerStyle={{
+              marginTop: fontsConstants.h(20),
+              marginHorizontal: fontsConstants.w(20)
+            }}
+            onPress={() => navigation.navigate('AddPropertyScreen')}
+          />
+        }
       </ImageBackground>
     </ScrollView>
   );

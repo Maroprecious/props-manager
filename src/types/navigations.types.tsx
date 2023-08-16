@@ -33,11 +33,33 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   PayRentScreen: undefined;
   ConfirmRentPayment: {
     amount: number,
+    property: {
+      id: string,
+      address: string,
+    },
   };
   TransactionsScreen: undefined;
   RentalsScreen: undefined;
   ViewRentalScreen: {
-    rental: any
+    rental: {
+      id: string,
+      tenancy: {
+        id: string
+      },
+      property: {
+        id: string,
+        address: string,
+      }, 
+      lastPaymentDate: string,
+      nextDueDate: string,
+      nextRentAmount: number,
+      duration: number,
+      landlord?: {
+        id: string,
+        fullName: string,
+        mobile: string
+      }
+    }
   };
   DocumentsScreen: undefined;
   TenancyScreen: undefined;
