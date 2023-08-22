@@ -37,7 +37,7 @@ export default function CreateAccountScreen({
   })
   const { createAccount, loading } = useAuthenticate()
   const [data, setData] = useState<any>({
-    email: user.email,
+    email: user?.email || '',
     firstName: '',
     lastName: '',
     password: '',
@@ -50,7 +50,7 @@ export default function CreateAccountScreen({
     const req = await createAccount({
       ...data,
       userId: user.id,
-      isCompleteAccountReg: user.email !== ''
+      isCompleteAccountReg: user?.email !== ''
     })
     if (req.hasError && req.status !== 200)
       showToast({
@@ -95,7 +95,7 @@ export default function CreateAccountScreen({
         justifyContent: "flex-end"
       }}>
         <ScreenTitle
-          title={user.email === '' ? `Sign Up` : `Complete Sign Up`}
+          title={user?.email === '' ? `Sign Up` : `Complete Sign Up`}
           intro={`Enter sign up details`}
           containerStyle={{
             marginTop: fontsConstants.h(-20),
@@ -127,7 +127,7 @@ export default function CreateAccountScreen({
           onChangeText={(e) => handleData(e, 'email')}
           value={data?.email}
           containerStyle={styles.inputContainerStyle}
-          disabled={user.email !== ''}
+          disabled={user?.email !== ''}
         />
         <DefaultInput
           placeholder="Password"
@@ -144,7 +144,7 @@ export default function CreateAccountScreen({
             zIndex: 10
           }]}    
           dropDownDirection="BOTTOM"    
-          disabled={user.email !== ''}  
+          disabled={user?.email !== ''}  
         />
         <Text style={[styles.noteText, {
           textAlign: "center",
@@ -184,7 +184,7 @@ export default function CreateAccountScreen({
           disabled={data.email && data.phoneNumber && data.firstName && data.lastName && data.password && data.role ? false : true}
           containerStyle={{zIndex: -1}}
         />
-        {user.email === '' && 
+        {user?.email === '' && 
           <RNView style={{
             flexDirection: "row",
             justifyContent: "space-between",
@@ -270,7 +270,7 @@ export default function CreateAccountScreen({
         buttonTitle={alertData.buttonTitle}
         type={alertData.type}
         onClosed={() => {
-          if(registrationSuccessful) navigation.navigate(user.email ? "ReLoginScreen" : "LoginScreen")
+          if(registrationSuccessful) navigation.navigate(user?.email ? "ReLoginScreen" : "LoginScreen")
         }}
         body={(
           <>
@@ -292,7 +292,7 @@ export default function CreateAccountScreen({
             </Text>
           </>
         )}
-        onButtonPress={() => registrationSuccessful ? navigation.navigate(user.email ? "ReLoginScreen" : "LoginScreen") : alertRef?.current?.close()}
+        onButtonPress={() => registrationSuccessful ? navigation.navigate(user?.email ? "ReLoginScreen" : "LoginScreen") : alertRef?.current?.close()}
       />
     </ScrollView>
   );
