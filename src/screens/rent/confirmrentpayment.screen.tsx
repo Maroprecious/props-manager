@@ -51,7 +51,7 @@ export default function ConfirmRentPayment({
           width: '100%',
           opacity: 1,
           backgroundColor: '#fff',
-          height: '80%'
+          height: '80%',
         }}>
         <ImageBackground
           source={require("src/assets/images/backgrounds/background.png")}

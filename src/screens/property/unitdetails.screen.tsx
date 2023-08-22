@@ -27,7 +27,7 @@ export default function UnitDetailsScreen({
     const { loading, createProperty, created } = useProperty()
     const { property } = useProperties()
     const { oneUnit } = useUnit()
-    console.log(oneUnit, 'hello')
+    console.log(oneUnit.occupyingStatus, 'charge')
     return (
         <Layout title="Unit Details" goback={true}>
             <View style={styles.container}>
@@ -58,40 +58,41 @@ export default function UnitDetailsScreen({
                         {[{
                             id: 1,
                             label: 'Unit Rent:',
-                            value: oneUnit.unitRent === null ? '0.00' : formatCurrency(Number(oneUnit.unitRent)),
+                            value: oneUnit.unitRent === null ?
+                                '₦ 0.00' : `₦ ${formatCurrency(Number(oneUnit.unitRent))}`,
                             valueTextOpacity: 1
                         }, {
                             id: 2,
                             label: 'Service Charge:',
-                            value: formatCurrency(Number(oneUnit.unitServiceCharge)),
+                            value: `₦ ${formatCurrency(Number(oneUnit.unitServiceCharge))}`,
                             valueTextOpacity: 1
                         }, {
                             id: 3,
                             label: 'Legal Fee:',
-                            value: oneUnit.unitLegalFee === null ? '0.00' : formatCurrency(Number(oneUnit.unitLegalFee)),
+                            value: oneUnit.unitLegalFee === null ? '₦ 0.00' : `₦ ${formatCurrency(Number(oneUnit.unitLegalFee))}`,
                             valueTextOpacity: 1
                         }, {
                             id: 4,
                             label: 'Agreement Charge:',
-                            value: oneUnit.unitAgreementCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitAgreementCharge)),
+                            value: oneUnit.unitAgreementCharge === null ? '₦ 0.00' : `₦ ${formatCurrency(Number(oneUnit.unitAgreementCharge))}`,
                             valueTextOpacity: 1
                         }, {
                             id: 5,
                             label: 'Commission Charge:',
-                            value: oneUnit.unitCommissionCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitCommissionCharge)),
+                            value: oneUnit.unitCommissionCharge === null ? '₦ 0.00' : `₦ ${formatCurrency(Number(oneUnit.unitCommissionCharge))}`,
                             valueTextOpacity: 1
                         },
                         {
                             id: 6,
                             label: 'Other Charges:',
                             value:
-                                oneUnit.otherCharges === null ? '0.00' : formatCurrency(Number(oneUnit.otherCharges)),
+                                oneUnit.otherCharges === null ? '₦ 0.00' :  !oneUnit.otherCharges ? '₦ 0.00' : `₦ ${formatCurrency(Number(oneUnit.otherCharges))}`,
                             valueTextOpacity: 1
                         }, {
                             id: 7,
                             label: 'Occupying Status:',
                             value:
-                                oneUnit.occupyingStatus === false ? 'None' : oneUnit.occupyingStatus,
+                                oneUnit.occupyingStatus === false ? 'None' : 'Occupied',
                             valueTextOpacity: 1
                         }
                         ].map((item, index) => (
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
         color: colorsConstants.light.darkText
     },
     edit: {
-       
+
         textAlign: 'right',
         textDecorationColor: colorsConstants.colorPrimary,
         textDecorationLine: 'underline',

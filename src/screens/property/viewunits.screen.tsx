@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext, useState, useEffect } from "react";
-import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { View, StyleSheet, FlatList, TouchableOpacity, RefreshControl } from "react-native";
 import { Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -21,7 +21,7 @@ export default function ViewUnitsScreen({
 }: RootStackScreenProps<"ViewUnitsScreen">) {
     const theme = useContext(AppThemeContext);
     const [units, setUnits] = useState([])
-    const {setOneUnit} = useUnit()
+    const { setOneUnit } = useUnit()
     const user = useAppSelector((state) => state.auth.user)
     const { loading, getUnits } = useUnits()
 
@@ -43,8 +43,8 @@ export default function ViewUnitsScreen({
             }}>
                 <View style={styles.details}>
                     <View>
-                        <Text style={[styles.title, {color: colorsConstants[theme].darkText}]}>{item.unitName}</Text>
-                        <Text style={[styles.label, {color: colorsConstants[theme].grey3}]}>{item.unitType.description}</Text>
+                        <Text style={[styles.title, { color: colorsConstants[theme].darkText }]}>{item.unitName}</Text>
+                        <Text style={[styles.label, { color: colorsConstants[theme].grey3 }]}>{item.unitType.description}</Text>
                     </View>
                     <FontAwesome name="angle-right" size={20} color="black" />
                 </View>
@@ -55,13 +55,21 @@ export default function ViewUnitsScreen({
         <Layout title="Units" goback={true}>
             <View style={styles.container}>
                 <FlatList
-                refreshing={loading}
+                    refreshing={loading}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={loading}
+                            onRefresh={() => {
+                                fetchUnits();
+                            }}
+                            />
+                    }
                     data={units}
                     contentContainerStyle={{ width: '98%', alignSelf: 'center', marginTop: 20 }}
-                    renderItem={({ item }) => <Item item={item}  />}
+                    renderItem={({ item }) => <Item item={item} />}
                     ListEmptyComponent={() =>
                         <View style={styles.center}>
-                            <Text style={{fontFamily: fontsConstants.Lora_Regular, fontSize: 15}}>No Units,</Text>
+                            <Text style={{ fontFamily: fontsConstants.Lora_Regular, fontSize: 15 }}>No Units,</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('AddUnitsScreen', {
                                 propertyId: property.id
                             })}>
@@ -77,25 +85,26 @@ export default function ViewUnitsScreen({
 const styles = StyleSheet.create({
     container: {
         width: '90%',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        height: '100%'
     },
-    details:{
+    details: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 16
     },
-    title:{
+    title: {
         fontSize: 19,
         fontFamily: fontsConstants.Lora_Bold,
     },
-    label:{
+    label: {
         fontSize: 14,
-        fontFamily: fontsConstants.Lora_Regular, 
+        fontFamily: fontsConstants.Lora_Regular,
         marginTop: 3,
-        
+
     },
-    center:{
+    center: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'center',
