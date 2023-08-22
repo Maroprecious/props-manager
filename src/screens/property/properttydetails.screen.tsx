@@ -111,7 +111,7 @@ export default function PropertyDetailsScreen({
                             navigation.navigate("ViewUnitsScreen")
                         }}
                         containerStyle={{
-                            marginHorizontal: fontsConstants.w(30),
+                            // marginHorizontal: fontsConstants.w(30),
                             marginTop: 40
                         }}
                     />

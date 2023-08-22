@@ -13,7 +13,7 @@ import { DefaultRadiobox } from "src/components/inputs/checkbox.components";
 import { formatCurrency } from "src/utils/FormatNumber";
 import moment from "moment";
 import { LocationIcon } from "./components";
-import { RenderAddTenancyButton } from "../property/components";
+import { RenderAddButton } from "../property/components";
 import { useAppSelector } from "src/hooks/useReduxHooks";
 import useTenant from "src/hooks/useTenant";
 
@@ -133,7 +133,7 @@ export default function PayRentScreen({
               }}>
                 {`No additional tenancy record found`}
               </Text>
-              <RenderAddTenancyButton
+              <RenderAddButton
 
               />
             </View>

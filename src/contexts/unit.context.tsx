@@ -11,6 +11,7 @@ type oneUnitType = {
     unitName: string,
     unitRent: number | string,
     unitServiceCharge: number | string,
+    unitOtherCharges: number
     unitType:{
         category?: string,
         description?: string,
@@ -31,6 +32,7 @@ const initialUnitState: oneUnitType = {
     unitName: '',
     unitRent: 0,
     unitServiceCharge: 0,
+    unitOtherCharges: 0,
     unitType:{
         category: '',
         description: '',

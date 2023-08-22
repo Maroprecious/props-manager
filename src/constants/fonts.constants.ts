@@ -1,5 +1,8 @@
 import { Dimensions } from 'react-native';
 
+export const deivceWidth = Dimensions.get("window").width;
+export const deviceHeight = Dimensions.get("window").height;
+
 export const DEVICE_SCALE = Dimensions.get('window').width / 375;
 export const DEVICE_SCALE_HEIGHT = Dimensions.get('window').height / 768;
 

@@ -1,13 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     StyleSheet,
     TouchableOpacity,
     View,
     ScrollView,
     Image,
-    Platform
+    Platform,
+    ImageBackground,
+    FlatList
 } from "react-native";
-import { Text } from "src/components/Themed";
+import { SafeAreaView, Text } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
@@ -18,20 +20,157 @@ import { DefaultRadiobox } from "src/components/inputs/checkbox.components";
 import { LocationIcon } from "../rent/components";
 import Layout from "src/components/layout/layout";
 import { object } from "yup";
+import useProperties from "src/hooks/useProperties";
+import layoutsConstants from "src/constants/layouts.constants";
+import { TabScreenTitle } from "src/components/labels/screentitle.components";
+import { ScreenTitle } from "../auth/components/screentitle.component";
+import { RenderPropertyDetails } from "../property/components";
 
 export default function ViewTenancyScreen({
     navigation,
     route
 }: RootStackScreenProps<"ViewTenancyScreen">) {
     const theme = useContext(AppThemeContext);
+    const selectedProperty = route.params?.data?.property;
+    
+    const { loading, getPropertyOccupants } = useProperties();
+
     const [selected, setSelected] = useState<any>({ id: -1 })
+    const [tenants, setTenants] = useState<any>([]);
+
+    const fetchOccupants = async () => {
+        const req = await getPropertyOccupants({
+            propertyId: selectedProperty.id
+        });
+        if (req.hasError === false) setTenants(req?.data?.message || [])
+    }
+
+    useEffect(() => {
+        fetchOccupants()
+    }, [selectedProperty?.id])
+    
     return (
 
-        <Layout title="View Tenants" goback={true}>
-            <ScrollView
-            showsVerticalScrollIndicator={false}
-                style={styles.container}
+        // <Layout title="View Tenants" goback={true}>
+        //     <ScrollView
+        //     showsVerticalScrollIndicator={false}
+        //         style={styles.container}
+        //     >
+        //         <View style={{
+        //         }}>
+
+        //             <View style={{
+        //                 borderWidth: fontsConstants.h(1),
+        //                 borderColor: colorsConstants.colorPrimary,
+        //                 padding: fontsConstants.w(14),
+        //                 marginBottom: fontsConstants.h(20),
+        //                 marginTop: 20,
+        //                 height: 110,
+        //                 borderRadius: 20,
+        //                 flexDirection: 'row',
+        //                 justifyContent: 'space-between'
+        //             }}>
+
+        //                 <LocationIcon
+        //                     imageSize={fontsConstants.w(25)}
+        //                     containerStyle={{
+        //                         height: fontsConstants.w(48),
+        //                         width: fontsConstants.w(48),
+        //                     }}
+        //                 />
+        //                 <View style={{
+        //                     marginHorizontal: fontsConstants.w(10),
+        //                     flex: 1,
+        //                     justifyContent: 'space-between'
+        //                 }}>
+        //                     <Text style={{
+        //                         fontFamily: fontsConstants.Lora_Regular,
+        //                         fontSize: fontsConstants.h(14),
+        //                         color: colorsConstants[theme].modalBg,
+        //                     }}>
+        //                         Property ID: {selectedProperty.id}
+        //                     </Text>
+        //                     <Text style={{
+        //                         fontFamily: fontsConstants.Lora_Regular,
+        //                         fontSize: fontsConstants.h(12),
+        //                         color: colorsConstants[theme].address,
+        //                     }}>
+        //                         {selectedProperty.propertyName}
+        //                     </Text>
+        //                     <Text style={{
+        //                         fontFamily: fontsConstants.Lora_Regular,
+        //                         fontSize: Platform.OS === 'android' ? 10 : 12,
+        //                         color: colorsConstants[theme].modalBg,
+        //                     }}>
+        //                         {selectedProperty.propertyLocation}                            </Text>
+        //                 </View>
+
+        //             </View>
+
+
+        //         </View>
+        //         {tenants.map((elem: any, index: number) => (
+        //             <TouchableOpacity 
+        //                 activeOpacity={layoutsConstants.activeOpacity} 
+        //                 key={index.toString()} 
+        //                 style={styles.item_container}
+        //             >
+        //                 <View style={[styles.icon_container, { backgroundColor: colorsConstants[theme].grey2 }]} >
+        //                     <Image source={require("src/assets/images/icons/human-icon.png")} style={styles.icon} />
+        //                 </View>
+        //                 <View style={styles.content}>
+        //                     <Text style={[styles.label, { color: colorsConstants[theme].modalBg }]}>{elem?.unit?.unitName || ""}</Text>
+        //                     <Text style={[styles.occupant, { color: colorsConstants[theme].modalBg }]}>Occupant: {elem.occupant} - {elem?.phone || ''}</Text>
+        //                     {/* <Text style={[styles.occupant, { color: colorsConstants[theme].modalBg }]}>Rent Status: {elem.amount} - <Text style={{ color: elem.rent_status === 'Unpaid' ? colorsConstants.criticalRed : colorsConstants.colorSuccess, fontFamily: fontsConstants.Lora_Regular, fontSize: 12 }}>{elem.rent_status}</Text></Text> */}
+        //                 </View>
+        //                 <View>
+        //                     <DefaultRadiobox
+        //                         checked={selected?.id === elem.id}
+        //                         checkedColor={colorsConstants.radioBoxActive}
+        //                         size={fontsConstants.w(20)}
+        //                         onPress={() => setSelected(elem)} />
+        //                 </View>
+        //             </TouchableOpacity>
+        //         ))}
+        //         <DefaultButton
+        //             title={`Add New Tenant`}
+        //             onPress={() => navigation.navigate("AddTenantScreen", {
+        //             data: {
+        //                 unit: {
+        //                 id: null
+        //                 },
+        //                 property: {
+        //                 id: selectedProperty?.id
+        //                 },
+        //             }, from: "tenancy-screen"
+        //             })}
+        //             containerStyle={{
+        //             marginTop: fontsConstants.h(20)
+        //             }}
+        //         />
+        //     </ScrollView>
+
+        // </Layout >
+
+        <SafeAreaView style={{
+            flex: 1
+        }}>
+            <ImageBackground
+                source={require("src/assets/images/backgrounds/background.png")}
+                style={{
+                flex: 1,
+                paddingTop: fontsConstants.h(40),
+                paddingHorizontal: fontsConstants.w(20),
+                }}
             >
+                <HeaderBackButton />
+                <ScreenTitle
+                    title={`View Tenants`}
+                    containerStyle={{
+                        marginTop: fontsConstants.h(12),
+                        marginBottom: fontsConstants.h(35)
+                    }}
+                />
                 <View style={{
                 }}>
 
@@ -64,64 +203,73 @@ export default function ViewTenancyScreen({
                                 fontSize: fontsConstants.h(14),
                                 color: colorsConstants[theme].modalBg,
                             }}>
-                                Property ID: MPM-VI-00946
+                                Property ID: {selectedProperty.id}
                             </Text>
                             <Text style={{
                                 fontFamily: fontsConstants.Lora_Regular,
                                 fontSize: fontsConstants.h(12),
                                 color: colorsConstants[theme].address,
                             }}>
-                                10 Alake Street, Victoria Island. Lagos
+                                {selectedProperty.propertyName}
                             </Text>
                             <Text style={{
                                 fontFamily: fontsConstants.Lora_Regular,
                                 fontSize: Platform.OS === 'android' ? 10 : 12,
                                 color: colorsConstants[theme].modalBg,
                             }}>
-                                Property Manager: Stanley Olaoye - 07039095620                            </Text>
+                                {selectedProperty.propertyLocation}                            </Text>
                         </View>
 
                     </View>
-
-
                 </View>
-                {
-                    TenantInfo.map((elem) => (
-                        <TouchableOpacity activeOpacity={.6} key={elem.id} style={styles.item_container}>
-                            <View style={[styles.icon_container, { backgroundColor: colorsConstants[theme].grey2 }]} >
-                                <Image source={elem.icon} style={styles.icon} />
-                            </View>
-                            <View style={styles.content}>
-                                <Text style={[styles.label, { color: colorsConstants[theme].modalBg }]}>{elem.label}</Text>
-                                <Text style={[styles.occupant, { color: colorsConstants[theme].modalBg }]}>Occupant: {elem.occupant} - {elem.phone}</Text>
-                                <Text style={[styles.occupant, { color: colorsConstants[theme].modalBg }]}>Rent Status: {elem.amount} - <Text style={{ color: elem.rent_status === 'Unpaid' ? colorsConstants.criticalRed : colorsConstants.colorSuccess, fontFamily: fontsConstants.Lora_Regular, fontSize: 12 }}>{elem.rent_status}</Text></Text>
-                            </View>
-                            <View>
-                                <DefaultRadiobox
-                                    checked={selected?.id === elem.id}
-                                    checkedColor={colorsConstants.radioBoxActive}
-                                    size={fontsConstants.w(20)}
-                                    onPress={() => setSelected(elem)} />
-                            </View>
-                        </TouchableOpacity>
-                    ))
-                }
-                <DefaultButton
-                    title={(Object.keys(selected).length > 1 ? `View Tenant Details` : `Add Tenant`)}
-                    titleStyle={{ fontSize: 20 }}
-                    onPress={() => navigation.navigate("ViewTenant")}
-                    disabled={!(Object.keys(selected).length > 1)}
-                    containerStyle={{
-                        marginHorizontal: fontsConstants.w(30),
-                        marginTop: 50,
-                        marginBottom: 50
-                    }}
+                <FlatList
+                    refreshing={loading}
+                    data={tenants}
+                    onRefresh={fetchOccupants}
+                    renderItem={({ item, index }) => (
+                        <TouchableOpacity 
+                        activeOpacity={layoutsConstants.activeOpacity} 
+                        key={index.toString()} 
+                        style={styles.item_container}
+                    >
+                        <View style={[styles.icon_container, { backgroundColor: colorsConstants[theme].grey2 }]} >
+                            <Image source={require("src/assets/images/icons/human-icon.png")} style={styles.icon} />
+                        </View>
+                        <View style={styles.content}>
+                            <Text style={[styles.label, { color: colorsConstants[theme].modalBg }]}>{item?.unit?.unitName || ""}</Text>
+                            <Text style={[styles.occupant, { color: colorsConstants[theme].modalBg }]}>Occupant: {`${item?.tenant?.firstName || "NIL"} ${item?.tenant?.lastName || "NIL"}`} - {item?.tenant?.phoneNumber !== null ? item?.tenant?.phoneNumber : 'Phone'}</Text>
+                            {/* <Text style={[styles.occupant, { color: colorsConstants[theme].modalBg }]}>Rent Status: {elem.amount} - <Text style={{ color: elem.rent_status === 'Unpaid' ? colorsConstants.criticalRed : colorsConstants.colorSuccess, fontFamily: fontsConstants.Lora_Regular, fontSize: 12 }}>{elem.rent_status}</Text></Text> */}
+                        </View>
+                        <View>
+                            {/* <DefaultRadiobox
+                                checked={selected?.id === item?.id}
+                                checkedColor={colorsConstants.radioBoxActive}
+                                size={fontsConstants.w(20)}
+                                onPress={() => setSelected(item)} /> */}
+                        </View>
+                    </TouchableOpacity>
+                    )}
+                    ListFooterComponent={
+                        <DefaultButton
+                            title={`Add New Tenant`}
+                            onPress={() => navigation.navigate("AddTenantScreen", {
+                            data: {
+                                unit: {
+                                id: null
+                                },
+                                property: {
+                                id: selectedProperty?.id
+                                },
+                            }, from: "tenancy-screen"
+                            })}
+                            containerStyle={{
+                            marginTop: fontsConstants.h(20)
+                            }}
+                        />
+                    }
                 />
-            </ScrollView>
-
-        </Layout >
-
-
+            </ImageBackground>
+        </SafeAreaView>
     );
 }
 

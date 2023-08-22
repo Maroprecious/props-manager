@@ -21,7 +21,7 @@ import { AssignManagerSchema } from "src/utils/schema";
 import * as Yup from 'yup';
 import { Success } from "src/components/modals/alert.modals";
 import { Select } from "src/components/select/select";
-import { RenderAddTenancyButton } from "../property/components";
+import { RenderAddButton } from "../property/components";
 
 
 
@@ -191,7 +191,7 @@ export default function AssignPropertyManager({
                                 }}>
                                     {`No additional property record found`}
                                 </Text>
-                                <RenderAddTenancyButton />
+                                <RenderAddButton />
                             </View>
                         </View>
                     </View>

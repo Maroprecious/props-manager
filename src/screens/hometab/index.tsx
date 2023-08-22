@@ -17,7 +17,7 @@ import { LocationIcon } from "../rent/components";
 import { useContext } from "react";
 import AppThemeContext from "src/contexts/Theme.context";
 import { useAppSelector } from "src/hooks/useReduxHooks";
-import { PropertiesListView, RenderAddTenancyButton } from "../property/components";
+import { PropertiesListView, RenderAddButton } from "../property/components";
 import useProperty from "src/hooks/useProperties";
 import { useNavigation } from "@react-navigation/native";
 import useTenant from "src/hooks/useTenant";
