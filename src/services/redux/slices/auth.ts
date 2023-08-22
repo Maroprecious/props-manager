@@ -54,7 +54,8 @@ export const authSlice = createSlice({
     logout: (state) => {
       state = produce(state, draft => {
         draft.token = null,
-        draft.user.id = null
+        draft.user.id = null,
+        draft.user.email = ''
       })
       return state;
     }
