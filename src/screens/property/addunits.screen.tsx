@@ -164,7 +164,6 @@ export default function AddUnitsScreen({
     }
   }
   const doEditUnit = async () => {
-    
     const req: any = await editUnit({
       unitName,
       unitRent: Number(currencyToString(unitRent)),
@@ -172,17 +171,19 @@ export default function AddUnitsScreen({
       unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
       unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
       unitLegalCharge: Number(currencyToString(unitLegalCharge)),
+      unitOtherCharges: Number(currencyToString(unitOtherCharges)),
       propertyId: property.id,
       unitTypeId: unitTypeId.toString()
     }, oneUnit.id)
     if (req?.data?.hasError === false) {
      setOneUnit({
       unitName,
-      unitRent,
-      unitServiceCharge,
-      unitAgreementCharge,
-      unitCommissionCharge,
-      unitLegalFee: unitLegalCharge.toString(),
+      unitRent: Number(currencyToString(unitRent)),
+      unitServiceCharge: Number(currencyToString(unitServiceCharge)),
+      unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
+      unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
+      unitLegalFee: Number(currencyToString(unitLegalCharge)),
+      unitOtherCharges: Number(currencyToString(unitOtherCharges)),
       id: oneUnit.id,
       unitType: {
         id: unitTypeId, 
@@ -438,6 +439,7 @@ export default function AddUnitsScreen({
               marginRight: fontsConstants.w(5)
             }]}
           />
+          {route.params.actionType === "add" &&
           <DefaultInput
             value={totalReps}
             onChangeText={(t: string) => setTotalReps(t)}
@@ -449,15 +451,25 @@ export default function AddUnitsScreen({
               flex: 1,
               marginLeft: fontsConstants.w(5)
             }]}
-          />
+          />}
         </View>
+        {route.params?.actionType === "edit" ? (
+          <DefaultButton
+            title={`Update`}
+            onPress={doEditUnit}
+            loading={loading}
+            containerStyle={{
+              marginTop: fontsConstants.h(10)
+            }}
+          />
+        ) : (
         <View style={{
           flexDirection: "row",
           justifyContent: "space-between",
           marginTop: fontsConstants.h(10)
         }}>
           <TouchableOpacity
-            onPress={() => route.params?.actionType === 'edit' ? doEditUnit() : doAddUnit() }
+            onPress={doAddUnit}
             activeOpacity={layoutsConstants.activeOpacity}
             children={
               <Text style={{
@@ -476,10 +488,10 @@ export default function AddUnitsScreen({
                   color: colorsConstants.colorPrimary,
                   fontFamily: fontsConstants.American_Typewriter_Bold,
                   fontSize: fontsConstants.h(15)
-                }}>{`View ${route.params.actionType === 'edit' ? 'edited' : 'added'} Units`}</Text>
+                }}>{`View added Units`}</Text>
               }
             />}
-        </View>
+        </View> )}
       </ImageBackground>
       <Modalize
         ref={modalRef}

@@ -85,13 +85,13 @@ export default function UnitDetailsScreen({
                             id: 6,
                             label: 'Other Charges:',
                             value:
-                                oneUnit.otherCharges === null ? '0.00' : formatCurrency(Number(oneUnit.otherCharges)),
+                                oneUnit.unitOtherCharges === null ? '0.00' : formatCurrency(Number(oneUnit.unitOtherCharges)),
                             valueTextOpacity: 1
                         }, {
                             id: 7,
                             label: 'Occupying Status:',
                             value:
-                                oneUnit.occupyingStatus === false ? 'None' : oneUnit.occupyingStatus,
+                                oneUnit.occupyingStatus === true ? 'Occupied' : 'Not Occupied',
                             valueTextOpacity: 1
                         }
                         ].map((item, index) => (
@@ -137,7 +137,8 @@ export default function UnitDetailsScreen({
                             navigation.navigate("AddTenantScreen", {
                                 data: {
                                     unit: oneUnit
-                                }
+                                },
+                                from: "unit-screen"
                             })
                         }}
                         containerStyle={{

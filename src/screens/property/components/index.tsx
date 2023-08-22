@@ -220,10 +220,10 @@ export const PropertiesListView = ({
               fontSize: fontsConstants.h(14),
               color: colorsConstants[theme].darkText3
             }}>
-              {`No additional property record found`}
+              {`No property record found`}
             </Text>
-            <RenderAddTenancyButton
-  
+            <RenderAddButton
+              onPress={() => navigation.navigate("AddPropertyScreen")}
             />
           </View>
         )}
@@ -352,10 +352,10 @@ export const PropertiesListView = ({
   )
 }
 
-export const RenderAddTenancyButton = ({
-
+export const RenderAddButton = ({
+  onPress = () => null
 } : {
-
+  onPress?: any
 }) => {
   const navigation = useNavigation();
   const theme = useContext(AppThemeContext)
@@ -366,6 +366,7 @@ export const RenderAddTenancyButton = ({
         flexDirection: "row",
         alignItems: "center"
       }}
+      onPress={onPress}
     >
       <Icon
         name="playlist-add"

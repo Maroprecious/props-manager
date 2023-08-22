@@ -21,7 +21,7 @@ import { Entypo } from "@expo/vector-icons";
 import Layout from "src/components/layout/layout";
 import { RemoveModal } from "src/components/modals/remove-modal";
 import { Success } from "src/components/modals/alert.modals";
-import { RenderAddTenancyButton } from "../property/components";
+import { RenderAddButton } from "../property/components";
 
 export default function PropertyManagerScreen({
     navigation,
@@ -122,7 +122,7 @@ export default function PropertyManagerScreen({
                                 }}>
                                     {`No additional property record found`}
                                 </Text>
-                                <RenderAddTenancyButton />
+                                <RenderAddButton />
                             </View>
                         </View>
                     </View>

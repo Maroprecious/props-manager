@@ -63,7 +63,15 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   };
   DocumentsScreen: undefined;
   TenancyScreen: undefined;
-  ViewTenancyScreen: undefined;
+  ViewTenancyScreen: {
+    data: {
+      property: {
+        id: string,
+        propertyName: string,
+        propertyLocation: string,
+      }
+    }
+  };
   ViewTenant: undefined;
   PropertyManagerScreen: undefined;
   AssignPropertyManager: undefined
@@ -116,8 +124,12 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
     data: {
       unit: {
         id: string,
-      } & any
-    }
+      } & any,
+      property?: {
+        id: string
+      }
+    },
+    from: "unit-screen" | "tenancy-screen"
   }, 
   CompleteAccountCreationScreen: undefined 
 };

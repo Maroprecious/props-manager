@@ -17,6 +17,8 @@ export const editeUnitEndpoint = `/properties/update-unit`;
 export const getUnitsTypesEndpoint = `/properties/unit-management/get-all-unit-type`;
 export const getPropertiesEndpoint = `/properties/get-owner-based-property`;
 export const getUnitsEndpoint = `/properties/get-property-units`;
+export const getOnePropertyEndpoint = `/properties/get-property-details`;
+export const getPropertyOccupantsEndpoint = `/properties/get-tenant-in-a-property`;
 
 
 

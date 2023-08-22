@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createPropertyEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint, editPropertyEndpoint, editeUnitEndpoint } from "src/constants/api.endpoints.constants";
+import { createPropertyEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint, editPropertyEndpoint, editeUnitEndpoint, getOnePropertyEndpoint, getPropertyOccupantsEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -13,6 +13,40 @@ const useProperty = () => {
     setLoading(true);
     const request = await makeApiRequest({
       route: `${getPropertiesEndpoint}`,
+      type: 'GET',
+      pathParams
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+
+  const getOneProperty = async (pathParams: {
+    propertId: string
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${getOnePropertyEndpoint}`,
+      type: 'GET',
+      pathParams
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+
+  const getPropertyOccupants = async (pathParams: {
+    propertyId: string
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${getPropertyOccupantsEndpoint}`,
       type: 'GET',
       pathParams
     });
@@ -69,7 +103,7 @@ const useProperty = () => {
       hasError: request?.status !== 200
     }
   };
-  return { loading, createProperty, created, getProperties, editProperty };
+  return { loading, createProperty, created, getProperties, editProperty, getOneProperty, getPropertyOccupants };
 };
 
 export default useProperty;
@@ -139,6 +173,7 @@ export const useUnits = () => {
     unitAgreementCharge: number,
     unitCommissionCharge: number,
     propertyId: string,
+    unitOtherCharges: number
   }, id: string, cb = () => { }): Promise<NetworkResponse> => {
     setLoading(true);
     const request = await makeApiRequest({
