@@ -16,7 +16,7 @@ import { Modalize } from "react-native-modalize";
 import { Icon, Image } from "react-native-elements";
 import { currencySymbol } from "src/constants/currencies.constants";
 import moment from "moment";
-import  { Paystack, paystackProps }  from 'react-native-paystack-webview';
+import  { Paystack , paystackProps}  from 'react-native-paystack-webview';
 import { useAppSelector } from "src/hooks/useReduxHooks";
 import { PAYSTACK_PUBLIC_KEY } from "@env";
 import usePayments from "src/hooks/usePayments";

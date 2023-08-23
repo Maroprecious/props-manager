@@ -95,7 +95,7 @@ export default function LoginScreen({
           }}
         />
         <DefaultInput
-          placeholder="Enter email or mobile number"
+          placeholder="Enter email"
           keyboardType="email-address"
           value={email}
           onChangeText={(t: string) => setEmail(t)}

@@ -109,7 +109,7 @@ export default function PayRentScreen({
                 marginHorizontal: fontsConstants.w(10),
                 flex: 1
               }}>
-                {item?.unit?.id}
+                {item?.unit?.unitName}
               </Text>
               <DefaultRadiobox
                 checked={selected?.unit?.id === item.unit?.id}
@@ -120,7 +120,7 @@ export default function PayRentScreen({
               />
               </View>
             ))}
-            <View style={{
+            {/* <View style={{
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
@@ -136,7 +136,7 @@ export default function PayRentScreen({
               <RenderAddButton
 
               />
-            </View>
+            </View> */}
           </View>
           <View>
             <Text style={{
@@ -155,12 +155,12 @@ export default function PayRentScreen({
               {[{
                 id: 1,
                 label: 'Property ID:',
-                value: selected?.property_details?.id || 'Property not registered in Mypropsmanger',
+                value: selected?.property_details?.id || 'MPM-',
                 valueTextOpacity: selected?.property_details?.id ? 1 : 0.3
               }, {
                 id: 2,
                 label: 'Landlord:',
-                value: `${selected?.landlord_detail?.firstName} ${selected?.landlord_detail?.lastName}` || 'Not Specified',
+                value: `${selected?.landlord_detail?.firstName || 'NA'} ${selected?.landlord_detail?.lastName || 'NA'}`,
                 valueTextOpacity: selected?.landlord_detail?.firstName ? 1 : 0.3
               }, {
                 id: 3, 
@@ -170,7 +170,7 @@ export default function PayRentScreen({
               }, {
                 id: 4,
                 label: 'Rent Due Date:',
-                value: moment(new Date('20'+selected?.tenancy?.lastPaymentDate)).add((selected?.tenancy?.tenantDuration?.split(" ")[0]), "months").format("YYYY-MM-DD"),
+                value: selected?.tenancy?.lastPaymentDate ? moment(new Date(selected?.tenancy?.lastPaymentDate)).add((selected?.tenancy?.tenantDuration?.split(" ")[0]), "months").format("YYYY-MM-DD") : 'NIL',
                 valueTextOpacity: selected?.dueDate ? 1 : 0.3
               }].map((item, index) => (
                 <View key={index.toString()} style={{

@@ -95,7 +95,7 @@ export default function RentalsScreen({
             />
           ))}
         </RNView>
-        {user.roleType !== "tenant" && 
+        {/* {user.roleType !== "tenant" && 
           <DefaultButton
             title={`Add Tenancy`}
             containerStyle={{
@@ -104,7 +104,7 @@ export default function RentalsScreen({
             }}
             onPress={() => navigation.navigate('AddPropertyScreen')}
           />
-        }
+        } */}
       </ImageBackground>
     </ScrollView>
   );

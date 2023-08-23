@@ -132,7 +132,7 @@ export const RenderLatestOccupiedProperty = () => {
         }, {
           id: 2,
           label: 'Tenancy Duration',
-          value: `${propertiesOccupied[0]?.unit?.tenantDuration}`,
+          value: `${propertiesOccupied[0]?.tenancy?.tenantDuration}`,
           color: "#633EFF"
         }].map((item, index) => (
           <RentalDetailItem
