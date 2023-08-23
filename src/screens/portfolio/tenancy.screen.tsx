@@ -54,25 +54,27 @@ export default function TenancyScreen({
   }, [properties])
 
   useEffect(() => {
-    getOneProperty({
-      propertId: selected
-    }).then((res) => {
-      if(res.hasError === false) {
-        setSelectedDetails({
-          ...res?.data?.message,
-          ...res?.data?.additionalDetail
+    console.log(selected, "selected")
+    if (selected !== -1)
+      getOneProperty({
+        propertId: selected
+      }).then((res) => {
+        if(res.hasError === false) {
+          setSelectedDetails({
+            ...res?.data?.message,
+            ...res?.data?.additionalDetail
+          })
+        }
+      }).catch((e) => {
+        console.log(e)
+        let selectedIndex = -1;
+        properties.forEach((item: any, index: number) => {
+          if (item.id === selected) selectedIndex = index;
         })
-      }
-    }).catch((e) => {
-      console.log(e)
-      let selectedIndex = -1;
-      properties.forEach((item: any, index: number) => {
-        if (item.id === selected) selectedIndex = index;
+        setSelectedDetails({
+          ...properties[selectedIndex]
+        })
       })
-      setSelectedDetails({
-        ...properties[selectedIndex]
-      })
-    })
   }, [selected])
 
   return (
@@ -115,18 +117,18 @@ export default function TenancyScreen({
             {properties.map((item: any, index: number) => (
               <RenderPropertyDetails
                 key={index.toString()}
-                itemHeaderText={`Property Location`}
+                itemHeaderText={`${item?.propertyName || ''}`}
                 item={{
                   id: item?.id,
                   propertyLocation: item?.propertyLocation,
-                  propertyName: item?.propertyName,
+                  // propertyName: item?.propertyName,
                 }}
                 selectable
                 selectedId={selected}
-                setSelected={setSelected}
+                setSelected={(item: any) => setSelected(item?.id)}
               />
             ))}
-            <RNView
+            {user.roleType === "landlord" && <RNView
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -136,7 +138,7 @@ export default function TenancyScreen({
               <RenderAddButton
                 onPress={() => navigation.navigate("AddPropertyScreen")}
               />
-            </RNView>
+            </RNView>}
           </ScrollView>
         </RNView>
         <RNView 
@@ -216,7 +218,7 @@ export default function TenancyScreen({
           ))}
           <DefaultButton
             title={`View Tenants`}
-            disabled={selectedDetails?.id === -1}
+            disabled={selectedDetails?.id === -1 || loading}
             onPress={() => navigation.navigate("ViewTenancyScreen", {
               data: {
                 property: {

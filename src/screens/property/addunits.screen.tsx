@@ -31,6 +31,7 @@ export default function AddUnitsScreen({
   const user = useAppSelector((state) => state.auth.user)
   const { loading, getTypes, createUnit, fetchingTypes, editUnit } = useUnits()
 
+  const [hasPendingItem, setHasPendingItem] = useState(false);
   const [units, setUnits] = useState<any>([])
   const [unitTypes, setUnitTypes] = useState<any>([]);
   const [unitTypeId, setunitTypeId] = useState("")
@@ -104,7 +105,8 @@ export default function AddUnitsScreen({
             unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
             unitOtherCharges: Number(currencyToString(unitOtherCharges)),
             totalReps,
-            unitTypeId
+            unitTypeId,
+            saved: false
           }
         ])
         setUnitAgreementCharge('0.00')
@@ -116,6 +118,7 @@ export default function AddUnitsScreen({
         setUnitCommissionCharge('0.00')
         setUnitOtherCharges('0.00')
         setTotalReps('1')
+        setHasPendingItem(true)
       } catch (error) {
         console.log(error)
       } finally {
@@ -139,22 +142,34 @@ export default function AddUnitsScreen({
   const doCreateUnits = async () => {
     const reqUnits = [];
     for (const unit of units) {
-      const totalReps = Number(unit?.totalReps || '1')
-      for (let i = 0; i < totalReps; i++) {
-        reqUnits.push({
-          ...unit
-        })
+      if (unit?.saved === false) {
+        const totalReps = Number(unit?.totalReps || '1')
+        for (let i = 0; i < totalReps; i++) {
+          reqUnits.push({
+            ...unit
+          })
+        }
       }
     }
     const req: any = await createUnit(reqUnits)
     modalRef?.current?.close()
     if (req?.data?.hasError === false) {
-      setUnits([])
+      setHasPendingItem(false)
       showToast({
         title: "Units",
         type: "success",
         message: req?.message || req?.message?.message?.message || "Units added successfully"
       })
+
+      //retain added units 
+      const _units = []
+      for (const unit of units) {
+        _units.push({
+          ...unit,
+          saved: true
+        });
+      }
+      setUnits(_units)
     } else {
       showToast({
         title: "Add Units",
@@ -245,7 +260,7 @@ export default function AddUnitsScreen({
 
   React.useEffect(() => {
     const backAction = () => {
-      if (units.length > 0) {
+      if (units.length > 0 && hasPendingItem) {
         Alert.alert(`Hold On!`, `You have units pending for upload.\nAre you sure you want to go back?`, [{
           text: `Cancel`,
         }, {
@@ -509,7 +524,7 @@ export default function AddUnitsScreen({
             return (
               <View key={index.toString()} style={{
                 borderWidth: 1,
-                borderColor: colorsConstants.colorPrimary,
+                borderColor: item?.saved ? colorsConstants.colorSuccess : colorsConstants.colorPrimary,
                 borderRadius: fontsConstants.w(5),
                 padding: fontsConstants.h(10),
                 marginBottom: fontsConstants.h(20)
@@ -535,12 +550,13 @@ export default function AddUnitsScreen({
                   {expandedUnit !== -1 && expandedUnit === index ? (
                     <Text
                       style={{
-                        color: colorsConstants.criticalRed,
-                        fontSize: fontsConstants.h(12)
+                        color: item?.saved ? colorsConstants.colorSuccess : colorsConstants.criticalRed,
+                        fontSize: fontsConstants.h(12),
+                        opacity: item?.saved ? layoutsConstants.activeOpacity : undefined
                       }}
-                      onPress={() => removeUnit(index)}
+                      onPress={() => !item?.saved ? removeUnit(index) : null}
                     >
-                      Remove
+                      {item?.saved ? 'Saved' : 'Remove'}
                     </Text>
                   ) : (
                     <Icon
@@ -590,7 +606,7 @@ export default function AddUnitsScreen({
           }}>{`Added Units`}</Text>,
           ListFooterComponent: 
             units.length > 0 ? <DefaultButton
-              title={`Add Unit${units.length > 1 ? 's' : ''} to Property`}
+              title={`Save Unit${units.length > 1 ? 's' : ''} to Property`}
               onPress={doCreateUnits}
               loading={loading}
             /> : <></>,

@@ -74,7 +74,7 @@ export default function PropertiesScreen({
               >
                 <RenderPropertyDetails
                   item={item}
-                  itemHeaderText="Property Details"
+                  itemHeaderText={item?.propertyName || 'Property Name'}
                   showItemId={false}
                   containerStyle={{
                     marginBottom: fontsConstants.h(20)
