@@ -9,11 +9,10 @@ import globalConstants from "src/constants/global.constants";
 import { ScreenTitle } from "../auth/components/screentitle.component";
 import colorsConstants from "src/constants/colors.constants";
 import layoutsConstants from "src/constants/layouts.constants";
-import { DefaultRadiobox } from "src/components/inputs/checkbox.components";
 import { formatCurrency } from "src/utils/FormatNumber";
 import moment from "moment";
-import { LocationIcon } from "./components";
-import { RenderAddButton } from "../property/components";
+import ContentLoader, { Rect } from 'react-content-loader/native';
+import { RenderPropertyDetails } from "../property/components";
 import { useAppSelector } from "src/hooks/useReduxHooks";
 import useTenant from "src/hooks/useTenant";
 
@@ -36,6 +35,10 @@ export default function PayRentScreen({
     else setProperties([]) 
   }
   const [selected, setSelected] = useState<any>({id: -1})
+
+  useEffect(() => {
+    setSelected(properties[0])
+  }, [properties])
 
   useEffect(() => {
     fetchProperties()
@@ -87,38 +90,18 @@ export default function PayRentScreen({
             marginBottom: fontsConstants.h(20)
           }}>
             {properties.map((item: any, index: number) => (
-              <View
+              <RenderPropertyDetails
                 key={index.toString()}
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginBottom: fontsConstants.h(10)
+                itemHeaderText={item?.unit?.unitName}
+                item={{
+                  id: item?.property_details?.id,
+                  propertyLocation: item?.property_details?.propertyLocation || "",
+                  propertyName: item?.property_details?.propertyName
                 }}
-              >
-              <LocationIcon
-                imageSize={fontsConstants.w(20)}
-                containerStyle={{
-                  height: fontsConstants.w(45),
-                  width: fontsConstants.w(45),
-                }}
-              /> 
-              <Text style={{
-                fontFamily: fontsConstants.Lora_Regular,
-                fontSize: fontsConstants.h(14),
-                color: colorsConstants[theme].darkText3,
-                marginHorizontal: fontsConstants.w(10),
-                flex: 1
-              }}>
-                {item?.unit?.unitName}
-              </Text>
-              <DefaultRadiobox
-                checked={selected?.unit?.id === item.unit?.id}
-                checkedColor={colorsConstants.radioBoxActive}
-                size={fontsConstants.w(20)}
-                label={`Select`}
-                onPress={() => setSelected(item)}
+                selectable
+                selectedId={selected?.property_details?.id}
+                setSelected={setSelected}
               />
-              </View>
             ))}
             {/* <View style={{
               flexDirection: "row",
@@ -186,16 +169,31 @@ export default function PayRentScreen({
                   }}>
                     {item.label}
                   </Text>
-                  <Text style={{
-                    fontFamily: fontsConstants.Lora_Regular,
-                    fontSize: fontsConstants.w(12),
-                    color: colorsConstants[theme].darkText,
-                    opacity: item.valueTextOpacity,
-                    flex: 2.5,
-                    marginLeft: fontsConstants.w(5)
-                  }}>
-                    {item.value}
-                  </Text>
+                  {loading ? (
+                  <ContentLoader
+                      height={10}
+                      style={{
+                        flex: 1
+                      }}
+                      speed={1}
+                      backgroundColor={colorsConstants[theme].lighterGrey}
+                      foregroundColor={colorsConstants[theme]["grey0.13"]}
+                      viewBox="0 0 380 70"
+                    >
+                      <Rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
+                    </ContentLoader>
+                  ) : (
+                    <Text style={{
+                      fontFamily: fontsConstants.Lora_Regular,
+                      fontSize: fontsConstants.w(12),
+                      color: colorsConstants[theme].darkText,
+                      opacity: item.valueTextOpacity,
+                      flex: 2.5,
+                      marginLeft: fontsConstants.w(5)
+                    }}>
+                      {item.value}
+                    </Text>
+                  )}
                 </View>
               ))}
             </View>
@@ -210,7 +208,7 @@ export default function PayRentScreen({
               address: selected?.property_details?.propertyLocation
             }
           })}
-          disabled={selected?.id === -1}
+          disabled={selected?.id === -1 || loading}
           containerStyle={{
             marginTop: fontsConstants.h(100)
           }}

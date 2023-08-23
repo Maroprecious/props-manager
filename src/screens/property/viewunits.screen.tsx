@@ -56,18 +56,11 @@ export default function ViewUnitsScreen({
             <View style={styles.container}>
                 <FlatList
                     refreshing={loading}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={loading}
-                            onRefresh={() => {
-                                fetchUnits();
-                            }}
-                            />
-                    }
+                    onRefresh={fetchUnits}
                     data={units}
                     contentContainerStyle={{ width: '98%', alignSelf: 'center', marginTop: 20 }}
                     renderItem={({ item }) => <Item item={item} />}
-                    ListEmptyComponent={() =>
+                    ListEmptyComponent={() => !loading ?
                         <View style={styles.center}>
                             <Text style={{ fontFamily: fontsConstants.Lora_Regular, fontSize: 15 }}>No Units,</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('AddUnitsScreen', {
@@ -75,7 +68,7 @@ export default function ViewUnitsScreen({
                             })}>
                                 <Text style={styles.link}> Add Units</Text>
                             </TouchableOpacity>
-                        </View>}
+                        </View> : null}
                 />
             </View>
         </Layout>
