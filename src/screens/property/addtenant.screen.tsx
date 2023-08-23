@@ -17,6 +17,7 @@ import DefaultDatePicker from "src/components/inputs/dateinput.component";
 import useTenant from "src/hooks/useTenant";
 import moment from "moment";
 import { showToast } from "src/components/Toast";
+import { useUnit } from "src/contexts/unit.context";
 import { useUnits } from "src/hooks/useProperties";
 
 export default function AddTenantScreen({
@@ -29,6 +30,7 @@ export default function AddTenantScreen({
   const [unitId, setUnitId] = useState(route.params?.data?.unit?.id || -1)
 
   const { loading, addTenantToUnit } = useTenant()
+  const {oneUnit, setOneUnit} = useUnit()
 
   const [units, setUnits] = useState<any>([]);
 
@@ -69,6 +71,10 @@ export default function AddTenantScreen({
       lastPaymentDate: `${moment(lastPaymentDate).format("YYYY-MM-DD")}`
     })
     if (req?.data?.hasError === false) {
+      setOneUnit({
+        ...oneUnit,
+        occupyingStatus: true
+      })
       setTenantEmail("")
       showToast({
         title: "Tenant",

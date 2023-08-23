@@ -97,12 +97,13 @@ export const ConfirmModal = () => {
         backgroundColor: colorsConstants[theme].modalBg,
       }}>
         <View style={{
-          height: fontsConstants.h(395),
+          maxHeight: fontsConstants.h(395),
           marginHorizontal: layoutsConstants.mainViewHorizontalPadding,
           borderRadius: fontsConstants.w(20),
           backgroundColor: colorsConstants[theme].cardBg,
           paddingTop: fontsConstants.h(15),
-          paddingHorizontal: fontsConstants.w(20)
+          paddingHorizontal: fontsConstants.w(20),
+          paddingVertical: fontsConstants.h(20)
         }}>
           <Text style={{
             fontFamily: fontsConstants.Lora_Regular,

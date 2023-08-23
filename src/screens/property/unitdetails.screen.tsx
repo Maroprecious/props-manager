@@ -15,6 +15,7 @@ import { useProperties } from "src/contexts/property.context";
 import { useUnit } from "src/contexts/unit.context";
 import { formatNumber } from "src/utils/FormatNumber";
 import { formatCurrency } from "src/utils/FormatNumber";
+import { currencySymbol } from "src/constants/currencies.constants";
 
 
 export default function UnitDetailsScreen({
@@ -27,7 +28,7 @@ export default function UnitDetailsScreen({
     const { loading, createProperty, created } = useProperty()
     const { property } = useProperties()
     const { oneUnit } = useUnit()
-    console.log(oneUnit, 'hello')
+    console.log(oneUnit.occupyingStatus, 'charge')
     return (
         <Layout title="Unit Details" goback={true}>
             <View style={styles.container}>
@@ -58,34 +59,34 @@ export default function UnitDetailsScreen({
                         {[{
                             id: 1,
                             label: 'Unit Rent:',
-                            value: oneUnit.unitRent === null ? '0.00' : formatCurrency(Number(oneUnit.unitRent)),
+                            value: `${currencySymbol['ngn']}${oneUnit.unitRent === null ? '0.00' : formatCurrency(Number(oneUnit.unitRent))}`,
                             valueTextOpacity: 1
                         }, {
                             id: 2,
                             label: 'Service Charge:',
-                            value: formatCurrency(Number(oneUnit.unitServiceCharge)),
+                            value: `${currencySymbol['ngn']}${formatCurrency(Number(oneUnit.unitServiceCharge))}`,
                             valueTextOpacity: 1
                         }, {
                             id: 3,
                             label: 'Legal Fee:',
-                            value: oneUnit.unitLegalFee === null ? '0.00' : formatCurrency(Number(oneUnit.unitLegalFee)),
+                            value: `${currencySymbol['ngn']}${oneUnit.unitLegalFee === null ? '0.00' : formatCurrency(Number(oneUnit.unitLegalFee))}`,
                             valueTextOpacity: 1
                         }, {
                             id: 4,
                             label: 'Agreement Charge:',
-                            value: oneUnit.unitAgreementCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitAgreementCharge)),
+                            value: `${currencySymbol['ngn']}${oneUnit.unitAgreementCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitAgreementCharge))}`,
                             valueTextOpacity: 1
                         }, {
                             id: 5,
                             label: 'Commission Charge:',
-                            value: oneUnit.unitCommissionCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitCommissionCharge)),
+                            value: `${currencySymbol['ngn']}${oneUnit.unitCommissionCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitCommissionCharge))}`,
                             valueTextOpacity: 1
                         },
                         {
                             id: 6,
                             label: 'Other Charges:',
                             value:
-                                oneUnit.unitOtherCharges === null ? '0.00' : formatCurrency(Number(oneUnit.unitOtherCharges)),
+                                `${currencySymbol['ngn']}${oneUnit.unitOtherCharges === null ? '0.00' : formatCurrency(Number(oneUnit.unitOtherCharges))}`,
                             valueTextOpacity: 1
                         }, {
                             id: 7,
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
         color: colorsConstants.light.darkText
     },
     edit: {
-       
+
         textAlign: 'right',
         textDecorationColor: colorsConstants.colorPrimary,
         textDecorationLine: 'underline',
