@@ -97,6 +97,5 @@ export const splitPhoneNumber = (phone: string) => {
 export const currencyToString = (num: string) => {
   const commaRegEx = new RegExp(',','g')
   const str = num.split('.')[0].replace(commaRegEx,"");
-  console.log(str)
   return str !== "0" ? str : ""
 }

@@ -33,15 +33,45 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   PayRentScreen: undefined;
   ConfirmRentPayment: {
     amount: number,
+    property: {
+      id: string,
+      address: string,
+    },
   };
   TransactionsScreen: undefined;
   RentalsScreen: undefined;
   ViewRentalScreen: {
-    rental: any
+    rental: {
+      id: string,
+      tenancy: {
+        id: string
+      },
+      property: {
+        id: string,
+        address: string,
+      }, 
+      lastPaymentDate: string,
+      nextDueDate: string,
+      nextRentAmount: number,
+      duration: number,
+      landlord?: {
+        id: string,
+        fullName: string,
+        mobile: string
+      }
+    }
   };
   DocumentsScreen: undefined;
   TenancyScreen: undefined;
-  ViewTenancyScreen: undefined;
+  ViewTenancyScreen: {
+    data: {
+      property: {
+        id: string,
+        propertyName: string,
+        propertyLocation: string,
+      }
+    }
+  };
   ViewTenant: undefined;
   PropertyManagerScreen: undefined;
   AssignPropertyManager: undefined
@@ -94,9 +124,14 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
     data: {
       unit: {
         id: string,
-      } & any
-    }
-  }
+      } & any,
+      property?: {
+        id: string
+      }
+    },
+    from: "unit-screen" | "tenancy-screen"
+  }, 
+  CompleteAccountCreationScreen: undefined 
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -116,6 +151,7 @@ export type LaunchStackParamList = {
 
 export type AuthStackParamList = {
   LoginScreen: undefined;
+  ReLoginScreen: undefined;
   ForgotPasswordScreen: {
     type: verificationType
   };

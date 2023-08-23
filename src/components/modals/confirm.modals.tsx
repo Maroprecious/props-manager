@@ -115,7 +115,7 @@ export const ConfirmModal = () => {
             color={colorsConstants.criticalRed}
             size={fontsConstants.h(100)}
             style={{
-              marginTop: fontsConstants.h(50)
+              marginTop: fontsConstants.h(20)
             }}
           />
           <Text style={{

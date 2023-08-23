@@ -11,13 +11,14 @@ import globalConstants, { screenBG } from "src/constants/global.constants";
 import layoutsConstants from "src/constants/layouts.constants";
 import { ScreenTitle } from "../auth/components/screentitle.component";
 import colorsConstants from "src/constants/colors.constants";
-import { DefaultInput } from "src/components/inputs/inputs.components";
+import { DefaultInput, DefaultSelectInput } from "src/components/inputs/inputs.components";
 import DefaultSlider from "src/components/inputs/slider.component";
 import DefaultDatePicker from "src/components/inputs/dateinput.component";
 import useTenant from "src/hooks/useTenant";
 import moment from "moment";
 import { showToast } from "src/components/Toast";
 import { useUnit } from "src/contexts/unit.context";
+import { useUnits } from "src/hooks/useProperties";
 
 export default function AddTenantScreen({
   navigation,
@@ -26,27 +27,55 @@ export default function AddTenantScreen({
   const theme = useContext(AppThemeContext);
 
   const user = useAppSelector((state) => state.auth.user)
+  const [unitId, setUnitId] = useState(route.params?.data?.unit?.id || -1)
+
   const { loading, addTenantToUnit } = useTenant()
   const {oneUnit, setOneUnit} = useUnit()
+
+  const [units, setUnits] = useState<any>([]);
+
+  const { loading: fetchingUnits, getUnits } = useUnits()
+
+  const fetchUnits = async () => {
+    const req = await getUnits(`${route?.params?.data?.property?.id}` || '-1')
+    if (req?.hasError === false) {
+      const _units = [];
+      for (const _d of req?.data?.message || []) {
+        _units.push({
+          id: _d?.id,
+          label: `${_d?.unitName} - ${_d.unitType?.description}`,
+          value: _d?.id
+        })
+      }
+      setUnits(_units)
+    }
+  }
+    
   const [tenantEmail, setTenantEmail] = useState("")
   const [tenantDuration, setTenantDuration] = useState(12);
   const [moveInDate, setMoveInDate] = useState<any>(new Date());
   const [lastPaymentDate, setLastPaymentDate] = useState<any>(new Date());
 
+  React.useEffect(() => {
+    if (route.params.from === "tenancy-screen") {
+      fetchUnits()
+    }
+  }, [])
   
   const doAddTenant = async () => {
     const req = await addTenantToUnit({
-      unitId: route.params.data.unit.id,
+      unitId,
       tenantDuration: `${tenantDuration} months`,
       tenantEmail,
-      moveInDate: `${moment(moveInDate).format("MMM, YYYY")}`,
-      lastPaymentDate: `${moment(lastPaymentDate).format("YY-MM-DD")}`
+      moveInDate: `${moment(moveInDate).format("YYYY-MM-DD")}`,
+      lastPaymentDate: `${moment(lastPaymentDate).format("YYYY-MM-DD")}`
     })
     if (req?.data?.hasError === false) {
       setOneUnit({
         ...oneUnit,
         occupyingStatus: true
       })
+      setTenantEmail("")
       showToast({
         title: "Tenant",
         type: "success",
@@ -82,6 +111,22 @@ export default function AddTenantScreen({
             marginBottom: fontsConstants.h(35)
           }}
         />
+        {route.params?.from === "tenancy-screen" && (
+          <DefaultSelectInput
+            value={unitId}
+            setValue={setUnitId}
+            items={units}
+            loading={fetchingUnits}
+            listMode="MODAL"
+            searchable
+            label={`Select Unit`}
+            labelStyle={styles.labelStyle}
+            containerStyle={{
+              marginBottom: fontsConstants.h(10)
+            }}
+            searchPlaceholder={`Search Unit`}
+          />
+        )}
         <DefaultInput
           placeholder={`Tenant Email`}
           value={tenantEmail}
@@ -136,7 +181,7 @@ export default function AddTenantScreen({
           title={`Add Tenant`}
           onPress={doAddTenant}
           loading={loading}
-          disabled={tenantEmail === "" || tenantDuration < 3}
+          disabled={tenantEmail === "" || tenantDuration < 3 || unitId === -1}
         />
       </ImageBackground>
     </SafeAreaView>

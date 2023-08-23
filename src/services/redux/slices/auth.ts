@@ -3,6 +3,7 @@ import axios from 'axios';
 import { API_BEARER_TOKEN } from "@env";
 import { produce } from 'immer';
 import { ReduxAuthState, roleTypes } from 'src/types/app.types';
+import SecureStoreManager from 'src/utils/SecureStoreManager';
 
 const initialAuthState: ReduxAuthState = {
   token: API_BEARER_TOKEN,
@@ -26,11 +27,13 @@ export const authSlice = createSlice({
   reducers: {
     populateUserData: (state, action) => {
       const user = action?.payload?.user
+      if (!user?.completed) SecureStoreManager.setInitialRouteName("CompleteAccountCreationScreen")
+
       const roleType: roleTypes = user.roles.length === 1 && user.roles[0] === "ROLE_TENANT" 
         ? "tenant"
         : user.roles.length === 1 && user.roles[0] === "ROLE_LANDLORD"
         ? "landlord"
-        : "pro-manager"
+        : "property-manager"
       
       user['roleType'] = roleType
       axios.defaults.headers.common[
@@ -51,7 +54,8 @@ export const authSlice = createSlice({
     logout: (state) => {
       state = produce(state, draft => {
         draft.token = null,
-        draft.user.id = null
+        draft.user.id = null,
+        draft.user.email = ''
       })
       return state;
     }

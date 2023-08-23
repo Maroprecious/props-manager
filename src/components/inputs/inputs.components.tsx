@@ -208,7 +208,8 @@ export const DefaultSelectInput = ({
   errorMessage,
   showErrorMessage = true,
   loading = false,
-  errorMessageStyle = {}
+  errorMessageStyle = {},
+  disabled = false
 } : {
   value: string | number
   items: {
@@ -236,6 +237,7 @@ export const DefaultSelectInput = ({
   showErrorMessage?: boolean
   loading?: boolean
   errorMessageStyle?: StyleProp<TextStyle>
+  disabled?: boolean
 }) => {
 
   const theme = useContext(AppThemeContext);
@@ -334,6 +336,7 @@ export const DefaultSelectInput = ({
             size={fontsConstants.h(20)}
           />
         }
+        disabled={disabled}
       />
       {errorMessage && showErrorMessage && <Text style={[defaultErrorMessageStyle, {
         marginTop: fontsConstants.h(-20),

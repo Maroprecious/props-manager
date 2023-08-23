@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View as RNView, StyleProp, ViewStyle } from "react-native";
+import { View as RNView, StyleProp, TouchableOpacity, ViewStyle } from "react-native";
 import { Image } from 'react-native-elements'
 import { Text } from "src/components/Themed";
 import fontsConstants from "src/constants/fonts.constants";
@@ -40,16 +40,16 @@ export const LocationIcon = ({
 
 export const RentalItem = ({
   item = {},
-  onViewPress,
+  onViewPress = () => null,
   containerStyle
 } : {
   item: any
-  onViewPress?: Function;
+  onViewPress?: any;
   containerStyle?: StyleProp<ViewStyle>
 }) => {
   const theme = useContext(AppThemeContext);
   return (
-    <RNView style={[{
+    <TouchableOpacity style={[{
       borderWidth: fontsConstants.h(1),
       borderColor: colorsConstants.colorPrimary,
       borderRadius: fontsConstants.w(20),
@@ -57,7 +57,10 @@ export const RentalItem = ({
       flexDirection: "row",
       alignItems: "center",
       marginTop: fontsConstants.h(20)
-    }, containerStyle]}>
+    }, containerStyle]}
+      onPress={onViewPress}
+      activeOpacity={layoutsConstants.activeOpacity}
+    >
       <LocationIcon
         containerStyle={{
           height: fontsConstants.w(50),
@@ -97,6 +100,6 @@ export const RentalItem = ({
           activeOpacity={layoutsConstants.activeOpacity}
         />
       ) : null}
-    </RNView>
+    </TouchableOpacity>
   )
 }

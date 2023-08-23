@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { ScrollView, Text } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
-import globalConstants, { Tenancies } from "src/constants/global.constants";
+import globalConstants from "src/constants/global.constants";
 import { ScreenTitle } from "../auth/components/screentitle.component";
 import colorsConstants from "src/constants/colors.constants";
 import layoutsConstants from "src/constants/layouts.constants";
@@ -13,20 +13,40 @@ import { DefaultRadiobox } from "src/components/inputs/checkbox.components";
 import { formatCurrency } from "src/utils/FormatNumber";
 import moment from "moment";
 import { LocationIcon } from "./components";
-import { RenderAddTenancyButton } from "../property/components";
+import { RenderAddButton } from "../property/components";
+import { useAppSelector } from "src/hooks/useReduxHooks";
+import useTenant from "src/hooks/useTenant";
 
 export default function PayRentScreen({
   navigation,
   route
 }: RootStackScreenProps<"PayRentScreen">) {
   const theme = useContext(AppThemeContext);
+  const user = useAppSelector((state) => state.auth.user);
 
+  const { loading, getOccupiedProperties } = useTenant();
+
+  const [properties, setProperties] = useState<any>([]);
+
+  const fetchProperties = async () => {
+    const req = await getOccupiedProperties({
+      tenantId: `${user.id}`
+    });
+    if (req?.hasError === false) setProperties(req?.data?.message || [])
+    else setProperties([]) 
+  }
   const [selected, setSelected] = useState<any>({id: -1})
+
+  useEffect(() => {
+    fetchProperties()
+  }, [navigation])
 
   return (
     <ScrollView
       style={styles.container}
-      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{
+        minHeight: '100%'
+      }}
     >
       <ImageBackground
         source={require("src/assets/images/backgrounds/background.png")}
@@ -66,7 +86,7 @@ export default function PayRentScreen({
             padding: fontsConstants.w(14),
             marginBottom: fontsConstants.h(20)
           }}>
-            {Tenancies.map((item, index) => (
+            {properties.map((item: any, index: number) => (
               <View
                 key={index.toString()}
                 style={{
@@ -89,10 +109,10 @@ export default function PayRentScreen({
                 marginHorizontal: fontsConstants.w(10),
                 flex: 1
               }}>
-                {item.propertyLocation}
+                {item?.unit?.unitName}
               </Text>
               <DefaultRadiobox
-                checked={selected?.id === item.id}
+                checked={selected?.unit?.id === item.unit?.id}
                 checkedColor={colorsConstants.radioBoxActive}
                 size={fontsConstants.w(20)}
                 label={`Select`}
@@ -100,7 +120,7 @@ export default function PayRentScreen({
               />
               </View>
             ))}
-            <View style={{
+            {/* <View style={{
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
@@ -113,10 +133,10 @@ export default function PayRentScreen({
               }}>
                 {`No additional tenancy record found`}
               </Text>
-              <RenderAddTenancyButton
+              <RenderAddButton
 
               />
-            </View>
+            </View> */}
           </View>
           <View>
             <Text style={{
@@ -135,22 +155,22 @@ export default function PayRentScreen({
               {[{
                 id: 1,
                 label: 'Property ID:',
-                value: selected?.propertyId || 'Property not registered in Mypropsmanger',
-                valueTextOpacity: selected?.propertyId ? 1 : 0.3
+                value: selected?.property_details?.id || 'MPM-',
+                valueTextOpacity: selected?.property_details?.id ? 1 : 0.3
               }, {
                 id: 2,
                 label: 'Landlord:',
-                value: selected?.landlord || 'Not Specified',
-                valueTextOpacity: selected?.landlord ? 1 : 0.3
+                value: `${selected?.landlord_detail?.firstName || 'NA'} ${selected?.landlord_detail?.lastName || 'NA'}`,
+                valueTextOpacity: selected?.landlord_detail?.firstName ? 1 : 0.3
               }, {
                 id: 3, 
                 label: 'Rent Amount:',
-                value: `₦${formatCurrency(selected?.rentAmount || 0)}`,
-                valueTextOpacity: selected?.rentAmount ? 1 : 0.3
+                value: `₦${formatCurrency(selected?.unit?.unitRent || 0)}`,
+                valueTextOpacity: selected?.unit?.unitRent ? 1 : 0.3
               }, {
                 id: 4,
                 label: 'Rent Due Date:',
-                value: moment(selected?.dueDate).format("DD/MM/YYYY"),
+                value: selected?.tenancy?.lastPaymentDate ? moment(new Date(selected?.tenancy?.lastPaymentDate)).add((selected?.tenancy?.tenantDuration?.split(" ")[0]), "months").format("YYYY-MM-DD") : 'NIL',
                 valueTextOpacity: selected?.dueDate ? 1 : 0.3
               }].map((item, index) => (
                 <View key={index.toString()} style={{
@@ -184,11 +204,15 @@ export default function PayRentScreen({
         <DefaultButton
           title={`Next`}
           onPress={() => navigation.navigate("ConfirmRentPayment", {
-            amount: selected?.rentAmount
+            amount: selected?.unit?.unitRent,
+            property: {
+              id: selected?.property_details?.id,
+              address: selected?.property_details?.propertyLocation
+            }
           })}
+          disabled={selected?.id === -1}
           containerStyle={{
-            marginTop: fontsConstants.h(100),
-            marginHorizontal: fontsConstants.w(20)
+            marginTop: fontsConstants.h(100)
           }}
         />
       </ImageBackground>

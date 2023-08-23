@@ -31,6 +31,7 @@ export default function AddUnitsScreen({
   const user = useAppSelector((state) => state.auth.user)
   const { loading, getTypes, createUnit, fetchingTypes, editUnit } = useUnits()
 
+  const [hasPendingItem, setHasPendingItem] = useState(false);
   const [units, setUnits] = useState<any>([])
   const [unitTypes, setUnitTypes] = useState<any>([]);
   const [unitTypeId, setunitTypeId] = useState("")
@@ -104,7 +105,8 @@ export default function AddUnitsScreen({
             unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
             unitOtherCharges: Number(currencyToString(unitOtherCharges)),
             totalReps,
-            unitTypeId
+            unitTypeId,
+            saved: false
           }
         ])
         setUnitAgreementCharge('0.00')
@@ -116,6 +118,7 @@ export default function AddUnitsScreen({
         setUnitCommissionCharge('0.00')
         setUnitOtherCharges('0.00')
         setTotalReps('1')
+        setHasPendingItem(true)
       } catch (error) {
         console.log(error)
       } finally {
@@ -139,22 +142,34 @@ export default function AddUnitsScreen({
   const doCreateUnits = async () => {
     const reqUnits = [];
     for (const unit of units) {
-      const totalReps = Number(unit?.totalReps || '1')
-      for (let i = 0; i < totalReps; i++) {
-        reqUnits.push({
-          ...unit
-        })
+      if (unit?.saved === false) {
+        const totalReps = Number(unit?.totalReps || '1')
+        for (let i = 0; i < totalReps; i++) {
+          reqUnits.push({
+            ...unit
+          })
+        }
       }
     }
     const req: any = await createUnit(reqUnits)
     modalRef?.current?.close()
     if (req?.data?.hasError === false) {
-      setUnits([])
+      setHasPendingItem(false)
       showToast({
         title: "Units",
         type: "success",
         message: req?.message || req?.message?.message?.message || "Units added successfully"
       })
+
+      //retain added units 
+      const _units = []
+      for (const unit of units) {
+        _units.push({
+          ...unit,
+          saved: true
+        });
+      }
+      setUnits(_units)
     } else {
       showToast({
         title: "Add Units",
@@ -164,7 +179,6 @@ export default function AddUnitsScreen({
     }
   }
   const doEditUnit = async () => {
-    
     const req: any = await editUnit({
       unitName,
       unitRent: Number(currencyToString(unitRent)),
@@ -172,17 +186,19 @@ export default function AddUnitsScreen({
       unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
       unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
       unitLegalCharge: Number(currencyToString(unitLegalCharge)),
+      unitOtherCharges: Number(currencyToString(unitOtherCharges)),
       propertyId: property.id,
       unitTypeId: unitTypeId.toString()
     }, oneUnit.id)
     if (req?.data?.hasError === false) {
      setOneUnit({
       unitName,
-      unitRent,
-      unitServiceCharge,
-      unitAgreementCharge,
-      unitCommissionCharge,
-      unitLegalFee: unitLegalCharge.toString(),
+      unitRent: Number(currencyToString(unitRent)),
+      unitServiceCharge: Number(currencyToString(unitServiceCharge)),
+      unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
+      unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
+      unitLegalFee: Number(currencyToString(unitLegalCharge)),
+      unitOtherCharges: Number(currencyToString(unitOtherCharges)),
       id: oneUnit.id,
       unitType: {
         id: unitTypeId, 
@@ -244,7 +260,7 @@ export default function AddUnitsScreen({
 
   React.useEffect(() => {
     const backAction = () => {
-      if (units.length > 0) {
+      if (units.length > 0 && hasPendingItem) {
         Alert.alert(`Hold On!`, `You have units pending for upload.\nAre you sure you want to go back?`, [{
           text: `Cancel`,
         }, {
@@ -438,6 +454,7 @@ export default function AddUnitsScreen({
               marginRight: fontsConstants.w(5)
             }]}
           />
+          {route.params.actionType === "add" &&
           <DefaultInput
             value={totalReps}
             onChangeText={(t: string) => setTotalReps(t)}
@@ -449,15 +466,25 @@ export default function AddUnitsScreen({
               flex: 1,
               marginLeft: fontsConstants.w(5)
             }]}
-          />
+          />}
         </View>
+        {route.params?.actionType === "edit" ? (
+          <DefaultButton
+            title={`Update`}
+            onPress={doEditUnit}
+            loading={loading}
+            containerStyle={{
+              marginTop: fontsConstants.h(10)
+            }}
+          />
+        ) : (
         <View style={{
           flexDirection: "row",
           justifyContent: "space-between",
           marginTop: fontsConstants.h(10)
         }}>
           <TouchableOpacity
-            onPress={() => route.params?.actionType === 'edit' ? doEditUnit() : doAddUnit() }
+            onPress={doAddUnit}
             activeOpacity={layoutsConstants.activeOpacity}
             children={
               <Text style={{
@@ -476,10 +503,10 @@ export default function AddUnitsScreen({
                   color: colorsConstants.colorPrimary,
                   fontFamily: fontsConstants.American_Typewriter_Bold,
                   fontSize: fontsConstants.h(15)
-                }}>{`View ${route.params.actionType === 'edit' ? 'edited' : 'added'} Units`}</Text>
+                }}>{`View added Units`}</Text>
               }
             />}
-        </View>
+        </View> )}
       </ImageBackground>
       <Modalize
         ref={modalRef}
@@ -497,7 +524,7 @@ export default function AddUnitsScreen({
             return (
               <View key={index.toString()} style={{
                 borderWidth: 1,
-                borderColor: colorsConstants.colorPrimary,
+                borderColor: item?.saved ? colorsConstants.colorSuccess : colorsConstants.colorPrimary,
                 borderRadius: fontsConstants.w(5),
                 padding: fontsConstants.h(10),
                 marginBottom: fontsConstants.h(20)
@@ -523,12 +550,13 @@ export default function AddUnitsScreen({
                   {expandedUnit !== -1 && expandedUnit === index ? (
                     <Text
                       style={{
-                        color: colorsConstants.criticalRed,
-                        fontSize: fontsConstants.h(12)
+                        color: item?.saved ? colorsConstants.colorSuccess : colorsConstants.criticalRed,
+                        fontSize: fontsConstants.h(12),
+                        opacity: item?.saved ? layoutsConstants.activeOpacity : undefined
                       }}
-                      onPress={() => removeUnit(index)}
+                      onPress={() => !item?.saved ? removeUnit(index) : null}
                     >
-                      Remove
+                      {item?.saved ? 'Saved' : 'Remove'}
                     </Text>
                   ) : (
                     <Icon
@@ -578,7 +606,7 @@ export default function AddUnitsScreen({
           }}>{`Added Units`}</Text>,
           ListFooterComponent: 
             units.length > 0 ? <DefaultButton
-              title={`Add Unit${units.length > 1 ? 's' : ''} to Property`}
+              title={`Save Unit${units.length > 1 ? 's' : ''} to Property`}
               onPress={doCreateUnits}
               loading={loading}
             /> : <></>,

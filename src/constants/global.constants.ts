@@ -209,14 +209,15 @@ export const PaymentsMenuItems = [{
 
 export const TenanctPortfolioItems = [{
   id: 1,
-  label: "Rental",
+  label: "Rentals",
   icon: require("src/assets/images/icons/rental.png"),
   screen: "RentalsScreen"
-}, {
-  id: 2,
-  label: "Documents",
-  icon: require("src/assets/images/icons/documents.png"),
-  screen: "DocumentsScreen"
+// }, 
+// {
+//   id: 2,
+//   label: "Documents",
+//   icon: require("src/assets/images/icons/documents.png"),
+//   screen: "DocumentsScreen"
 }]
 
 export const LandlordPortfolioItems = [

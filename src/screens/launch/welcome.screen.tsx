@@ -44,7 +44,7 @@ export default function WelcomeScreen({
         flexDirection: "row",
         justifyContent: "space-between",
         paddingHorizontal: fontsConstants.w(21),
-        marginBottom: fontsConstants.h(50)
+        marginBottom: fontsConstants.h(10)
       }}>
         <View>
           {index > 0 ? (

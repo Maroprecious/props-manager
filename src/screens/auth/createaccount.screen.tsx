@@ -16,11 +16,15 @@ import { AlertModal } from "src/components/modals/alert.modals";
 import useAuthenticate from "src/hooks/useAuthentication";
 import { showToast } from "src/components/Toast";
 import layoutsConstants from "src/constants/layouts.constants";
+import { useAppSelector } from "src/hooks/useReduxHooks";
+import SecureStoreManager from "src/utils/SecureStoreManager";
 
 export default function CreateAccountScreen({
   navigation,
   route
 }: RootStackScreenProps<"CreateAccountScreen">) {
+  const user = useAppSelector((state) => state.auth.user)
+
   const theme = useContext(AppThemeContext);
   const alertRef = useRef<Modalize>(null);
   const [registrationSuccessful, setRegistrationSuccessful] = useState<boolean>(true);
@@ -33,17 +37,21 @@ export default function CreateAccountScreen({
   })
   const { createAccount, loading } = useAuthenticate()
   const [data, setData] = useState<any>({
-    email: '',
+    email: user?.email || '',
     firstName: '',
     lastName: '',
     password: '',
     phoneNumber: '',
-    role: ''
+    role: user?.roleType?.toUpperCase() || "",
   })
-  const [accountType, setAccountType] = useState(-1);
+  const [accountType, setAccountType] = useState('-1');
 
   const doSignUp = async () => {
-    const req = await createAccount(data)
+    const req = await createAccount({
+      ...data,
+      userId: user.id,
+      isCompleteAccountReg: user?.email !== ''
+    })
     if (req.hasError && req.status !== 200)
       showToast({
         title: `Login`,
@@ -52,6 +60,7 @@ export default function CreateAccountScreen({
       })
     else {
       setRegistrationSuccessful(true)
+      SecureStoreManager.setInitialRouteName("LoginScreen")
       alertRef.current?.open()    
     }
   }
@@ -86,7 +95,7 @@ export default function CreateAccountScreen({
         justifyContent: "flex-end"
       }}>
         <ScreenTitle
-          title={`Sign Up`}
+          title={user?.email === '' ? `Sign Up` : `Complete Sign Up`}
           intro={`Enter sign up details`}
           containerStyle={{
             marginTop: fontsConstants.h(-20),
@@ -116,7 +125,9 @@ export default function CreateAccountScreen({
           placeholder="Email ID"
           keyboardType="email-address"
           onChangeText={(e) => handleData(e, 'email')}
+          value={data?.email}
           containerStyle={styles.inputContainerStyle}
+          disabled={user?.email !== ''}
         />
         <DefaultInput
           placeholder="Password"
@@ -126,13 +137,14 @@ export default function CreateAccountScreen({
         />
         <DefaultSelectInput
           items={AccountTypes}
-          value={accountType}
+          value={data?.role}
           setValue={setAccountType}
           onSelectItem={(e: {value: string}) => handleData(e.value, 'role')}
           containerStyle={[styles.inputContainerStyle, {
             zIndex: 10
           }]}    
-          dropDownDirection="BOTTOM"      
+          dropDownDirection="BOTTOM"    
+          disabled={user?.email !== ''}  
         />
         <Text style={[styles.noteText, {
           textAlign: "center",
@@ -144,7 +156,7 @@ export default function CreateAccountScreen({
             textDecorationLine: "underline",
             zIndex: -1
           }}>Sign up</Text>
-          {`you agree to the following`}
+          {` you agree to the following`}
         </Text>
         <RNView style={{
           flexDirection: "row",
@@ -172,26 +184,30 @@ export default function CreateAccountScreen({
           disabled={data.email && data.phoneNumber && data.firstName && data.lastName && data.password && data.role ? false : true}
           containerStyle={{zIndex: -1}}
         />
-        <RNView style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: fontsConstants.h(25)
-        }}>
-          <TouchableOpacity style={{
+        {user?.email === '' && 
+          <RNView style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: fontsConstants.h(25)
+          }}>
+            <TouchableOpacity style={{
 
-          }} activeOpacity={globalConstants.activeOpacity}
-            onPress={() => navigation.navigate("LoginScreen")}
-          >
-          <Text style={styles.linkTextStyle}>
-              {`Already have an account? `}
-              <Text style={{
-                textDecorationLine: "underline",
-                fontFamily: fontsConstants.American_Typewriter_Bold
-              }}>Sign In</Text>
-            </Text>
-          </TouchableOpacity>
-        </RNView>
+            }} activeOpacity={globalConstants.activeOpacity}
+              onPress={() => {
+                navigation.navigate("LoginScreen")
+              }}
+            >
+            <Text style={styles.linkTextStyle}>
+                {`Already have an account? `}
+                <Text style={{
+                  textDecorationLine: "underline",
+                  fontFamily: fontsConstants.American_Typewriter_Bold
+                }}>Sign In</Text>
+              </Text>
+            </TouchableOpacity>
+          </RNView>
+        }
         <Text style={{
           marginTop: fontsConstants.h(20),
           textAlign: "center",
@@ -254,7 +270,7 @@ export default function CreateAccountScreen({
         buttonTitle={alertData.buttonTitle}
         type={alertData.type}
         onClosed={() => {
-          if(registrationSuccessful) navigation.navigate("LoginScreen")
+          if(registrationSuccessful) navigation.navigate(user?.email ? "ReLoginScreen" : "LoginScreen")
         }}
         body={(
           <>
@@ -276,7 +292,7 @@ export default function CreateAccountScreen({
             </Text>
           </>
         )}
-        onButtonPress={() => registrationSuccessful ? navigation.navigate("LoginScreen") : alertRef?.current?.close()}
+        onButtonPress={() => registrationSuccessful ? navigation.navigate(user?.email ? "ReLoginScreen" : "LoginScreen") : alertRef?.current?.close()}
       />
     </ScrollView>
   );
