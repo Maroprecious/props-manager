@@ -26,3 +26,8 @@ export const getPropertyOccupantsEndpoint = `/properties/get-tenant-in-a-propert
 export const addTenantToPropertyEndpoint = `/properties/tenancy/create-tenancy`;
 export const getOccupiedPropertiesEndpoint = `/properties/tenancy/get-tenant-occupied-details`;
 export const endTenancyEndpoint = `/properties/tenancy/remove-tenancy`;
+
+
+
+//transactions
+export const getTnxHistoryEndpoint = `/transactions/get-transaction-history`;
