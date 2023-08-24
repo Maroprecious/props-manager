@@ -24,7 +24,7 @@ export const RentalDetailItem = ({
   containerStyle,
   labelStyle,
   valueStyle,
-  loading = true
+  loading = false
 } : {
   label: string,
   value: string | number,
