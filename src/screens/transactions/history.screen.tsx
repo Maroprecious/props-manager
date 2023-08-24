@@ -1,21 +1,37 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, ImageBackground, StyleSheet } from "react-native";
-import { SafeAreaView } from "src/components/Themed";
+import { SafeAreaView, Text } from "src/components/Themed";
 import { HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
-import globalConstants, { TransactionHistory } from "src/constants/global.constants";
 import { ScreenTitle } from "../auth/components/screentitle.component";
 import layoutsConstants from "src/constants/layouts.constants";
 import { NotificationProps } from "src/types/app.types";
 import { NotificationItemCard } from "src/components/cards";
+import { useTransactions } from "src/hooks/usePayments";
+import { useAppSelector } from "src/hooks/useReduxHooks";
 
 export default function TransactionsScreen({
   navigation,
   route
 }: RootStackScreenProps<"TransactionsScreen">) {
   const theme = useContext(AppThemeContext);
+  const user = useAppSelector((state) => state.auth.user)
+  const { loading, getHistory } = useTransactions()
+
+  const [transactions, setTransactions] = useState<any>([]);
+
+  const doGetTnxHistory = async () => {
+    const req = await getHistory({
+      userId: `${user.id}`
+    })
+    if (req?.hasError === false) setTransactions(req?.data?.message || [])
+  }
+
+  useEffect(() => {
+    doGetTnxHistory()
+  }, [navigation])
 
   return (
     <SafeAreaView
@@ -42,7 +58,9 @@ export default function TransactionsScreen({
         />
         
         <FlatList
-          data={TransactionHistory}
+          data={transactions}
+          refreshing={loading}
+          onRefresh={doGetTnxHistory}
           renderItem={({ item, index }) => {
             return (
               <NotificationItemCard
@@ -63,6 +81,17 @@ export default function TransactionsScreen({
             paddingHorizontal: fontsConstants.w(18),
             paddingTop: fontsConstants.h(30),
           }}
+          ListEmptyComponent={
+            <Text style={{
+              alignSelf: "center",
+              marginTop: fontsConstants.h(100),
+              fontFamily: fontsConstants.Lora_Bold,
+              fontSize: fontsConstants.h(20),
+              opacity: layoutsConstants.activeOpacity
+            }}>
+              {`No History`}
+            </Text>
+          }
         />
       </ImageBackground>
     </SafeAreaView>
