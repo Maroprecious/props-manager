@@ -13,41 +13,47 @@ import { ScreenTitle } from "./components/screentitle.component";
 import useAuthenticate from "src/hooks/useAuthentication";
 import { showToast } from "src/components/Toast";
 import IsEmail from "src/utils/IsEmail";
+import { useAppSelector } from "src/hooks/useReduxHooks";
 
 export default function ForgotPasswordScreen({
   navigation,
   route
 }: RootStackScreenProps<"ForgotPasswordScreen">) {
   const theme = useContext(AppThemeContext);
+  const user = useAppSelector((state) => state.auth.user)
   const { loading, requestPasswordReset } = useAuthenticate();
-  const screenType: verificationType = route.params?.type;
+  const screenType: verificationType = route.params?.type || "verify-email";
 
 
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState(user?.email || "")
 
   const doGetPin = async () => {
-    switch (screenType) {
-      case "reset-password":
-        const req = await requestPasswordReset({
-          email: email.toLocaleLowerCase()
-        });
-        if (req?.hasError)
-          showToast({
-            type:`error`,
-            title:`Password Reset`,
-            message: req?.message || req?.error || req?.statusText || "Unable to request password reset"
-          })
-        else
+    const req = await requestPasswordReset({
+      email: email.toLocaleLowerCase()
+    });
+    if (req?.hasError)
+      showToast({
+        type:`error`,
+        title:`Password Reset`,
+        message: req?.message || req?.error || req?.statusText || "Unable to request password reset"
+      })
+    else {
+      switch (screenType) {
+        case "reset-password":
           navigation.navigate("OTPScreen", {
             type: screenType,
             email: email.toLocaleLowerCase()
           })
-        break;
-      case "verify-email": 
-        navigation.navigate("OTPVerifyScreen", route.params)
-        break;
-      default:
-        break;
+          break;
+        case "verify-email": 
+          navigation.navigate("OTPVerifyScreen", {
+            type: screenType,
+            email: email.toLocaleLowerCase()
+          })
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -68,7 +74,7 @@ export default function ForgotPasswordScreen({
             : ``
           }
           intro={screenType === "reset-password" ? `Please enter your email address. You will\nreceive a password reset PIN` 
-            : screenType === "verify-email" ? `Please enter your email address, You will receive an email verification PIN.`
+            : screenType === "verify-email" ? `Confirm your email address, you will receive an email verification PIN.`
             : ``
           }
           containerStyle={{
@@ -78,6 +84,7 @@ export default function ForgotPasswordScreen({
           placeholder="Enter email ID"
           keyboardType="email-address"
           value={email}
+          editable={screenType === "reset-password"}
           onChangeText={(t: string) => setEmail(t)}
         />
         <DefaultButton

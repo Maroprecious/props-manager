@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View as RNView, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { StyleSheet, View as RNView, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, DeviceEventEmitter } from "react-native";
 import { ScrollView, Text, View } from "src/components/Themed";
 import { NotificationItemCard } from "src/components/cards";
 import { Avatar, Image } from 'react-native-elements'
@@ -21,6 +21,8 @@ import { PropertiesListView, RenderAddButton } from "../property/components";
 import useProperty from "src/hooks/useProperties";
 import { useNavigation } from "@react-navigation/native";
 import useTenant from "src/hooks/useTenant";
+import { MPM_PROPERTY_CREATED } from "src/constants/events.constants";
+import { useProperties } from "src/contexts/property.context";
 
 export const RenderLatestOccupiedProperty = () => {
   const theme = useContext(AppThemeContext)
@@ -157,7 +159,7 @@ export const RenderUserProperties = () => {
   const user = useAppSelector((state) => state.auth.user)
   const navigation = useNavigation()
   const { loading, getProperties } = useProperty();
-
+  
   const [properties, setProperties] = React.useState<any>([{}, {}]);
 
   const fetchProperties = async () => {
@@ -168,6 +170,14 @@ export const RenderUserProperties = () => {
   } 
 
   React.useEffect(() => {
+    DeviceEventEmitter.addListener(MPM_PROPERTY_CREATED, fetchProperties);
+
+    return () => {
+      DeviceEventEmitter.removeAllListeners(MPM_PROPERTY_CREATED)
+    }
+  }, []);
+
+  React.useEffect(() => {
     fetchProperties()
   }, [navigation])
 
@@ -175,7 +185,7 @@ export const RenderUserProperties = () => {
     <PropertiesListView
       data={properties}
       itemsLoading={loading}
-      onViewPressed={(property: typeof Tenancies[0]) => {
+      onOpenProperty={(property: any) => {
         console.log(property)
       }}
       headerText={`My Properties`}
