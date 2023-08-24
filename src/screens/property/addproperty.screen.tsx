@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext, useState } from "react";
-import { View, ImageBackground, StyleSheet, TouchableOpacity, BackHandler, Alert } from "react-native";
+import { View, ImageBackground, StyleSheet, TouchableOpacity, BackHandler, Alert, DeviceEventEmitter } from "react-native";
 import { SafeAreaView, Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -17,6 +17,7 @@ import { NigerisStates } from "src/constants/nigerianstates.constants";
 import useProperty from "src/hooks/useProperties";
 import { showToast } from "src/components/Toast";
 import { useProperties } from "src/contexts/property.context";
+import { MPM_PROPERTY_CREATED } from "src/constants/events.constants";
 
 export default function AddPropertyScreen({
   navigation,
@@ -78,6 +79,7 @@ export default function AddPropertyScreen({
       userId: `${user.id}`
     })
     if (req?.hasError === false) {
+      DeviceEventEmitter.emit(MPM_PROPERTY_CREATED, {})
       showToast({
         title: "Add Property",
         type: "success",

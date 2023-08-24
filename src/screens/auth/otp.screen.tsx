@@ -15,6 +15,8 @@ import { Modalize } from "react-native-modalize";
 import useAuthenticate from "src/hooks/useAuthentication";
 import { showToast } from "src/components/Toast";
 import layoutsConstants from "src/constants/layouts.constants";
+import { useAppSelector } from "src/hooks/useReduxHooks";
+import SecureStoreManager from "src/utils/SecureStoreManager";
 
 export default function OTPScreen({
   navigation,
@@ -22,6 +24,7 @@ export default function OTPScreen({
 }: RootStackScreenProps<"OTPScreen">) {
   const theme = useContext(AppThemeContext);
   const alertRef = useRef<Modalize>(null);
+  const user = useAppSelector((state) => state.auth.user)
 
   const { loading, verifyOTP, requestPasswordReset } = useAuthenticate();
 
@@ -65,36 +68,42 @@ export default function OTPScreen({
     startCount(60)
   }, [])
 
+  useEffect(() => {
+    if(otp.length === 6) doConfirmOTP()
+  }, [otp])
+
   const doConfirmOTP = async () => {
-    switch (screenType) {
-      case "reset-password":
-        const req = await verifyOTP({
-          otp
-        });
-        if (req?.hasError)
-          showToast({
-            type:`error`,
-            title:`OTP Verification`,
-            message: req?.message || req?.error || req?.statusText || "Unable to verify OTP"
+    const req = await verifyOTP({
+      otp
+    });
+    if (req?.hasError)
+      showToast({
+        type:`error`,
+        title:`OTP Verification`,
+        message: req?.message || req?.error || req?.statusText || "Unable to verify OTP"
+      })
+    else {
+      SecureStoreManager.setInitialRouteName("LoginScreen")
+      switch (screenType) {
+        case "reset-password":
+            navigation.navigate("ResetPasswordScreen", {
+              email: route.params.email
+            })
+          break;
+        case "verify-email":
+          setAlertData({
+            ...alertData,
+            title: `Email Verified`,
+            message: `You have successfully verified your email ID.`,
+            subMessage: `You can now proceed to dashboard to continue other in-app activities.`,
+            buttonTitle: `Proceed`,
+            screen: user?.id === null || user?.id === undefined ? `LoginScreen` : `App`
           })
-        else
-          navigation.navigate("ResetPasswordScreen", {
-            email: route.params.email
-          })
-        break;
-      case "verify-email":
-        setAlertData({
-          ...alertData,
-          title: `Email Verified`,
-          message: `You have successfully verified your email ID.`,
-          subMessage: `Kindly go back to dashboard to continue other in-app activities.`,
-          buttonTitle: `Finish`,
-          screen: `App`
-        })
-        alertRef?.current?.open();
-        break;
-      default:
-        break;
+          alertRef?.current?.open();
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -115,9 +124,22 @@ export default function OTPScreen({
             : `Verify`
           }
           intro={screenType === "reset-password" ? `Please enter the password reset PIN\nsent to your email ID`
-            : screenType === "verify-email" ? `Please enter the email verification PIN sent to your email ID.`
+            : screenType === "verify-email" ? `Please enter the email verification PIN sent to your email ID\n${route.params.email}`
             : ``
           }
+        />
+        <OtpInput
+          value={otp}
+          onChange={(code: string) => setOTP(code)}
+          boxCount={6}
+          boxSize={fontsConstants.h(35)}
+          inputStyle={{
+            borderRadius: fontsConstants.w(10)
+          }}
+          itemSpacing={fontsConstants.w(5)}
+          containerStyle={{
+            marginBottom: fontsConstants.h(10)
+          }}
         />
         {counter > 0 ? (
           <Text style={[styles.requestNewText, {
@@ -134,39 +156,29 @@ export default function OTPScreen({
             </Text>
           </TouchableOpacity>
         )}
-        <OtpInput
-          value={otp}
-          onChange={(code: string) => setOTP(code)}
-          boxCount={6}
-          boxSize={fontsConstants.h(35)}
-          inputStyle={{
-            borderRadius: fontsConstants.w(10)
-          }}
-          itemSpacing={fontsConstants.w(5)}
-          containerStyle={{
-            marginBottom: fontsConstants.h(20)
-          }}
-        />
         <DefaultButton
           title={`Confirm`}
           disabled={Number(otp) === 0 || otp === ""}
           loading={loading}
           onPress={doConfirmOTP}
+          containerStyle={{marginTop: fontsConstants.h(20)}}
         />
-        <DefaultButton
-          title={`Cancel`}
-          type="outline"
-          onPress={() => navigation.canGoBack() ? navigation.goBack() : navigation.navigate("WelcomeScreen")}
-          titleStyle={{
-            color: colorsConstants.criticalRed
-          }}
-          buttonStyle={{
-            borderColor: colorsConstants.criticalRed,
-          }}
-          containerStyle={{
-            marginTop: fontsConstants.h(30)
-          }}
-        />
+        {screenType === "reset-password" && 
+          <DefaultButton
+            title={`Cancel`}
+            type="outline"
+            onPress={() => navigation.canGoBack() ? navigation.goBack() : navigation.navigate("LoginScreen")}
+            titleStyle={{
+              color: colorsConstants.criticalRed
+            }}
+            buttonStyle={{
+              borderColor: colorsConstants.criticalRed,
+            }}
+            containerStyle={{
+              marginTop: fontsConstants.h(30)
+            }}
+          />
+        }
       </View>
       <AlertModal
         modalRef={alertRef}

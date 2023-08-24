@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ImageBackground, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from "react-native";
+import { ActivityIndicator, ImageBackground, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 import { SafeAreaView, Text } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
@@ -23,7 +23,8 @@ export const RentalDetailItem = ({
   button,
   containerStyle,
   labelStyle,
-  valueStyle
+  valueStyle,
+  loading = true
 } : {
   label: string,
   value: string | number,
@@ -32,6 +33,7 @@ export const RentalDetailItem = ({
   containerStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
   valueStyle?: StyleProp<TextStyle>;
+  loading?: boolean
 }) => {
   return (
     <View
@@ -51,10 +53,20 @@ export const RentalDetailItem = ({
           fontSize: fontsConstants.h(12),
           marginBottom: fontsConstants.h(10)
         }, labelStyle]}>{label}</Text>
-        <Text style={[{
-          fontFamily: fontsConstants.Lora_Regular,
-          fontSize: fontsConstants.h(15)
-        }, valueStyle]}>{value}</Text>
+        {loading ? (
+          <ActivityIndicator
+            color={colorsConstants.colorPrimary}
+            size={fontsConstants.h(18)}
+            style={{
+              alignSelf: "flex-start"
+            }}
+          />
+        ) : (
+          <Text style={[{
+            fontFamily: fontsConstants.Lora_Regular,
+            fontSize: fontsConstants.h(15)
+          }, valueStyle]}>{value}</Text>
+        )}
       </View>
       <View style={{
         alignItems: "center",

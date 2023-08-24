@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Modal, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
 import colorsConstants from "src/constants/colors.constants";
 import fontsConstants from "src/constants/fonts.constants";
@@ -13,6 +13,10 @@ import { Icon } from "react-native-elements";
 import { RentalDetailItem } from "src/screens/rent/view.screen";
 import { useNavigation } from "@react-navigation/native";
 import { List } from 'react-content-loader/native';
+import useProperty from "src/hooks/useProperties";
+import { formatCurrency } from "src/utils/FormatNumber";
+import { currencySymbol } from "src/constants/currencies.constants";
+import moment from "moment";
 
 export const RenderPropertyDetails = ({
   item,
@@ -139,6 +143,7 @@ export const PropertiesListView = ({
   itemHeaderText,
   selectable = false,
   onViewPressed = () => null,
+  onOpenProperty = () => null,
   showItemId = true,
   headerTextStyle = {},
   itemsLoading = false
@@ -150,16 +155,34 @@ export const PropertiesListView = ({
   itemHeaderText?: string
   selectable?: boolean
   onViewPressed?: Function
+  onOpenProperty?: Function
   showItemId?: boolean
   headerTextStyle?: StyleProp<TextStyle>
   itemsLoading?: boolean
 }) => {
   const theme = useContext(AppThemeContext);
   const navigation = useNavigation()
+  const { loading: loadingData, getOneProperty } = useProperty()
 
   const [viewItem, setViewItem] = useState<typeof Tenancies[0] | undefined | any>(undefined);
   const [openModal, setOpenModal] = useState(false);
+  const [selectedDetails, setSelectedDetails] = useState<any>({
 
+  })
+
+  useEffect(() => {
+    if (viewItem?.id !== undefined)
+      getOneProperty({
+        propertId: viewItem?.id || "-1"
+      }).then((res) => {
+        if (res?.hasError === false) {
+          setSelectedDetails({
+            ...res?.data?.message,
+            ...res?.data?.additionalDetail
+          })
+        }
+      })
+  }, [viewItem])
   
   return (
     <View>
@@ -268,13 +291,13 @@ export const PropertiesListView = ({
             >
             {[{
               id: 1,
-              label: 'Rental Status',
-              value: `Rented Out`,
+              label: 'Expected Rent',
+              value: `${currencySymbol['ngn']}${formatCurrency(selectedDetails?.expectedRentChargeSum || 0)}`,
               color: colorsConstants.colorPrimary
             }, {
               id: 2,
-              label: 'Property Type',
-              value: `Block of Units`,
+              label: 'Total Tenants',
+              value: `${selectedDetails?.numberOfTenants || 0}`,
               color: colorsConstants.criticalRed
             }].map((item, index) => (
               <RentalDetailItem
@@ -288,6 +311,7 @@ export const PropertiesListView = ({
                   marginLeft: index === 1 ? fontsConstants.w(5) : 0,
                   marginRight: index === 1 ? 0 : fontsConstants.w(5)
                 }}
+                loading={loadingData}
               />
             ))}
           </View>
@@ -301,12 +325,12 @@ export const PropertiesListView = ({
             {[{
               id: 1,
               label: 'Number of Units',
-              value: `6`,
+              value: `${(selectedDetails?.numberOfOccupiedUnits || 0) + (selectedDetails?.numberOfUnoccupiedUnits || 0)}`,
               color: "#FF9401"
             }, {
               id: 2,
-              label: 'Tenancy Duration',
-              value: `12 months`,
+              label: 'Created At',
+              value: `${moment(new Date(selectedDetails?.created_at)).format("YYYY-MM-DD")}`,
               color: "#633EFF"
             }].map((item, index) => (
               <RentalDetailItem
@@ -320,11 +344,15 @@ export const PropertiesListView = ({
                   marginLeft: index === 1 ? fontsConstants.w(5) : 0,
                   marginRight: index === 1 ? 0 : fontsConstants.w(5)
                 }}
+                loading={loadingData}
               />
             ))}
           </View>
           <DefaultButton
             title={`Open Property`}
+            onPress={() => {
+              onOpenProperty(selectedDetails)
+            }}
             containerStyle={{
               marginTop: fontsConstants.h(40),
               marginHorizontal: fontsConstants.w(10)

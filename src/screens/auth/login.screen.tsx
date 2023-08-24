@@ -48,7 +48,11 @@ export default function LoginScreen({
         user
       }));
       if (user?.completed === true)
-        navigation.navigate("App")
+        if (user?.verified === true)
+          navigation.navigate("App")
+        else navigation.navigate("VerifyEmailScreen", {
+          type: "verify-email"
+        })
       else
         navigation.navigate("CompleteAccountCreationScreen")
     }

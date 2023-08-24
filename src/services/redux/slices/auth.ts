@@ -28,7 +28,8 @@ export const authSlice = createSlice({
     populateUserData: (state, action) => {
       const user = action?.payload?.user
       if (!user?.completed) SecureStoreManager.setInitialRouteName("CompleteAccountCreationScreen")
-
+      else if (!user?.verified) SecureStoreManager.setInitialRouteName("VerifyEmailScreen")
+      
       const roleType: roleTypes = user.roles.length === 1 && user.roles[0] === "ROLE_TENANT" 
         ? "tenant"
         : user.roles.length === 1 && user.roles[0] === "ROLE_LANDLORD"

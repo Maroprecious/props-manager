@@ -31,8 +31,8 @@ export default function CreateAccountScreen({
   const [alertData, setAlertData] = useState<any>({
     title: `Account Creation`,
     message: `Your account has been successfully Created.`,
-    subMessage: `Kindly login to access your MPM profile.`,
-    buttonTitle: `Login`,
+    subMessage: `Kindly verify your email to access your MPM profile.`,
+    buttonTitle: `Verify Email`,
     type: `success`
   })
   const { createAccount, loading } = useAuthenticate()
@@ -268,9 +268,15 @@ export default function CreateAccountScreen({
         modalRef={alertRef}
         title={alertData.title}
         buttonTitle={alertData.buttonTitle}
+        buttonContainerStyle={{
+          marginTop: fontsConstants.h(50)
+        }}
         type={alertData.type}
         onClosed={() => {
-          if(registrationSuccessful) navigation.navigate(user?.email ? "ReLoginScreen" : "LoginScreen")
+          if(registrationSuccessful) navigation.navigate("OTPScreen", {
+            type: "verify-email",
+            email: data.email
+          })
         }}
         body={(
           <>
@@ -292,7 +298,10 @@ export default function CreateAccountScreen({
             </Text>
           </>
         )}
-        onButtonPress={() => registrationSuccessful ? navigation.navigate(user?.email ? "ReLoginScreen" : "LoginScreen") : alertRef?.current?.close()}
+        onButtonPress={() => registrationSuccessful ? navigation.navigate("OTPScreen", {
+          type: "verify-email",
+          email: data.email
+        }) : alertRef?.current?.close()}
       />
     </ScrollView>
   );

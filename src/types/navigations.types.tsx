@@ -28,6 +28,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   }
   OTPVerifyScreen: {
     type: verificationType
+    email: string
   }
   InviteScreen: undefined;
   PayRentScreen: undefined;
