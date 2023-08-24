@@ -17,6 +17,7 @@ import useProperty from "src/hooks/useProperties";
 import { formatCurrency } from "src/utils/FormatNumber";
 import { currencySymbol } from "src/constants/currencies.constants";
 import moment from "moment";
+import { useProperties } from "src/contexts/property.context";
 
 export const RenderPropertyDetails = ({
   item,
@@ -162,6 +163,7 @@ export const PropertiesListView = ({
 }) => {
   const theme = useContext(AppThemeContext);
   const navigation = useNavigation()
+  const { setProperty } = useProperties()
   const { loading: loadingData, getOneProperty } = useProperty()
 
   const [viewItem, setViewItem] = useState<typeof Tenancies[0] | undefined | any>(undefined);
@@ -352,6 +354,9 @@ export const PropertiesListView = ({
             title={`Open Property`}
             onPress={() => {
               onOpenProperty(selectedDetails)
+              setProperty(viewItem)
+              navigation.navigate("PropertyDetailsScreen")
+              setOpenModal(false)
             }}
             containerStyle={{
               marginTop: fontsConstants.h(40),

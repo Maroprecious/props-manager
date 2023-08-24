@@ -38,7 +38,7 @@ export default function AddUnitsScreen({
   const [unitName, setUnitName] = useState("")
   const [unitRent, setUnitRent] = useState('0.00')
   const [unitServiceCharge, setUnitServiceCharge] = useState('0.00')
-  const [unitLegalCharge, setUnitLegalCharge] = useState('0.00')
+  const [unitLegalFee, setUnitLegalFee] = useState('0.00')
   const [unitAgreementCharge, setUnitAgreementCharge] = useState('0.00')
   const [unitCommissionCharge, setUnitCommissionCharge] = useState('0.00')
   const [unitOtherCharges, setUnitOtherCharges] = useState('0.00')
@@ -100,7 +100,7 @@ export default function AddUnitsScreen({
             unitName,
             unitRent: Number(currencyToString(unitRent)),
             unitServiceCharge: Number(currencyToString(unitServiceCharge)),
-            unitLegalCharge: Number(currencyToString(unitLegalCharge)),
+            unitLegalFee: Number(currencyToString(unitLegalFee)),
             unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
             unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
             unitOtherCharges: Number(currencyToString(unitOtherCharges)),
@@ -110,7 +110,7 @@ export default function AddUnitsScreen({
           }
         ])
         setUnitAgreementCharge('0.00')
-        setUnitLegalCharge('0.00')
+        setUnitLegalFee('0.00')
         setUnitName('')
         setUnitRent('0.00')
         setUnitServiceCharge('0.00')
@@ -185,7 +185,7 @@ export default function AddUnitsScreen({
       unitServiceCharge: Number(currencyToString(unitServiceCharge)),
       unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
       unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
-      unitLegalCharge: Number(currencyToString(unitLegalCharge)),
+      unitLegalFee: Number(currencyToString(unitLegalFee)),
       unitOtherCharges: Number(currencyToString(unitOtherCharges)),
       propertyId: property.id,
       unitTypeId: unitTypeId.toString()
@@ -197,7 +197,7 @@ export default function AddUnitsScreen({
       unitServiceCharge: Number(currencyToString(unitServiceCharge)),
       unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
       unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
-      unitLegalFee: Number(currencyToString(unitLegalCharge)),
+      unitLegalFee: Number(currencyToString(unitLegalFee)),
       unitOtherCharges: Number(currencyToString(unitOtherCharges)),
       id: oneUnit.id,
       unitType: {
@@ -254,7 +254,7 @@ export default function AddUnitsScreen({
       setUnitServiceCharge(Object.is(oneUnit.unitServiceCharge, null) ? '0.00': oneUnit.unitServiceCharge.toString())
       setUnitAgreementCharge(Object.is(oneUnit.unitAgreementCharge, null) ? '0.00' : oneUnit.unitAgreementCharge?.toString() as string)
       setUnitCommissionCharge(Object.is(oneUnit.unitCommissionCharge, null) ? '0.00':  oneUnit.unitCommissionCharge?.toString() as string)
-      setUnitLegalCharge(Object.is(oneUnit.unitLegalFee, null) ? '0.00' : oneUnit.unitLegalFee?.toString() as string)
+      setUnitLegalFee(Object.is(oneUnit.unitLegalFee, null) ? '0.00' : oneUnit.unitLegalFee?.toString() as string)
     }
   }, [oneUnit, route])
 
@@ -364,8 +364,8 @@ export default function AddUnitsScreen({
             setValue: setUnitServiceCharge,
             label: `Service Charge`
           }, {
-            value: unitLegalCharge,
-            setValue: setUnitLegalCharge,
+            value: unitLegalFee,
+            setValue: setUnitLegalFee,
             label: `legal Charge`
           }].map((item, index) => (
             <DefaultInput
@@ -584,7 +584,7 @@ export default function AddUnitsScreen({
                       {`Service Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitServiceCharge)}</Text>
                     </Text>
                     <Text style={styles.unitDetailTextStyle2}>
-                      {`Legal Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitLegalCharge)}</Text>
+                      {`Legal Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitLegalFee)}</Text>
                     </Text>
                   </View>
                   <View style={styles.listViewRows}>

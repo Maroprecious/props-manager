@@ -13,9 +13,9 @@ import useProperty from "src/hooks/useProperties";
 import Layout from "src/components/layout/layout";
 import { useProperties } from "src/contexts/property.context";
 import { useUnit } from "src/contexts/unit.context";
-import { formatNumber } from "src/utils/FormatNumber";
 import { formatCurrency } from "src/utils/FormatNumber";
 import { currencySymbol } from "src/constants/currencies.constants";
+import { AntDesign } from '@expo/vector-icons';
 
 
 export default function UnitDetailsScreen({
@@ -28,128 +28,135 @@ export default function UnitDetailsScreen({
     const { loading, createProperty, created } = useProperty()
     const { property } = useProperties()
     const { oneUnit } = useUnit()
-    console.log(oneUnit.occupyingStatus, 'charge')
     return (
-        <Layout title="Unit Details" goback={true}>
-            <View style={styles.container}>
-                <View style={styles.location}>
-                    <LocationIcon
-                        containerStyle={{
-                            height: fontsConstants.w(50),
-                            width: fontsConstants.w(50)
-                        }} />
-                    <View style={styles.details}>
-                        <Text style={styles.title}>{oneUnit.unitName}</Text>
-                        <Text style={styles.address}>{oneUnit.unitType.description}</Text>
-                    </View>
-                </View>
-                <TouchableOpacity onPress={() => navigation.navigate('AddUnitsScreen', {
-                    actionType: 'edit',
-                    propertyId: property.id
-                })}>
-                    <Text style={styles.edit}>Edit Unit</Text>
-                </TouchableOpacity>
-                <View>
-                    <View style={{
-                        backgroundColor: colorsConstants[theme]["grey0.13"],
-                        padding: fontsConstants.w(14),
-                        borderRadius: fontsConstants.h(10),
-                        marginTop: 25
-                    }}>
-                        {[{
-                            id: 1,
-                            label: 'Unit Rent:',
-                            value: `${currencySymbol['ngn']}${oneUnit.unitRent === null ? '0.00' : formatCurrency(Number(oneUnit.unitRent))}`,
-                            valueTextOpacity: 1
-                        }, {
-                            id: 2,
-                            label: 'Service Charge:',
-                            value: `${currencySymbol['ngn']}${formatCurrency(Number(oneUnit.unitServiceCharge))}`,
-                            valueTextOpacity: 1
-                        }, {
-                            id: 3,
-                            label: 'Legal Fee:',
-                            value: `${currencySymbol['ngn']}${oneUnit.unitLegalFee === null ? '0.00' : formatCurrency(Number(oneUnit.unitLegalFee))}`,
-                            valueTextOpacity: 1
-                        }, {
-                            id: 4,
-                            label: 'Agreement Charge:',
-                            value: `${currencySymbol['ngn']}${oneUnit.unitAgreementCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitAgreementCharge))}`,
-                            valueTextOpacity: 1
-                        }, {
-                            id: 5,
-                            label: 'Commission Charge:',
-                            value: `${currencySymbol['ngn']}${oneUnit.unitCommissionCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitCommissionCharge))}`,
-                            valueTextOpacity: 1
-                        },
-                        {
-                            id: 6,
-                            label: 'Other Charges:',
-                            value:
-                                `${currencySymbol['ngn']}${oneUnit.unitOtherCharges === null ? '0.00' : formatCurrency(Number(oneUnit.unitOtherCharges))}`,
-                            valueTextOpacity: 1
-                        }, {
-                            id: 7,
-                            label: 'Occupying Status:',
-                            value:
-                                oneUnit.occupyingStatus === true ? 'Occupied' : 'Not Occupied',
-                            valueTextOpacity: 1
-                        }
-                        ].map((item, index) => (
-                            < View key={item.id.toString()} >
-                                <View style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    justifyContent: 'space-between',
-                                    height: 50,
-                                }}>
-                                    <Text style={{
-                                        fontFamily: fontsConstants.Lora_Regular,
-                                        fontSize: fontsConstants.w(14),
-                                        color: colorsConstants[theme].darkText,
-                                        width: '50%'
-                                    }}>
-                                        {item.label}
-                                    </Text>
-                                    <Text style={{
-                                        fontFamily: fontsConstants.Lora_Regular,
-                                        fontSize: fontsConstants.w(12),
-                                        color: colorsConstants[theme].darkText,
-                                        opacity: item.valueTextOpacity,
-                                        flex: 2.5,
-                                        justifyContent: 'flex-start',
-                                        textAlign: 'justify',
-                                        flexDirection: 'row'
-                                    }}>
-                                        {item.value}
-                                    </Text>
-                                </View>
-                                <View style={{
-                                    borderBottomColor: colorsConstants[theme].dropShadow,
-                                    borderBottomWidth: item.id === 7 ? 0 : 1, opacity: 0.4
-                                }}></View>
-                            </View>
-                        ))}
-                    </View>
-                    <DefaultButton
-                        title={`Add Tenant`}
-                        onPress={() => {
+        <>
+            <TouchableOpacity style={styles.goBack} onPress={() => {
+                
+                navigation.navigate("ViewUnitsScreen")
+            }}>
+                <AntDesign name="arrowleft" size={30} color="black" />
+            </TouchableOpacity>
+            <Layout title="Unit Details" goback={false} textstyle={{ marginTop: 95 }}>
 
-                            navigation.navigate("AddTenantScreen", {
-                                data: {
-                                    unit: oneUnit
-                                },
-                                from: "unit-screen"
-                            })
-                        }}
-                        containerStyle={{
-                            marginHorizontal: fontsConstants.w(30),
-                            marginTop: 40
-                        }}
-                    />
+                <View style={styles.container}>
+                    <View style={styles.location}>
+                        <LocationIcon
+                            containerStyle={{
+                                height: fontsConstants.w(50),
+                                width: fontsConstants.w(50)
+                            }} />
+                        <View style={styles.details}>
+                            <Text style={styles.title}>{oneUnit.unitName}</Text>
+                            <Text style={styles.address}>{oneUnit.unitType.description}</Text>
+                        </View>
+                    </View>
+                    <TouchableOpacity onPress={() => navigation.navigate('AddUnitsScreen', {
+                        actionType: 'edit',
+                        propertyId: property.id
+                    })}>
+                        <Text style={styles.edit}>Edit Unit</Text>
+                    </TouchableOpacity>
+                    <View>
+                        <View style={{
+                            backgroundColor: colorsConstants[theme]["grey0.13"],
+                            padding: fontsConstants.w(14),
+                            borderRadius: fontsConstants.h(10),
+                            marginTop: 25
+                        }}>
+                            {[{
+                                id: 1,
+                                label: 'Unit Rent:',
+                                value: `${currencySymbol['ngn']}${oneUnit.unitRent === null ? '0.00' : formatCurrency(Number(oneUnit.unitRent))}`,
+                                valueTextOpacity: 1
+                            }, {
+                                id: 2,
+                                label: 'Service Charge:',
+                                value: `${currencySymbol['ngn']}${formatCurrency(Number(oneUnit.unitServiceCharge))}`,
+                                valueTextOpacity: 1
+                            }, {
+                                id: 3,
+                                label: 'Legal Fee:',
+                                value: `${currencySymbol['ngn']}${oneUnit.unitLegalFee === null ? '0.00' : formatCurrency(Number(oneUnit.unitLegalFee))}`,
+                                valueTextOpacity: 1
+                            }, {
+                                id: 4,
+                                label: 'Agreement Charge:',
+                                value: `${currencySymbol['ngn']}${oneUnit.unitAgreementCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitAgreementCharge))}`,
+                                valueTextOpacity: 1
+                            }, {
+                                id: 5,
+                                label: 'Commission Charge:',
+                                value: `${currencySymbol['ngn']}${oneUnit.unitCommissionCharge === null ? '0.00' : formatCurrency(Number(oneUnit.unitCommissionCharge))}`,
+                                valueTextOpacity: 1
+                            },
+                            {
+                                id: 6,
+                                label: 'Other Charges:',
+                                value:
+                                    `${currencySymbol['ngn']}${oneUnit.unitOtherCharges === null ? '0.00' : formatCurrency(Number(oneUnit.unitOtherCharges))}`,
+                                valueTextOpacity: 1
+                            }, {
+                                id: 7,
+                                label: 'Occupying Status:',
+                                value:
+                                    oneUnit.occupyingStatus === true ? 'Occupied' : 'Not Occupied',
+                                valueTextOpacity: 1
+                            }
+                            ].map((item, index) => (
+                                < View key={item.id.toString()} >
+                                    <View style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: 'space-between',
+                                        height: 50,
+                                    }}>
+                                        <Text style={{
+                                            fontFamily: fontsConstants.Lora_Regular,
+                                            fontSize: fontsConstants.w(14),
+                                            color: colorsConstants[theme].darkText,
+                                            width: '50%'
+                                        }}>
+                                            {item.label}
+                                        </Text>
+                                        <Text style={{
+                                            fontFamily: fontsConstants.Lora_Regular,
+                                            fontSize: fontsConstants.w(12),
+                                            color: colorsConstants[theme].darkText,
+                                            opacity: item.valueTextOpacity,
+                                            flex: 2.5,
+                                            justifyContent: 'flex-start',
+                                            textAlign: 'justify',
+                                            flexDirection: 'row'
+                                        }}>
+                                            {item.value}
+                                        </Text>
+                                    </View>
+                                    <View style={{
+                                        borderBottomColor: colorsConstants[theme].dropShadow,
+                                        borderBottomWidth: item.id === 7 ? 0 : 1, opacity: 0.4
+                                    }}></View>
+                                </View>
+                            ))}
+                        </View>
+                        <DefaultButton
+                            title={`Add Tenant`}
+                            onPress={() => {
+
+                                navigation.navigate("AddTenantScreen", {
+                                    data: {
+                                        unit: oneUnit
+                                    },
+                                    from: "unit-screen"
+                                })
+                            }}
+                            containerStyle={{
+                                marginHorizontal: fontsConstants.w(30),
+                                marginTop: 40
+                            }}
+                        />
+                    </View>
                 </View>
-            </View>
-        </Layout>
+            </Layout></>
     )
 }
 
@@ -190,5 +197,11 @@ const styles = StyleSheet.create({
         color: colorsConstants.colorPrimary,
         fontFamily: fontsConstants.Lora_Regular,
         paddingTop: 30
+    },
+    goBack: {
+        padding: 20,
+        paddingTop: 60,
+        position: 'absolute',
+        zIndex: 1000
     }
 });
