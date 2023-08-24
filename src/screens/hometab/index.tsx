@@ -186,7 +186,7 @@ export const RenderUserProperties = () => {
       data={properties}
       itemsLoading={loading}
       onOpenProperty={(property: any) => {
-        console.log(property)
+        // console.log(property)
       }}
       headerText={`My Properties`}
       itemHeaderText={`Property Details`}

@@ -33,7 +33,7 @@ export default function ViewUnitsScreen({
     }
     useEffect(() => {
         fetchUnits()
-    }, [])
+    }, [navigation])
 
     const Item = ({ item }: any) => {
         return (
