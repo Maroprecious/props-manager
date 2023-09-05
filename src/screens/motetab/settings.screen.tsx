@@ -9,7 +9,10 @@ import useColorScheme from 'src/hooks/useColorScheme';
 import { AntDesign } from '@expo/vector-icons';
 import { Switch } from 'react-native-switch';
 import { useState } from "react";
-import { useAppSelector } from "src/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "src/hooks/useReduxHooks";
+import useUser from "src/hooks/useUser";
+import useExpoPushToken from "src/hooks/useExpoPushToken";
+import { updateUserProfileData } from "src/services/redux/slices/auth";
 
 export default function SettingScreen({
     navigation,
@@ -18,8 +21,27 @@ export default function SettingScreen({
     const theme = useColorScheme()
 
     const user = useAppSelector((state) => state.auth.user)
+    const dispatch = useAppDispatch();
+    const { loading, updateProfile } = useUser();
+    const pushToken = useExpoPushToken();
 
-    const [value, setValue] = useState(false)
+    const [value, setValue] = useState(user?.pushToken !== "" && user?.pushToken !== undefined)
+
+    const setPushNotification = async (val: boolean) => {
+        setValue(val)
+        const req = await updateProfile({
+            userId: user?.id || "",
+            pushToken: val === true ? pushToken : ""
+        })
+        console.log(req, pushToken)
+        if (req?.status === 200) {
+            dispatch(updateUserProfileData({
+                ...user,
+                pushToken
+            }));  
+        }
+    }
+
     return (
         <Layout goback={true} title='Settings'>
             <RNView style={styles.container}>
@@ -44,7 +66,7 @@ export default function SettingScreen({
                         <Text style={[styles.text, { color: colorsConstants[theme].socialText }]}>Allow Push Notifications</Text>
                         <Switch
                             value={value}
-                            onValueChange={(val) => setValue(val)}
+                            onValueChange={(val) => setPushNotification(val)}
                             circleSize={30}
                             innerCircleStyle={{ width: 25, height: 25, marginRight: 2, borderColor: '#00000080', borderWidth: 0.2 }}
                             renderActiveText={false}

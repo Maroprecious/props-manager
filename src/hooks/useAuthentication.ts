@@ -119,7 +119,8 @@ const useAuthenticate = () => {
     password: string,
     role: string,
     isCompleteAccountReg: boolean,
-    userId?: string
+    userId?: string,
+    pushToken?: string,
   }, cb = () => {}): Promise<LoginResponse> => {
     let response: LoginResponse;
     try {

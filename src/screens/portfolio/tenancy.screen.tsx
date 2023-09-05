@@ -48,7 +48,6 @@ export default function TenancyScreen({
   }, [properties])
 
   useEffect(() => {
-    console.log(selected, "selected")
     if (selected !== -1)
       getOneProperty({
         propertId: selected

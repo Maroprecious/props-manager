@@ -17,7 +17,8 @@ const initialAuthState: ReduxAuthState = {
     aliasName: "",
     verified: false,
     phoneNumber: "",
-    roleType: null
+    roleType: null,
+    pushToken: ""
   }
 }
 

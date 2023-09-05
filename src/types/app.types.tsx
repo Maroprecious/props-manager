@@ -31,4 +31,16 @@ export type AuthUserType = {
   verified: boolean
   phoneNumber?: string
   roleType: roleTypes
+  pushToken?: string
+}
+
+export type PaymentData = {
+  unitId: string
+  invoiceId: string
+  referenceId: string
+  tenantId: string
+  ownerId: string
+  amountExpected: number
+  paymentStatus: boolean
+  invoiceCreationDate: string
 }

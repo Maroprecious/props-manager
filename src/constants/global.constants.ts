@@ -5,6 +5,8 @@ export const APP_THEME = `${APP_NAME}-APP-THEME`;
 export const APP_CONFIRM = `${APP_NAME}-APP-CONFIRM`;
 export const APP_TOKEN = `${APP_NAME}-APP-TOKEN`;
 export const APP_INITIAL_ROUTE = `${APP_NAME}-APP-INITIAL-ROUTE`;
+export const APP_INITIATED_PAYMENT = `${APP_NAME}-APP-INITIATED-PAYMENT`;
+export const APP_EXPO_PUSH_TOKEN = `${APP_NAME}-APP-EXPO-PUSH-TOKEN`;
 
 export const SliderData = [
   {

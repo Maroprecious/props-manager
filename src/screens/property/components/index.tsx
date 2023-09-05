@@ -208,7 +208,7 @@ export const PropertiesListView = ({
             item={item}
             key={index.toString()}
             selectedId={selectedId}
-            itemHeaderText={itemHeaderText}
+            itemHeaderText={`${item.propertyName}`}
             onViewPressed={onViewPressed}
             setViewItem={setViewItem}
             setOpenModal={setOpenModal}
@@ -218,28 +218,28 @@ export const PropertiesListView = ({
             loading={itemsLoading}
           />
         ))}
-        {data.length > 0 ? (
-          <TouchableOpacity style={{
-            marginTop: fontsConstants.h(0)
-          }}
-            activeOpacity={layoutsConstants.activeOpacity}
-            onPress={() => navigation.navigate("PropertiesScreen")}
-          >
-            <Text style={{
-              fontFamily: fontsConstants.Lora_Regular,
-              fontSize: fontsConstants.h(14),
-              color: colorsConstants[theme].darkText3
-            }}>
-              {`View More...`}
-            </Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: fontsConstants.h(0)
-          }}>
+        <View style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: fontsConstants.h(0)
+        }}>
+          {data.length > 0 ? (
+            <TouchableOpacity style={{
+              marginTop: fontsConstants.h(0)
+            }}
+              activeOpacity={layoutsConstants.activeOpacity}
+              onPress={() => navigation.navigate("PropertiesScreen")}
+            >
+              <Text style={{
+                fontFamily: fontsConstants.Lora_Regular,
+                fontSize: fontsConstants.h(14),
+                color: colorsConstants[theme].darkText3
+              }}>
+                {`View More...`}
+              </Text>
+            </TouchableOpacity>
+          ) : (
             <Text style={{
               fontFamily: fontsConstants.Lora_Regular,
               fontSize: fontsConstants.h(14),
@@ -247,11 +247,11 @@ export const PropertiesListView = ({
             }}>
               {`No property record found`}
             </Text>
-            <RenderAddButton
-              onPress={() => navigation.navigate("AddPropertyScreen")}
-            />
-          </View>
-        )}
+          )}
+          <RenderAddButton
+            onPress={() => navigation.navigate("AddPropertyScreen")}
+          />
+        </View>
       </View>
 
       <Modal 

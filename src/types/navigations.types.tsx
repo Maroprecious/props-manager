@@ -38,6 +38,9 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
       id: string,
       address: string,
     },
+    unit: {
+      id: string
+    }
   };
   TransactionsScreen: undefined;
   RentalsScreen: undefined;

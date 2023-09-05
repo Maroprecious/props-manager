@@ -9,7 +9,8 @@ import {
   ViewStyle,
   Platform,
   TextStyle,
-  TextInputProps
+  TextInputProps,
+  KeyboardTypeOptions
 } from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import colorsConstants from 'src/constants/colors.constants';
@@ -26,7 +27,8 @@ const OtpInput = ({
   textStyle = {},
   otherProps= {},
   itemSpacing = 9,
-  boxSize = fontsConstants.w(60)
+  boxSize = fontsConstants.w(60),
+  keyboardType = Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"
 }: {
   value: string;
   onChange?: (t: string) => void;
@@ -38,6 +40,7 @@ const OtpInput = ({
   textStyle?: StyleProp<TextStyle>;
   itemSpacing?: number;
   boxSize?: number;
+  keyboardType?: KeyboardTypeOptions
 }) => {
 
   const theme = useContext(AppThemeContext);
@@ -109,7 +112,7 @@ const OtpInput = ({
           <TextInput
             ref={ref}
             value={value}
-            keyboardType={Platform.OS === "android" ? "number-pad" : "name-phone-pad"}
+            keyboardType={keyboardType}
             style={[{width: fontsConstants.w(20), textAlign: 'center', color: theme === "light" ? colorsConstants.colorPrimary : colorsConstants.colorWhite}, textStyle, {...otherProps}]}
             allowFontScaling={false}
             maxLength={1}

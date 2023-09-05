@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ColorSchemeName } from 'react-native';
-import { APP_INITIAL_ROUTE, APP_THEME, APP_TOKEN } from 'src/constants/global.constants';
+import { APP_EXPO_PUSH_TOKEN, APP_INITIAL_ROUTE, APP_INITIATED_PAYMENT, APP_THEME, APP_TOKEN } from 'src/constants/global.constants';
 import * as SecureStore from 'expo-secure-store';
 import { RootStackParamList } from 'src/types/navigations.types';
 
@@ -51,6 +51,50 @@ const SecureStoreManager = {
       await SecureStore.setItemAsync(`${APP_TOKEN}`, token);
     } catch (error) {
       console.log(error);
+    }
+  },
+  getInitiatedPaymentData: async () => {
+    try {
+      const data = await SecureStore.getItemAsync(`${APP_INITIATED_PAYMENT}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  },
+  setInitiatedPaymentData: async (data: string) => {
+    try {
+      await SecureStore.setItemAsync(`${APP_INITIATED_PAYMENT}`, data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  delInitiatedPaymentData: async () => {
+    try {
+      await SecureStore.deleteItemAsync(`${APP_INITIATED_PAYMENT}`);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  storeExpoPushToken: async (token: string) => {
+    try {
+      return await SecureStore.setItemAsync(APP_EXPO_PUSH_TOKEN, token);
+    } catch (error) {
+      console.log('Store save error', error);
+    }
+  },
+  getExpoPushToken: async () => {
+    try {
+      return await SecureStore.getItemAsync(APP_EXPO_PUSH_TOKEN);
+    } catch (error) {
+      console.log('Store read error', error);
+    }
+  },
+  deleteExpoPushToken: () => {
+    try {
+      SecureStore.deleteItemAsync(APP_EXPO_PUSH_TOKEN);
+    } catch (error) {
+      console.log('Store read error', error);
     }
   },
 }
