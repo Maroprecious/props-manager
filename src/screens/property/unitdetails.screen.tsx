@@ -140,6 +140,7 @@ export default function UnitDetailsScreen({
                         </View>
                         <DefaultButton
                             title={`Add Tenant`}
+                            disabled={oneUnit.occupyingStatus === true}
                             onPress={() => {
 
                                 navigation.navigate("AddTenantScreen", {
@@ -150,7 +151,6 @@ export default function UnitDetailsScreen({
                                 })
                             }}
                             containerStyle={{
-                                marginHorizontal: fontsConstants.w(30),
                                 marginTop: 40
                             }}
                         />

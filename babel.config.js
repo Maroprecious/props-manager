@@ -29,6 +29,7 @@ module.exports = function (api) {
         "envName": "APP_ENV",
         "moduleName": "@env",
       }],
+      '@babel/plugin-proposal-export-namespace-from',
       'react-native-reanimated/plugin',
     ],
   };

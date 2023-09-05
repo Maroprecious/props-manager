@@ -1,5 +1,5 @@
-import React, { useContext, useRef, useState } from "react";
-import { ImageBackground, View, StyleSheet } from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { ImageBackground, View, StyleSheet, ActivityIndicator, Alert } from "react-native";
 import { SafeAreaView, Text } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
@@ -22,6 +22,12 @@ import { PAYSTACK_PUBLIC_KEY } from "@env";
 import usePayments from "src/hooks/usePayments";
 import { showToast } from "src/components/Toast";
 import { PAYMENT_OPTIONS } from "src/constants";
+import SecureStoreManager from "src/utils/SecureStoreManager";
+import { PaymentData } from "src/types/app.types";
+import ViewShot from "react-native-view-shot";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { SaveFileFromUri } from "src/utils/File";
+
 
 export default function ConfirmRentPayment({
   navigation,
@@ -32,8 +38,23 @@ export default function ConfirmRentPayment({
   const { loading: inititating, initiatePayment } = usePayments();
   
   const alertRef = useRef<Modalize>(null);
+  const viewShotRef = useRef<ViewShot>(null);
   const paystackWebViewRef = useRef<paystackProps.PayStackRef>(null); 
   
+  const [paymentData, setPaymentData] = useState({
+    amountExpected: 0
+  });
+
+  useEffect(() => {
+    SecureStoreManager.getInitiatedPaymentData().then((res) => {
+      const data: PaymentData = JSON.parse(res || `{}`);
+      if (data?.referenceId && data?.unitId === `${route?.params?.unit?.id}`)
+        setPaymentData(data)
+      else
+        preparePayment()
+    })
+  }, [route?.params?.unit?.id])
+
   const [paymentRefNumber, setPaymentRefNumber] = useState(`-1`);
   const [paymentRes, setPaymentRes] = useState<{
     transactionRef?: any,
@@ -41,14 +62,37 @@ export default function ConfirmRentPayment({
     data?: any
   }>({transactionRef: {}, data: {}, status: ''});
 
+  const doDownloadReceipt = async (name: string) => {
+    try {
+      //@ts-ignore
+      const res = await viewShotRef?.current?.capture();   
+      if(res) {
+        console.log(res, ">>")
+        await SaveFileFromUri(res, name)
+      }  
+    } catch (error) {
+      console.log(error)
+      showToast({
+        title: `Download`,
+        message: `Error downloading receipt`,
+        type: 'error'
+      })
+    }
+  }
+
   const preparePayment = async () => {
     const req = await initiatePayment({
-      amount: 30000,
-      email: user.email,
-      userId: `${user.id}`
+      unitId: `${route?.params?.unit?.id}`
     })
-    paystackWebViewRef?.current?.startTransaction();
-    setPaymentRefNumber(`${Math.floor((Math.random() * 1000000000) + 1)}`)
+    if (req?.hasError === false) {
+      setPaymentData(req?.data?.message || {})
+      setPaymentRefNumber(`${req?.data?.message?.referenceId}`)
+      const data = {
+        ...req?.data?.message,
+        unitId: `${route?.params?.unit?.id}`
+      }
+      await SecureStoreManager.setInitiatedPaymentData(JSON.stringify(data))
+    }
   }
 
   const completePayment = async () => {
@@ -72,6 +116,7 @@ export default function ConfirmRentPayment({
         <HeaderBackButton/>
         <ScreenTitle
           title={`Confirm Payment`}
+          intro={`Total payment includes the following: rent, service charge and other charges(if any)`}
           containerStyle={{
             marginTop: fontsConstants.h(12),
             marginBottom: fontsConstants.h(45)
@@ -96,7 +141,10 @@ export default function ConfirmRentPayment({
             }}>{`₦`}</Text>
           }
           disabled
-          value={`${formatCurrency(route.params?.amount || 0)}`}
+          rightIcon={ inititating ?
+            <ActivityIndicator color={colorsConstants.colorPrimary} style={{marginRight: fontsConstants.w(10)}} /> : undefined
+          }
+          value={inititating ? `0.00` : `${formatCurrency(paymentData?.amountExpected || 0)}`}
           disabledInputStyle={{color: colorsConstants[theme].darkText, opacity: 1}}
           inputStyle={{
             textAlign: "center",
@@ -120,17 +168,20 @@ export default function ConfirmRentPayment({
         <DefaultButton
           title={`Pay Now`}
           loading={inititating}
-          disabled={route?.params?.amount === undefined || route?.params?.amount === null}
+          disabled={paymentData?.amountExpected === undefined || paymentData?.amountExpected === 0}
           containerStyle={{
             marginTop: fontsConstants.h(50),
           }}
-          onPress={preparePayment}
+          onPress={async () => {
+            await SecureStoreManager.delInitiatedPaymentData()
+            paystackWebViewRef?.current?.startTransaction()
+          }}
         />
         <Paystack
           paystackKey={PAYSTACK_PUBLIC_KEY}
           billingEmail={user.email}
           billingName={`${user.firstName || ''} ${user.lastName|| ''}`}
-          amount={`${route.params?.amount.toFixed(2)}`}
+          amount={`${paymentData?.amountExpected.toFixed(2)}`}
           firstName={user.firstName || ''}
           lastName={user.lastName || ''}
           phone={user.phoneNumber || ''}
@@ -145,7 +196,7 @@ export default function ConfirmRentPayment({
               message: `Payment cancelled`,
             })
           }}
-          onSuccess={(res) => {
+          onSuccess={ async (res) => {
             setPaymentRes(res)
             res?.status === 'success'
               ? alertRef.current?.open()
@@ -155,6 +206,7 @@ export default function ConfirmRentPayment({
                 type: `error`,
               })
           }}
+          //@ts-ignore
           ref={paystackWebViewRef}
         />
         <AlertModal
@@ -165,78 +217,97 @@ export default function ConfirmRentPayment({
           buttonContainerStyle={{
             marginTop: fontsConstants.h(80)
           }}
-          title="Payment Successful"
+          title=""
           buttonTitle="Finish"
           type={undefined}
           onButtonPress={completePayment}
           body={
-            <View style={{
-              alignItems: "center",
-              marginTop: fontsConstants.h(50)
-            }}>
-              <Text style={{textAlign: "center", color: "#777779", fontFamily: fontsConstants.Roboto_Regular, fontSize: fontsConstants.h(15)}}>
-                {`You have successfully paid rent to`}
-              </Text>
-              <Icon name="person-circle" type="ionicon" size={fontsConstants.h(50)} containerStyle={{marginVertical: fontsConstants.h(10)}}/>
-              <Text style={{fontFamily: fontsConstants.Roboto_Medium, fontSize: fontsConstants.h(18), color: colorsConstants[theme].screenLabel}}>{`Ashaolu Davison`}</Text>
-              <Text style={{fontFamily: fontsConstants.Roboto_Medium, fontSize: fontsConstants.h(28), color: colorsConstants[theme].text, marginBottom: fontsConstants.h(30)}}>{`${currencySymbol['ngn']}${formatCurrency(route.params?.amount || 0)}`}</Text>
-              {[{
-                id: 1,
-                label: 'Source',
-                value: 'Card **** **** **** 7786'
-              }, {
-                id: 2,
-                label: 'Transaction ID:',
-                value: `TNX${paymentRes?.transactionRef?.trxref}`
-              }, {
-                id: 3,
-                label: 'Reference:',
-                value: `MPM/RENT/${paymentRes?.transactionRef?.trxref}`
-              }, {
-                id: 4,
-                label: 'Date / Time:',
-                value: moment(new Date()).format("DD/MM/YYYY hh:mm a")
-              // },{
-              //   id: 5,
-              //   label: 'Download Receipt',
-              //   icon: require("src/assets/images/icons/download.png")
-              }].map((item, index) => (
+            <View>
+              <ViewShot
+                ref={viewShotRef}
+                options={{
+                  fileName: `MPM-RENT-TNX${paymentRes?.transactionRef?.trxref}-${moment(new Date()).format("DD/MM/YYYY hh:mm a")}`,
+                  format: "jpg"
+                }}
+              >
+                <Text style={{
+                  fontSize: fontsConstants.h(30),
+                  fontFamily: fontsConstants.Lora_Bold,
+                  textAlign: "center"
+                }}>
+                  {`Payment Successful`}
+                </Text>
                 <View style={{
-                  flexDirection: "row",
                   alignItems: "center",
-                  justifyContent: "space-between",
-                  borderTopWidth: fontsConstants.h(1),
-                  borderBottomWidth: item.id === 5 ? fontsConstants.h(1) : undefined,
-                  borderColor: colorsConstants[theme].borderLine,
-                  paddingVertical: fontsConstants.h(15),
-                  marginHorizontal: fontsConstants.w(10),
-                  alignSelf: "flex-start",
-                }} key={index.toString()}>
-                  <Text style={[styles.summaryText, {
-                    minWidth: fontsConstants.w(100)
-                  }]}>
-                    {item.label}
+                  marginTop: fontsConstants.h(50)
+                }}>
+                  <Text style={{textAlign: "center", color: "#777779", fontFamily: fontsConstants.Roboto_Regular, fontSize: fontsConstants.h(15)}}>
+                    {`You have successfully paid rent to`}
                   </Text>
-                  {item?.value ? (
-                    <Text style={[styles.summaryText, {
-                      flex: 1,
-                      textAlign: "right"
-                    }]}>
-                      {item.value}
-                    </Text>
-                  ) : item?.icon ? (
-                    <View style={{flex: 1, alignItems: "flex-end"}}>
-                      <Image
-                        source={item.icon}
-                        style={{
-                          height: fontsConstants.h(30),
-                          width: fontsConstants.h(30),
-                        }}
-                      />
+                  <Icon name="person-circle" type="ionicon" size={fontsConstants.h(50)} containerStyle={{marginVertical: fontsConstants.h(10)}}/>
+                  <Text style={{fontFamily: fontsConstants.Roboto_Medium, fontSize: fontsConstants.h(18), color: colorsConstants[theme].screenLabel}}>{`Ashaolu Davison`}</Text>
+                  <Text style={{fontFamily: fontsConstants.Roboto_Medium, fontSize: fontsConstants.h(28), color: colorsConstants[theme].text, marginBottom: fontsConstants.h(30)}}>{`${currencySymbol['ngn']}${formatCurrency(paymentData?.amountExpected || 0)}`}</Text>
+                  {[{
+                    id: 1,
+                    label: 'Source',
+                    value: 'Card **** **** **** 7786'
+                  }, {
+                    id: 2,
+                    label: 'Transaction ID:',
+                    value: `TNX${paymentRes?.transactionRef?.trxref}`
+                  }, {
+                    id: 3,
+                    label: 'Reference:',
+                    value: `MPM/RENT/${paymentRes?.transactionRef?.trxref}`
+                  }, {
+                    id: 4,
+                    label: 'Date / Time:',
+                    value: moment(new Date()).format("DD/MM/YYYY hh:mm a")
+                  }].map((item, index) => (
+                    <View style={[styles.itemViewContainer, {
+                      borderColor: colorsConstants[theme].borderLine,
+                    }]} key={index.toString()}>
+                      <Text style={[styles.summaryText, {
+                        minWidth: fontsConstants.w(100)
+                      }]}>
+                        {item.label}
+                      </Text>
+                      {item?.value ? (
+                        <Text style={[styles.summaryText, {
+                          flex: 1,
+                          textAlign: "right"
+                        }]}>
+                          {item.value}
+                        </Text>
+                      ) : null}
                     </View>
-                  ) : null}
+                  ))}
                 </View>
-              ))}
+              </ViewShot>
+              {/* <View style={[styles.itemViewContainer, {
+                borderBottomWidth: fontsConstants.h(1),
+                borderColor: colorsConstants[theme].borderLine,
+                justifyContent: "space-between",
+                alignSelf: "stretch"
+              }]}>
+                <Text style={[styles.summaryText, {
+                  minWidth: fontsConstants.w(100)
+                }]}>
+                  Download Receipt
+                </Text>
+                <TouchableOpacity
+                  activeOpacity={layoutsConstants.activeOpacity}
+                  onPress={() => doDownloadReceipt(`MPM-RENT-TNX${paymentRes?.transactionRef?.trxref}-${moment(new Date()).format("DD/MM/YYYY hh:mm a")}`)}
+                >
+                  <Image
+                    source={require("src/assets/images/icons/download.png")}
+                    style={{
+                      width: fontsConstants.h(30),
+                      height: fontsConstants.h(30)
+                    }}
+                  />
+                </TouchableOpacity>
+              </View> */}
             </View>
           }
         />
@@ -256,5 +327,14 @@ const styles = StyleSheet.create({
     fontSize: fontsConstants.h(14),
     opacity: 0.6
   },
-  inputContainerStyle: {marginBottom: fontsConstants.h(20)}
+  inputContainerStyle: {marginBottom: fontsConstants.h(20)},
+  itemViewContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderTopWidth: fontsConstants.h(1),
+    paddingVertical: fontsConstants.h(15),
+    marginHorizontal: fontsConstants.w(10),
+    alignSelf: "flex-start",
+  }
 });

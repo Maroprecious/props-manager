@@ -34,11 +34,21 @@ export default function PayRentScreen({
     if (req?.hasError === false) setProperties(req?.data?.message || [])
     else setProperties([]) 
   }
-  const [selected, setSelected] = useState<any>({id: -1})
-
+  // const [selected, setSelected] = useState<any>({id: -1})
+  const [selected, setSelected] = useState<any>(-1)
+  const [selectedDetails, setSelectedDetails] = useState<any>({
+    unit: {
+      id: -1
+    }
+  })
+  
   useEffect(() => {
-    setSelected(properties[0])
-  }, [properties])
+    setSelectedDetails(properties[selected])
+  }, [selected])
+
+  // useEffect(() => {
+  //   setSelected(properties[0])
+  // }, [properties])
 
   useEffect(() => {
     fetchProperties()
@@ -94,13 +104,13 @@ export default function PayRentScreen({
                 key={index.toString()}
                 itemHeaderText={item?.unit?.unitName}
                 item={{
-                  id: item?.property_details?.id,
+                  id: `${index}`,
                   propertyLocation: item?.property_details?.propertyLocation || "",
-                  propertyName: item?.property_details?.propertyName
+                  propertyName: item?.unit?.unitType?.description
                 }}
                 selectable
-                selectedId={selected?.property_details?.id}
-                setSelected={setSelected}
+                selectedId={`${selected}`}
+                setSelected={(item: any) => setSelected(index)}
               />
             ))}
             {/* <View style={{
@@ -138,23 +148,23 @@ export default function PayRentScreen({
               {[{
                 id: 1,
                 label: 'Property ID:',
-                value: selected?.property_details?.id || 'MPM-',
-                valueTextOpacity: selected?.property_details?.id ? 1 : 0.3
+                value: selectedDetails?.property_details?.id || 'MPM-',
+                valueTextOpacity: selectedDetails?.property_details?.id ? 1 : 0.3
               }, {
                 id: 2,
                 label: 'Landlord:',
-                value: `${selected?.landlord_detail?.firstName || 'NA'} ${selected?.landlord_detail?.lastName || 'NA'}`,
-                valueTextOpacity: selected?.landlord_detail?.firstName ? 1 : 0.3
+                value: `${selectedDetails?.landlord_detail?.firstName || 'NA'} ${selectedDetails?.landlord_detail?.lastName || 'NA'}`,
+                valueTextOpacity: selectedDetails?.landlord_detail?.firstName ? 1 : 0.3
               }, {
                 id: 3, 
                 label: 'Rent Amount:',
-                value: `₦${formatCurrency(selected?.unit?.unitRent || 0)}`,
-                valueTextOpacity: selected?.unit?.unitRent ? 1 : 0.3
+                value: `₦${formatCurrency(selectedDetails?.unit?.unitRent || 0)}`,
+                valueTextOpacity: selectedDetails?.unit?.unitRent ? 1 : 0.3
               }, {
                 id: 4,
                 label: 'Rent Due Date:',
-                value: selected?.tenancy?.lastPaymentDate ? moment(new Date(selected?.tenancy?.lastPaymentDate)).add((selected?.tenancy?.tenantDuration?.split(" ")[0]), "months").format("YYYY-MM-DD") : 'NIL',
-                valueTextOpacity: selected?.dueDate ? 1 : 0.3
+                value: selectedDetails?.tenancy?.lastPaymentDate ? moment(new Date(selectedDetails?.tenancy?.lastPaymentDate)).add((selectedDetails?.tenancy?.tenantDuration?.split(" ")[0]), "months").format("YYYY-MM-DD") : 'NIL',
+                valueTextOpacity: selectedDetails?.dueDate ? 1 : 0.3
               }].map((item, index) => (
                 <View key={index.toString()} style={{
                   flexDirection: "row",
@@ -202,13 +212,16 @@ export default function PayRentScreen({
         <DefaultButton
           title={`Next`}
           onPress={() => navigation.navigate("ConfirmRentPayment", {
-            amount: selected?.unit?.unitRent,
+            amount: selectedDetails?.unit?.unitRent,
             property: {
-              id: selected?.property_details?.id,
-              address: selected?.property_details?.propertyLocation
+              id: selectedDetails?.property_details?.id,
+              address: selectedDetails?.property_details?.propertyLocation
+            },
+            unit: {
+              id: `${selectedDetails?.unit?.id}`
             }
           })}
-          disabled={selected?.id === -1 || loading}
+          disabled={selectedDetails?.unit?.id === undefined || loading}
           containerStyle={{
             marginTop: fontsConstants.h(100)
           }}

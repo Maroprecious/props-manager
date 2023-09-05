@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext, useState } from "react";
-import { Alert, BackHandler, ImageBackground, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, BackHandler, ImageBackground, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView, ScrollView, Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -282,6 +282,7 @@ export default function AddUnitsScreen({
   return (
     <ScrollView style={styles.container}
       contentContainerStyle={{ minHeight: "100%" }}
+      automaticallyAdjustKeyboardInsets={Platform.OS === "ios"}
     >
       <ImageBackground
         source={screenBG}

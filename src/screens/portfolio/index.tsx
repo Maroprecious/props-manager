@@ -22,7 +22,7 @@ export default function PortfolioTabScreen({
     ? TenanctPortfolioItems 
     : user.roleType === "landlord"
     ? LandlordPortfolioItems
-    : [];
+    : LandlordPortfolioItems;
 
   return (
     <SafeAreaView style={styles.container}>

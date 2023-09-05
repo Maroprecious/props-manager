@@ -8,10 +8,11 @@ const useUser = () => {
   
   const updateProfile = async (data: {
     userId: string,
-    firstName: string,
-    lastName: string,
-    phoneNumber: string,
-    aliasName: string,
+    firstName?: string,
+    lastName?: string,
+    phoneNumber?: string,
+    aliasName?: string,
+    pushToken?: string,
   }, cb = () => {}): Promise<NetworkResponse> => {
     setLoading(true);
     const request = await makeApiRequest({

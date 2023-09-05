@@ -18,6 +18,7 @@ import { showToast } from "src/components/Toast";
 import layoutsConstants from "src/constants/layouts.constants";
 import { useAppSelector } from "src/hooks/useReduxHooks";
 import SecureStoreManager from "src/utils/SecureStoreManager";
+import useExpoPushToken from "src/hooks/useExpoPushToken";
 
 export default function CreateAccountScreen({
   navigation,
@@ -45,10 +46,12 @@ export default function CreateAccountScreen({
     role: user?.roleType?.toUpperCase() || "",
   })
   const [accountType, setAccountType] = useState('-1');
+  const pushToken = useExpoPushToken() || "";
 
   const doSignUp = async () => {
     const req = await createAccount({
       ...data,
+      pushToken,
       userId: user.id,
       isCompleteAccountReg: user?.email !== ''
     })
@@ -60,6 +63,7 @@ export default function CreateAccountScreen({
       })
     else {
       setRegistrationSuccessful(true)
+      await SecureStoreManager.storeExpoPushToken(pushToken)
       SecureStoreManager.setInitialRouteName("LoginScreen")
       alertRef.current?.open()    
     }

@@ -1,21 +1,19 @@
 import { useState } from "react";
-import { addTenantToPropertyEndpoint, getTnxHistoryEndpoint } from "src/constants/api.endpoints.constants";
+import { getTnxHistoryEndpoint, initiatePaymentEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
 const usePayments = () => {
   const [loading, setLoading] = useState(false);
 
-  const initiatePayment = async (data: {
-    userId: string,
-    email: string,
-    amount: number
+  const initiatePayment = async (pathParams: {
+    unitId: string,
   }, cb = () => { }): Promise<NetworkResponse> => {
     setLoading(true);
     const request = await makeApiRequest({
-      route: `${addTenantToPropertyEndpoint}`,
-      type: 'POST',
-      data
+      route: `${initiatePaymentEndpoint}`,
+      type: 'GET',
+      pathParams
     });
     setLoading(false);
     cb();

@@ -31,3 +31,4 @@ export const endTenancyEndpoint = `/properties/tenancy/remove-tenancy`;
 
 //transactions
 export const getTnxHistoryEndpoint = `/transactions/get-transaction-history`;
+export const initiatePaymentEndpoint = `/transactions/initiate-rent-payment`;

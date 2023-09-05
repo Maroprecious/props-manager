@@ -143,7 +143,8 @@ export default function OTPScreen({
         />
         {counter > 0 ? (
           <Text style={[styles.requestNewText, {
-            color: colorsConstants[theme].screenIntro
+            color: colorsConstants.colorPrimary,
+            textDecorationLine: "underline",
           }]}>
             {`Request new OTP in ${counter}`}
           </Text>

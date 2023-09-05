@@ -209,7 +209,8 @@ export const DefaultSelectInput = ({
   showErrorMessage = true,
   loading = false,
   errorMessageStyle = {},
-  disabled = false
+  disabled = false,
+  disabledItemLabelStyle = {}
 } : {
   value: string | number
   items: {
@@ -237,6 +238,7 @@ export const DefaultSelectInput = ({
   showErrorMessage?: boolean
   loading?: boolean
   errorMessageStyle?: StyleProp<TextStyle>
+  disabledItemLabelStyle?: StyleProp<TextStyle>
   disabled?: boolean
 }) => {
 
@@ -307,6 +309,9 @@ export const DefaultSelectInput = ({
         dropDownContainerStyle={[{
           borderColor: colorsConstants[theme].borderLine,
         }, dropDownContainerStyle]}
+        disabledItemLabelStyle={[{
+          opacity: 0.5
+        }, disabledItemLabelStyle]}
         TickIconComponent={ ({style}) =>
           <Icon
             name="checkmark"

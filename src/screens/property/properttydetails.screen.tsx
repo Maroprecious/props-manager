@@ -23,7 +23,6 @@ export default function PropertyDetailsScreen({
     const user = useAppSelector((state) => state.auth.user)
     const { loading, createProperty, created } = useProperty()
     const { property } = useProperties()
-    console.log(property, 'hello')
     return (
         <Layout title="Property Details" goback={true}>
             <View style={styles.container}>

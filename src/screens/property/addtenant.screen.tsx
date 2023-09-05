@@ -44,7 +44,8 @@ export default function AddTenantScreen({
         _units.push({
           id: _d?.id,
           label: `${_d?.unitName} - ${_d.unitType?.description}`,
-          value: _d?.id
+          value: _d?.id,
+          disabled: _d?.occupyingStatus || false
         })
       }
       setUnits(_units)

@@ -20,6 +20,16 @@ import { CustomToast } from "src/components/Toast";
 import SecureStoreManager from "src/utils/SecureStoreManager";
 import { PropertyProvider } from "src/contexts/property.context";
 import { UnitProvider } from "src/contexts/unit.context";
+import * as Notifications from 'expo-notifications';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+    priority: Notifications.AndroidNotificationPriority.DEFAULT
+  }),
+});
 
 enableMapSet()
 

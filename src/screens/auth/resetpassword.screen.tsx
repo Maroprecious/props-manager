@@ -153,6 +153,9 @@ export default function ResetPasswordScreen({
           navigation.navigate("MoreTabScreen")
           : navigation.navigate("LoginScreen")
         }}
+        buttonContainerStyle={{
+          marginTop: fontsConstants.h(50)
+        }}
         title={!userLoggedIn ? 
           `New Password Set`
           : `Password Changed`

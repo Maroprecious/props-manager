@@ -49,6 +49,7 @@ export const AlertModal = ({
   buttonContainerStyle?: StyleProp<ViewStyle>;
   modalStyle?: StyleProp<ViewStyle>;
 } & ModalizeProps) => {
+  
   const theme = useContext(AppThemeContext);
 
   return (
@@ -78,12 +79,12 @@ export const AlertModal = ({
         <RNView style={{
           alignItems: "center"
         }}>
-          <Text style={{
+          {title !== "" && <Text style={{
             fontSize: fontsConstants.h(30),
             fontFamily: fontsConstants.Lora_Bold
           }}>
             {title}
-          </Text>
+          </Text>}
           {type !== undefined ? (
             <Image
               source={type === "success" ? require("src/assets/images/icons/check-success.png")

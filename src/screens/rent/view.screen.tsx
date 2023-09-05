@@ -251,7 +251,10 @@ export default function ViewRentalScreen({
           onPress={() => {
             navigation.navigate("ConfirmRentPayment", {
               amount: rentalDetails?.nextRentAmount,
-              property: rentalDetails?.property
+              property: rentalDetails?.property,
+              unit: {
+                id: rentalDetails?.id
+              }
             })
           }}
         />

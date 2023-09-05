@@ -1,13 +1,11 @@
 import * as React from "react";
-import { StyleSheet, View as RNView, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, DeviceEventEmitter } from "react-native";
+import { StyleSheet, View as RNView, ImageBackground, DeviceEventEmitter } from "react-native";
 import { ScrollView, Text, View } from "src/components/Themed";
-import { NotificationItemCard } from "src/components/cards";
 import { Avatar, Image } from 'react-native-elements'
 import colorsConstants from "src/constants/colors.constants";
 import fontsConstants from "src/constants/fonts.constants";
-import { DashboardSliderInfo, RecentActivitiesData, Tenancies } from "src/constants/global.constants";
+import { DashboardSliderInfo } from "src/constants/global.constants";
 import layoutsConstants from "src/constants/layouts.constants";
-import { NotificationProps } from "src/types/app.types";
 import { RootTabScreenProps } from "src/types/navigations.types";
 import AppIntroSlider from "react-native-app-intro-slider";
 import moment from "moment";
@@ -17,12 +15,12 @@ import { LocationIcon } from "../rent/components";
 import { useContext } from "react";
 import AppThemeContext from "src/contexts/Theme.context";
 import { useAppSelector } from "src/hooks/useReduxHooks";
-import { PropertiesListView, RenderAddButton } from "../property/components";
+import { PropertiesListView } from "../property/components";
 import useProperty from "src/hooks/useProperties";
 import { useNavigation } from "@react-navigation/native";
 import useTenant from "src/hooks/useTenant";
 import { MPM_PROPERTY_CREATED } from "src/constants/events.constants";
-import { useProperties } from "src/contexts/property.context";
+import { TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 export const RenderLatestOccupiedProperty = () => {
   const theme = useContext(AppThemeContext)
@@ -56,7 +54,7 @@ export const RenderLatestOccupiedProperty = () => {
         color: colorsConstants[theme].screenLabel,
         marginBottom: fontsConstants.h(10)
       }]}>
-        {`Tenancy Details`}
+        {`Your Tenancy Details`}
       </Text>
       <RNView style={{
         borderWidth: fontsConstants.h(1),
@@ -166,7 +164,15 @@ export const RenderUserProperties = () => {
     const req = await getProperties({
       userId: `${user.id}`
     })
-    if (req?.hasError === false) setProperties(req?.data?.message)
+    if (req?.hasError === false) {
+      const _props: any[] = req?.data?.message || [];
+      if (_props.length <= 5)
+        setProperties(_props)
+      else {
+        const _slice = _props.slice(0, 5)
+        setProperties(_slice)
+      }
+    }
   } 
 
   React.useEffect(() => {
@@ -191,7 +197,7 @@ export const RenderUserProperties = () => {
       headerText={`My Properties`}
       itemHeaderText={`Property Details`}
       headerTextStyle={{
-        marginTop: fontsConstants.h(20),
+        marginTop: fontsConstants.h(10),
         fontSize: fontsConstants.h(12)
       }}
     />
@@ -289,6 +295,9 @@ export default function HomeTabScreen({
         </View>
         <AppIntroSlider
           data={DashboardSliderInfo}
+          style={{
+            height: fontsConstants.w(220)
+          }}
           renderItem={({item, index}) => (
             <RNView style={{
               borderColor: colorsConstants.colorPrimary,
@@ -297,88 +306,72 @@ export default function HomeTabScreen({
               paddingHorizontal: fontsConstants.w(14),
               height: fontsConstants.w(200),
               justifyContent: "center",
-              marginBottom: fontsConstants.h(5),
             }} key={index.toString()}>
-              <TouchableWithoutFeedback 
-                onPress={() => {
-                  switch (item.id) {
-                    case 1:
-                      navigation.navigate("InviteScreen")
-                      break;
-                    case 2: 
-                    navigation.navigate("AddPropertyScreen")
-                      break;
-                    default:
-                      break;
-                  }
+              <RNView
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
                 }}
               >
-                <RNView
+                <Image
+                  source={item.image}
                   style={{
-                    flexDirection: "row",
-                    alignItems: "center",
+                    width: fontsConstants.w(100),
+                    height: fontsConstants.w(100)
                   }}
-                >
-                  <Image
-                    source={item.image}
-                    style={{
-                      width: fontsConstants.w(100),
-                      height: fontsConstants.w(100)
-                    }}
-                    resizeMode="contain"
-                  />
-                  <RNView style={{
-                    alignItems: "center",
-                    marginLeft: fontsConstants.w(11),
-                    flex: 1
+                  resizeMode="contain"
+                />
+                <RNView style={{
+                  alignItems: "center",
+                  marginLeft: fontsConstants.w(11),
+                  flex: 1
+                }}>
+                  <Text style={{
+                    fontFamily: fontsConstants.Lora_Bold,
+                    fontSize: fontsConstants.w(18),
+                    color: colorsConstants[theme].screenLabel,
+                    marginBottom: fontsConstants.h(8)
                   }}>
-                    <Text style={{
-                      fontFamily: fontsConstants.Lora_Bold,
-                      fontSize: fontsConstants.w(18),
-                      color: colorsConstants[theme].screenLabel,
-                      marginBottom: fontsConstants.h(8)
-                    }}>
-                      {item.title}
-                    </Text>
-                    <Text style={{
-                      fontFamily: fontsConstants.Lora_Regular,
-                      fontSize: fontsConstants.w(12),
-                      lineHeight: fontsConstants.h(15),
-                      color: colorsConstants[theme].screenLabel,
-                      textAlign: "center"
-                    }}>
-                      {item.message}
-                    </Text>
-                    {item.hasLink ? (
-                      <TouchableOpacity
-                        activeOpacity={layoutsConstants.activeOpacity}
-                        style={{
-                          marginTop: fontsConstants.h(15),
-                        }}
-                        onPress={() => {
-                          switch (item.id) {
-                            case 1:
-                              navigation.navigate("InviteScreen")
-                              break;
-                            case 2: 
-                            navigation.navigate("AddPropertyScreen")
-                              break;
-                            default:
-                              break;
-                          }
-                        }}
-                      >
-                        <Text style={{
-                          textDecorationLine: "underline",
-                          fontFamily: fontsConstants.Lora_Bold,
-                          fontSize: fontsConstants.h(14),
-                          color: colorsConstants[theme].screenLabel
-                        }}>{item.linkLabel}</Text>
-                      </TouchableOpacity>
-                    ) : null}
-                  </RNView>
+                    {item.title}
+                  </Text>
+                  <Text style={{
+                    fontFamily: fontsConstants.Lora_Regular,
+                    fontSize: fontsConstants.w(12),
+                    lineHeight: fontsConstants.h(15),
+                    color: colorsConstants[theme].screenLabel,
+                    textAlign: "center"
+                  }}>
+                    {item.message}
+                  </Text>
+                  {item.hasLink ? (
+                    <TouchableOpacity
+                      activeOpacity={layoutsConstants.activeOpacity}
+                      style={{
+                        marginTop: fontsConstants.h(15),
+                      }}
+                      onPress={() => {
+                        switch (item.id) {
+                          case 1:
+                            navigation.navigate("InviteScreen")
+                            break;
+                          case 2: 
+                          navigation.navigate("AddPropertyScreen")
+                            break;
+                          default:
+                            break;
+                        }
+                      }}
+                    >
+                      <Text style={{
+                        textDecorationLine: "underline",
+                        fontFamily: fontsConstants.Lora_Bold,
+                        fontSize: fontsConstants.h(14),
+                        color: colorsConstants[theme].screenLabel
+                      }}>{item.linkLabel}</Text>
+                    </TouchableOpacity>
+                  ) : null}
                 </RNView>
-              </TouchableWithoutFeedback>
+              </RNView>
             </RNView>
           )}
           activeDotStyle={{
@@ -391,8 +384,8 @@ export default function HomeTabScreen({
           showPrevButton={false}
           showSkipButton={false}
         />
-        {user.roleType === "landlord" && <RenderUserProperties />}
-        {user.roleType === "tenant" && <RenderLatestOccupiedProperty />}
+        {(user.roleType === "landlord" || user.roleType === "property-manager") && <RenderUserProperties />}
+        <RenderLatestOccupiedProperty/>
         {/* <RNView>
           <Text style={{
             fontFamily: fontsConstants.Lora_Bold,
@@ -434,7 +427,7 @@ const styles = StyleSheet.create({
   }, sliderDotStyle: {
     width: fontsConstants.w(5),
     height: fontsConstants.w(5),
-    marginTop: fontsConstants.h(80),
+    marginTop: fontsConstants.h(50),
     backgroundColor: "transparent",
     borderColor: `rgba(0, 65, 160, 0.25)`,
     borderWidth: fontsConstants.h(1)
