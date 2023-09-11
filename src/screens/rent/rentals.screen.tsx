@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ImageBackground, StyleSheet, View as RNView } from "react-native";
-import { ScrollView } from "src/components/Themed";
+import { ScrollView, Text } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
@@ -30,6 +30,7 @@ export default function RentalsScreen({
     const req = await getOccupiedProperties({
       tenantId: `${user.id}`
     });
+    console.log(req.data?.message)
     if (req?.hasError === false) setProperties(req?.data?.message || [])
     else setProperties([]) 
   }
@@ -68,18 +69,20 @@ export default function RentalsScreen({
             <RentalItem
               key={index.toString()}
               item={{
-                id: properties?.unit?.id || '',
+                id: item?.unit?.id || '',
+                propertyName: item?.unit?.unitName,
                 propertyLocation: item?.property_details?.propertyLocation,
               }}
               onViewPress={() => navigation.navigate("ViewRentalScreen", {
                 rental: {
                   duration: item?.unit?.tenantDuration?.split(" ")[0] || 12,
                   id: item?.unit?.id,
+                  unitName: item?.unit?.unitName,
                   tenancy: {
                     id: item?.tenancy?.id
                   },
                   lastPaymentDate: moment(item?.tenancy?.lastPaymentDate).format("YYYY-MM-DD"),
-                  nextDueDate: moment(new Date(item?.tenancy?.lastPaymentDate)).add(item?.tenancy?.tenantDuration?.split(" ")[0], "months").format("YYYY-MM-DD"),
+                  nextDueDate: moment(item?.tenancy?.nextDueDate).format("YYYY-MM-DD"),
                   nextRentAmount: item?.unit?.unitRent,
                   property: {
                     id: item?.property_details?.id,
@@ -94,6 +97,17 @@ export default function RentalsScreen({
               })}
             />
           ))}
+          {properties.length < 1 && (
+            <Text style={{
+              alignSelf: "center",
+              marginTop: fontsConstants.h(100),
+              fontFamily: fontsConstants.Lora_Bold,
+              fontSize: fontsConstants.h(20),
+              opacity: layoutsConstants.activeOpacity
+            }}>
+              {`No Rentals`}
+            </Text>
+          )}
         </RNView>
         {/* {user.roleType !== "tenant" && 
           <DefaultButton

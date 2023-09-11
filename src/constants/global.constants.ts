@@ -234,16 +234,16 @@ export const LandlordPortfolioItems = [
     label: "Tenancy",
     icon: require("src/assets/images/icons/tenancy-icon.png"),
     screen: "TenancyScreen"
-  }, {
-    id: 5,
-    label: "Property Managers",
-    icon: require("src/assets/images/icons/Property-manager-icon.png"),
-    screen: "PropertyManagerScreen"
-  }, {
-  id: 6,
-  label: "Property Analytics",
-  icon: require("src/assets/images/icons/Property-analytics-icon.png"),
-  screen: "RentalsScreen"
+  // }, {
+  //   id: 5,
+  //   label: "Property Managers",
+  //   icon: require("src/assets/images/icons/Property-manager-icon.png"),
+  //   screen: "PropertyManagerScreen"
+  // }, {
+  // id: 6,
+  // label: "Property Analytics",
+  // icon: require("src/assets/images/icons/Property-analytics-icon.png"),
+  // screen: "RentalsScreen"
   }
 ]
 

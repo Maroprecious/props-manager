@@ -258,26 +258,26 @@ export default function AddUnitsScreen({
     }
   }, [oneUnit, route])
 
-  React.useEffect(() => {
-    const backAction = () => {
-      if (units.length > 0 && hasPendingItem) {
-        Alert.alert(`Hold On!`, `You have units pending for upload.\nAre you sure you want to go back?`, [{
-          text: `Cancel`,
-        }, {
-          text: `Yes`,
-          onPress: () => navigation.goBack()
-        }])
-        return true;
-      }
-    };
+  const backAction = () => {
+    if (units.length > 0 && hasPendingItem) {
+      Alert.alert(`Hold On!`, `You have units pending for upload.\nAre you sure you want to go back?`, [{
+        text: `Cancel`,
+      }, {
+        text: `Yes`,
+        onPress: () => navigation.goBack()
+      }])
+      return true;
+    }
+  };
 
+  React.useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       backAction,
     );
 
     return () => backHandler.remove();
-  }, [units]);
+  }, [units, hasPendingItem]);
 
   return (
     <ScrollView style={styles.container}
@@ -293,7 +293,9 @@ export default function AddUnitsScreen({
           paddingBottom: layoutsConstants.tabBarHeight / 2
         }}
       >
-        <HeaderBackButton />
+        <HeaderBackButton 
+          onPress={backAction}
+        />
         <ScreenTitle
           title={`${route.params.actionType === 'edit' ? 'Edit' : 'Add'} Units`}
           intro={`${route.params.actionType === 'edit' ? 'Edit' : 'Add'} units to property: ${route?.params?.propertyDetails?.propertyName || property.propertyName}`}

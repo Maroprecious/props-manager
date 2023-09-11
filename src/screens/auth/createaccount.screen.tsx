@@ -36,6 +36,7 @@ export default function CreateAccountScreen({
     buttonTitle: `Verify Email`,
     type: `success`
   })
+
   const { createAccount, loading } = useAuthenticate()
   const [data, setData] = useState<any>({
     email: user?.email || '',
@@ -139,7 +140,7 @@ export default function CreateAccountScreen({
           onChangeText={(e) => handleData(e, 'password')}
           containerStyle={styles.inputContainerStyle}
         />
-        <DefaultSelectInput
+        {/* <DefaultSelectInput
           items={AccountTypes}
           value={data?.role}
           setValue={setAccountType}
@@ -149,7 +150,7 @@ export default function CreateAccountScreen({
           }]}    
           dropDownDirection="BOTTOM"    
           disabled={user?.email !== ''}  
-        />
+        /> */}
         <Text style={[styles.noteText, {
           textAlign: "center",
           marginTop: fontsConstants.h(-5),
@@ -277,7 +278,7 @@ export default function CreateAccountScreen({
         }}
         type={alertData.type}
         onClosed={() => {
-          if(registrationSuccessful) navigation.navigate("OTPScreen", {
+          if(registrationSuccessful) navigation.navigate(user?.email !== '' ? "OTPVerifyScreen" : "OTPScreen", {
             type: "verify-email",
             email: data.email
           })
@@ -302,7 +303,7 @@ export default function CreateAccountScreen({
             </Text>
           </>
         )}
-        onButtonPress={() => registrationSuccessful ? navigation.navigate("OTPScreen", {
+        onButtonPress={() => registrationSuccessful ? navigation.navigate(user?.email !== '' ? "OTPVerifyScreen" : "OTPScreen", {
           type: "verify-email",
           email: data.email
         }) : alertRef?.current?.close()}

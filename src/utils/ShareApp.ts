@@ -1,10 +1,11 @@
-import { Share } from "react-native";
+import { Platform, Share } from "react-native";
 import { showToast } from "src/components/Toast";
 
 const ShareApp = async (code: string) => {
   try {
+    const link = Platform.OS === "android" ? "http://playstore.com" : "http://appstore.com"
     const shareResult = await Share.share({
-      message: `Hi there! I am using MPM Mobile. Download app here and use my referral code: `,
+      message: `Hi there! I am using MPM Mobile. Download app ${link} and use my referral code: ${code}`,
       title: `MPM Invite`,
     });
     if (shareResult.action === Share.sharedAction) {

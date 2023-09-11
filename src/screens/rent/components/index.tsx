@@ -77,7 +77,7 @@ export const RentalItem = ({
           fontSize: fontsConstants.h(15),
           color: colorsConstants[theme].darkText,
           marginBottom: fontsConstants.w(10)
-        }]}>{`Tenancy Details`}</Text>
+        }]}>{item?.propertyName || `Tenancy Details`}</Text>
         <Text style={[{
           fontFamily: fontsConstants.Lora_Regular,
           fontSize: fontsConstants.h(11),

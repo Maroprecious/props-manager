@@ -35,6 +35,7 @@ export const RenderLatestOccupiedProperty = () => {
     const req = await getOccupiedProperties({
       tenantId: `${user.id}`
     });
+    console.log(req?.data?.message)
     if (req?.hasError === false) setPropertiesOccupied(req?.data?.message || [])
     else setPropertiesOccupied([]) 
   }
@@ -99,7 +100,7 @@ export const RenderLatestOccupiedProperty = () => {
         }, {
           id: 2,
           label: 'Next Rent Due Date',
-          value: moment(new Date(propertiesOccupied[0]?.tenancy?.lastPaymentDate)).add((propertiesOccupied[0]?.tenancy?.tenantDuration?.split(" ")[0]), "months").format("YYYY-MM-DD"),
+          value: moment(new Date(propertiesOccupied[0]?.tenancy?.nextDueDate)).format("YYYY-MM-DD"),
           color: "#FE4A5E"
         }].map((item, index) => (
           <RentalDetailItem
@@ -158,7 +159,7 @@ export const RenderUserProperties = () => {
   const navigation = useNavigation()
   const { loading, getProperties } = useProperty();
   
-  const [properties, setProperties] = React.useState<any>([{}, {}]);
+  const [properties, setProperties] = React.useState<any>([]);
 
   const fetchProperties = async () => {
     const req = await getProperties({
@@ -384,7 +385,8 @@ export default function HomeTabScreen({
           showPrevButton={false}
           showSkipButton={false}
         />
-        {(user.roleType === "landlord" || user.roleType === "property-manager") && <RenderUserProperties />}
+        {/* {(user.roleType === "landlord" || user.roleType === "property-manager") && <RenderUserProperties />} */}
+        <RenderUserProperties />
         <RenderLatestOccupiedProperty/>
         {/* <RNView>
           <Text style={{

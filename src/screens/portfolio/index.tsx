@@ -45,7 +45,7 @@ export default function PortfolioTabScreen({
             marginTop: fontsConstants.h(20)
           }}
         >
-          {menu.map((item: any, index: number) => (
+          {LandlordPortfolioItems.map((item: any, index: number) => (
             <MenuItemCard
               key={index.toString()}
               label={item.label}
