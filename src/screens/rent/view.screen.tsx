@@ -140,6 +140,7 @@ export default function ViewRentalScreen({
         <RentalItem
           item={{
             id: rentalDetails.id,
+            propertyName: rentalDetails?.unitName,
             propertyLocation: rentalDetails.property.address
           }}
           containerStyle={{marginBottom: fontsConstants.h(20)}}

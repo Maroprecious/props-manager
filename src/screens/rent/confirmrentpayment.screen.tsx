@@ -56,6 +56,7 @@ export default function ConfirmRentPayment({
   }, [route?.params?.unit?.id])
 
   const [paymentRefNumber, setPaymentRefNumber] = useState(`-1`);
+  const [landlordName, setLandlordName] = useState("MPM")
   const [paymentRes, setPaymentRes] = useState<{
     transactionRef?: any,
     status: string,
@@ -87,6 +88,7 @@ export default function ConfirmRentPayment({
     if (req?.hasError === false) {
       setPaymentData(req?.data?.message || {})
       setPaymentRefNumber(`${req?.data?.message?.referenceId}`)
+      setLandlordName(`${req?.data?.message?.landlordName}`)
       const data = {
         ...req?.data?.message,
         unitId: `${route?.params?.unit?.id}`
@@ -245,13 +247,13 @@ export default function ConfirmRentPayment({
                     {`You have successfully paid rent to`}
                   </Text>
                   <Icon name="person-circle" type="ionicon" size={fontsConstants.h(50)} containerStyle={{marginVertical: fontsConstants.h(10)}}/>
-                  <Text style={{fontFamily: fontsConstants.Roboto_Medium, fontSize: fontsConstants.h(18), color: colorsConstants[theme].screenLabel}}>{`Ashaolu Davison`}</Text>
+                  <Text style={{fontFamily: fontsConstants.Roboto_Medium, fontSize: fontsConstants.h(18), color: colorsConstants[theme].screenLabel}}>{landlordName || "MPM"}</Text>
                   <Text style={{fontFamily: fontsConstants.Roboto_Medium, fontSize: fontsConstants.h(28), color: colorsConstants[theme].text, marginBottom: fontsConstants.h(30)}}>{`${currencySymbol['ngn']}${formatCurrency(paymentData?.amountExpected || 0)}`}</Text>
                   {[{
-                    id: 1,
-                    label: 'Source',
-                    value: 'Card **** **** **** 7786'
-                  }, {
+                  //   id: 1,
+                  //   label: 'Source',
+                  //   value: 'Card **** **** **** 7786'
+                  // }, {
                     id: 2,
                     label: 'Transaction ID:',
                     value: `TNX${paymentRes?.transactionRef?.trxref}`

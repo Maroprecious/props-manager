@@ -150,11 +150,11 @@ export default function TenancyScreen({
           }, {
             id: 3,
             label: 'Number of Units:',
-            value: `${(selectedDetails?.numberOfUnoccupiedUnits || 0) + (selectedDetails?.numberOfOccupiedUnits)}`,
+            value: `${(selectedDetails?.numberOfUnoccupiedUnits || 0) + (selectedDetails?.numberOfOccupiedUnits) || 0}`,
           }, {
             id: 4,
             label: 'Number of Tenants:',
-            value: `${selectedDetails?.numberOfTenants}`,
+            value: `${selectedDetails?.numberOfTenants || 0}`,
           // }, {
           //   id: 5,
           //   label: 'Rent Amount per Unit:',
@@ -211,7 +211,7 @@ export default function TenancyScreen({
           ))}
           <DefaultButton
             title={`View Tenants`}
-            disabled={selectedDetails?.id === -1 || loading}
+            disabled={selectedDetails?.id === undefined || loading}
             onPress={() => navigation.navigate("ViewTenancyScreen", {
               data: {
                 property: {

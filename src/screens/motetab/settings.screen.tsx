@@ -30,6 +30,7 @@ export default function SettingScreen({
     const setPushNotification = async (val: boolean) => {
         setValue(val)
         const req = await updateProfile({
+            ...user,
             userId: user?.id || "",
             pushToken: val === true ? pushToken : ""
         })

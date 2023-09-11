@@ -47,6 +47,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   ViewRentalScreen: {
     rental: {
       id: string,
+      unitName: string,
       tenancy: {
         id: string
       },

@@ -97,7 +97,8 @@ export default function OTPScreen({
             message: `You have successfully verified your email ID.`,
             subMessage: `You can now proceed to dashboard to continue other in-app activities.`,
             buttonTitle: `Proceed`,
-            screen: user?.id === null || user?.id === undefined ? `LoginScreen` : `App`
+            screen: 'LoginScreen'
+            // screen: user?.id === null || user?.id === undefined ? `LoginScreen` : `App`
           })
           alertRef?.current?.open();
           break;
@@ -143,8 +144,6 @@ export default function OTPScreen({
         />
         {counter > 0 ? (
           <Text style={[styles.requestNewText, {
-            color: colorsConstants.colorPrimary,
-            textDecorationLine: "underline",
           }]}>
             {`Request new OTP in ${counter}`}
           </Text>
@@ -218,6 +217,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: globalConstants.mainViewHorizontalPadding
   }, requestNewText: {
     fontFamily: fontsConstants.Lora_Regular,
-    fontSize: fontsConstants.h(12)
+    fontSize: fontsConstants.h(12),
+    color: colorsConstants.colorPrimary,
+    textDecorationLine: "underline",
   }
 });
