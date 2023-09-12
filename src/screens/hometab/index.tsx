@@ -35,7 +35,6 @@ export const RenderLatestOccupiedProperty = () => {
     const req = await getOccupiedProperties({
       tenantId: `${user.id}`
     });
-    console.log(req?.data?.message)
     if (req?.hasError === false) setPropertiesOccupied(req?.data?.message || [])
     else setPropertiesOccupied([]) 
   }

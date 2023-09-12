@@ -33,26 +33,31 @@ export const MenuItems = [{
   screen: 'SettingScreen'
 }, {
   id: 2,
+  label: 'Bank Account',
+  icon: require("src/assets/images/icons/financials.png"),
+  screen: 'BankDetailsScreen'
+}, {
+  id: 3,
   label: 'FAQs',
   icon: require("src/assets/images/icons/faq.png"),
   screen: 'FaqScreen'
 }, {
-  id: 3,
+  id: 4,
   label: 'Help and Support',
   icon: require("src/assets/images/icons/question.png"),
   screen: 'HelpAndSupportScreen'
 }, {
-  id: 4,
+  id: 5,
   label: 'Invite Others',
   icon: require("src/assets/images/icons/invitation.png"),
   screen: 'InviteScreen'
 }, {
-  id: 5,
+  id: 6,
   label: 'Terms and Conditions',
   icon: require("src/assets/images/icons/agreement.png"),
   screen: 'TermsAndConditionScreen'
 }, {
-  id: 6,
+  id: 7,
   label: 'Logout',
   icon: require("src/assets/images/icons/logout.png"),
   screen: ''

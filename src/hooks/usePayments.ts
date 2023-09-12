@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getTnxHistoryEndpoint, initiatePaymentEndpoint } from "src/constants/api.endpoints.constants";
+import { createBankDetailsEndpoint, getBankListEndpoint, getNameEnquiryEndpoint, getTnxHistoryEndpoint, getUserBankDetailsEndpoint, initiatePaymentEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -22,7 +22,94 @@ const usePayments = () => {
       hasError: request?.status !== 200
     }
   };
-  return { loading, initiatePayment };
+
+  const getBankList = async (
+    cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${getBankListEndpoint}`,
+      type: 'GET',
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+
+  const getNameEnquiry = async (data: {
+    accountNumber: string,
+    bankCode: string,
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${getNameEnquiryEndpoint}/${data.accountNumber}/${data.bankCode}`,
+      type: 'GET',
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+
+  const createBankDetails = async (data: {
+    userId: string | null,
+    accountNumber: string,
+    accountName: string,
+    financialInstitution: string
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${createBankDetailsEndpoint}`,
+      type: 'POST',
+      data
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+  const editBankDetails = async (data: {
+    userId: string | null,
+    accountNumber: string,
+    accountName: string,
+    financialInstitution: string
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${createBankDetailsEndpoint}`,
+      type: 'PUT',
+      data
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+  const getUserBankDetails = async (data: {
+    userId: null | string,
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${getUserBankDetailsEndpoint}/${data.userId}`,
+      type: 'GET',
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+  
+  return { loading, initiatePayment, getBankList, getNameEnquiry, createBankDetails,editBankDetails, getUserBankDetails };
 };
 
 export default usePayments;

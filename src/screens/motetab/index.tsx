@@ -180,7 +180,7 @@ export default function MoreTabScreen({
           style={{
             flexDirection: "row",
             alignItems: "center",
-            paddingVertical: fontsConstants.h(20),
+            paddingVertical: fontsConstants.h(17),
             borderBottomWidth: fontsConstants.h(1),
             borderBottomColor: colorsConstants[theme].borderLine
           }}

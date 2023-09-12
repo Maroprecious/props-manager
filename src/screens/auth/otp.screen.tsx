@@ -102,6 +102,11 @@ export default function OTPScreen({
           })
           alertRef?.current?.open();
           break;
+          case "add-bank-account":
+            navigation.navigate('BankDetailsScreen', {
+             isEmailVerified: true
+            })
+          break;
         default:
           break;
       }
