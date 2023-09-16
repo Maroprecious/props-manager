@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createBankDetailsEndpoint, editBankDetailsEndpoint, getBankListEndpoint, getNameEnquiryEndpoint, getTnxHistoryEndpoint, getUserBankDetailsEndpoint, initiatePaymentEndpoint } from "src/constants/api.endpoints.constants";
+import { createBankDetailsEndpoint, editBankDetailsEndpoint, getBankListEndpoint, getNameEnquiryEndpoint, getTnxHistoryEndpoint, getUserBankDetailsEndpoint, initiatePaymentEndpoint, getFinancialsEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -108,9 +108,26 @@ const usePayments = () => {
       hasError: request?.status !== 200
     }
   };
+
+  const getFinancials = async (data: {
+    userId: null | string,
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${getFinancialsEndpoint}/${data.userId}`,
+      type: 'GET',
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
   
-  return { loading, initiatePayment, getBankList, getNameEnquiry, createBankDetails,editBankDetails, getUserBankDetails };
-};
+  return { loading, initiatePayment, getBankList, getNameEnquiry, createBankDetails,editBankDetails, getUserBankDetails, getFinancials };
+  };
+
 
 export default usePayments;
 
