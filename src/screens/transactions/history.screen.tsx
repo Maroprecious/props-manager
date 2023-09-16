@@ -65,8 +65,18 @@ export default function TransactionsScreen({
             return (
               <NotificationItemCard
                 key={index.toString()}
-                date={item.date}
-                items={item.items}
+                date={{
+                  day: item?.transactionDay,
+                  month: item?.transactionMonth,
+                  year: item?.transactionYear
+                }}
+                items={[{
+                  id: item?.id,
+                  text: item?.historyMessage,
+                  title: item?.historyTitle,
+                  type: "invoice",
+                  status: item?.successful ? "success" : "failed"
+                }]}
                 showMenuButton={false}
                 onNotificationItemPress={(notification: NotificationProps) => {
                   console.log(notification)

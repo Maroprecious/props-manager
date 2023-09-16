@@ -1,5 +1,9 @@
 export type NotificationProps = {
-  date: string,
+  date: string | {
+    month: string,
+    year: string,
+    day: string
+  },
   items: {
     id: any,
     title: string,
@@ -32,6 +36,7 @@ export type AuthUserType = {
   phoneNumber?: string
   roleType: roleTypes
   pushToken?: string
+  referralCode?: string
 }
 
 export type PaymentData = {

@@ -32,3 +32,8 @@ export const endTenancyEndpoint = `/properties/tenancy/remove-tenancy`;
 //transactions
 export const getTnxHistoryEndpoint = `/transactions/get-transaction-history`;
 export const initiatePaymentEndpoint = `/transactions/initiate-rent-payment`;
+export const getBankListEndpoint = '/accounts/banks/get-banks';
+export const getNameEnquiryEndpoint = `/accounts/banks/name-enquiry`
+export const getUserBankDetailsEndpoint = `/accounts/banks/fetch-user-bank-details`
+export const createBankDetailsEndpoint = `accounts/banks/create-bank-details`
+export const editBankDetailsEndpoint = `/accounts/banks/update-bank-details`

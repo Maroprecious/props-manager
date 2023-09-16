@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-export type verificationType = "verify-email" | "verify-phone-number" | "reset-password";
+export type verificationType = "verify-email" | "verify-phone-number" | "reset-password" | "add-bank-account";
 
 export type RootStackParamList = LaunchStackParamList & AuthStackParamList & RootTabParamList & {
   App: NavigatorScreenParams<RootTabParamList> | undefined;
@@ -101,6 +101,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   },
   AddTenancyDetails: undefined
   FaqScreen: undefined
+  BankDetailsScreen: undefined
   HelpAndSupportScreen: undefined
   TermsAndConditionScreen: undefined
   SettingScreen: undefined

@@ -33,26 +33,31 @@ export const MenuItems = [{
   screen: 'SettingScreen'
 }, {
   id: 2,
+  label: 'Bank Account',
+  icon: require("src/assets/images/icons/financials.png"),
+  screen: 'BankDetailsScreen'
+}, {
+  id: 3,
   label: 'FAQs',
   icon: require("src/assets/images/icons/faq.png"),
   screen: 'FaqScreen'
 }, {
-  id: 3,
+  id: 4,
   label: 'Help and Support',
   icon: require("src/assets/images/icons/question.png"),
   screen: 'HelpAndSupportScreen'
 }, {
-  id: 4,
+  id: 5,
   label: 'Invite Others',
   icon: require("src/assets/images/icons/invitation.png"),
   screen: 'InviteScreen'
 }, {
-  id: 5,
+  id: 6,
   label: 'Terms and Conditions',
   icon: require("src/assets/images/icons/agreement.png"),
   screen: 'TermsAndConditionScreen'
 }, {
-  id: 6,
+  id: 7,
   label: 'Logout',
   icon: require("src/assets/images/icons/logout.png"),
   screen: ''
@@ -182,21 +187,21 @@ export const PaymentsMenuItems = [{
   label: "Pay\nRent",
   icon: require("src/assets/images/icons/buy-airtime.png"),
   screen: "PayRentScreen"
-}, {
-  id: 2,
-  label: "Pay\nBills",
-  icon: require("src/assets/images/icons/invoice.png"),
-  screen: "BillsPaymentScreen"
-}, {
-  id: 3,
-  label: "Airtime\nTopup",
-  icon: require("src/assets/images/icons/buy-airtime.png"),
-  screen: "AirtimeTopUpScreen"
-}, {
-  id: 4,
-  label: "Request\nPayment",
-  icon: require("src/assets/images/icons/recieve-payment.png"),
-  screen: "RequestPaymentScreen"
+// }, {
+//   id: 2,
+//   label: "Pay\nBills",
+//   icon: require("src/assets/images/icons/invoice.png"),
+//   screen: "BillsPaymentScreen"
+// }, {
+//   id: 3,
+//   label: "Airtime\nTopup",
+//   icon: require("src/assets/images/icons/buy-airtime.png"),
+//   screen: "AirtimeTopUpScreen"
+// }, {
+//   id: 4,
+//   label: "Request\nPayment",
+//   icon: require("src/assets/images/icons/recieve-payment.png"),
+//   screen: "RequestPaymentScreen"
 }, {
   id: 5,
   label: "Your\nFinancials",

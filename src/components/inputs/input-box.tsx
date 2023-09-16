@@ -82,6 +82,7 @@ type props = {
     placeholder?: string;
     containerWidth?: string;
     textstyle?: StyleProp<TextStyle>;
+    placeholderStyle?: StyleProp<TextStyle>
 }
 
 export const InputBox = ({
@@ -100,6 +101,7 @@ export const InputBox = ({
             <TextInput
                 onBlur={onBlur}
                 onChangeText={onChange}
+                placeholder={placeholder}
                 style={[styled.inputField, extrastyles, textstyle, {backgroundColor: colorsConstants[theme].opaqueWhite,}]}
                 {...otherProps}
             />

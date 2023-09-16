@@ -28,7 +28,7 @@ type selectProps = {
     containerWidth?: string;
     fontFamily?: string;
     bgColor?: string,
-    defaultValue?: string;
+    defaultValue?: string | null;
     textstyle?: StyleProp<TextStyle>;
     dynamicPlaceholder?: string
 };
@@ -44,18 +44,18 @@ export const Select = ({
     containerWidth,
     fontFamily,
     bgColor,
-    defaultValue,
+    defaultValue = '',
     textstyle,
     containerStyles,
-    dynamicPlaceholder
+    dynamicPlaceholder,
 }: selectProps) => {
-    const [value, setValue] = useState<string | null>(null);
+    const [value, setValue] = useState<string | null>(defaultValue);
     const [isFocus, setIsFocus] = useState(false);
     const renderItem = (item: optionProps) => {
         console.log(item)
         return (
             <View style={{ marginVertical: 17, }}>
-                <Text style={[styles.selectedTextStyle, { fontFamily: fontFamily, color: colorsConstants[theme].success_message }]}>{item?.label}</Text>
+                <Text style={[styles.selectedTextStyle, { fontFamily: fontsConstants.American_Typewriter_Regular, color: colorsConstants[theme].grey3 }]}>{item?.label}</Text>
             </View>
         );
     };
@@ -69,16 +69,16 @@ export const Select = ({
     return (
         <View style={[{ width: "100%", marginBottom: 20 }, extraStyles]}>
             <Dropdown
-                style={[styles.dropdown, {backgroundColor: colorsConstants[theme].inputBackground},{ width: containerWidth }, isFocus && { borderColor: colorsConstants.light.black }, containerStyles]}
-                placeholderStyle={[styles.placeholderStyle, { fontFamily: fontFamily, color: colorsConstants[theme].success_message}, textstyle]}
-                selectedTextStyle={[styles.selectedTextStyle, { fontFamily: fontFamily, color: colorsConstants[theme].success_message } ]}
+                style={[styles.dropdown, {backgroundColor: colorsConstants[theme].inputBackground},{ width: containerWidth }, isFocus && { borderColor: colorsConstants[theme].grey }, containerStyles]}
+                placeholderStyle={[styles.placeholderStyle, { fontFamily: fontsConstants.American_Typewriter_Regular, color: colorsConstants[theme].success_message}, textstyle]}
+                selectedTextStyle={[styles.selectedTextStyle, { fontFamily: fontsConstants.American_Typewriter_Regular, color: colorsConstants[theme].textBlack } ]}
                 data={options}
                 maxHeight={300}
                 search={search}
 
                 labelField={'label'}
                 valueField={'value'}
-                itemContainerStyle={[{ backgroundColor: bgColor }, containerStyles]}
+                itemContainerStyle={[{ backgroundColor: colorsConstants[theme].inputBackground}, containerStyles]}
                 placeholder={
                     !isFocus ? (placeholder ? placeholder : "Select Status") : dynamicPlaceholder
                 }
@@ -91,6 +91,7 @@ export const Select = ({
                     setValue(item.value);
                     setIsFocus(false);
                 }}
+                
                 iconStyle={styles.iconStyle}
 
                 renderItem={renderItem}
@@ -117,8 +118,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderRadius: 10,
         paddingLeft: 10,
+        borderColor: colorsConstants.light.borderLine,
+        borderWidth: .6,
         fontFamily: fontsConstants.American_Typewriter_Regular,
         alignSelf: 'center',
+
         // marginBottom: 20,
     },
     iconStyle: {
@@ -133,18 +137,19 @@ const styles = StyleSheet.create({
         top: 8,
         zIndex: 999,
         paddingHorizontal: 8,
-        fontSize: 14,
+        fontSize: 19,
     },
     placeholderStyle: {
-        fontSize: 14,
-        fontFamily: "LoraBold",
+        fontSize: 16,
+        fontFamily: fontsConstants.American_Typewriter_Regular,
         paddingLeft: 25,
         opacity: 0.80,
     },
     selectedTextStyle: {
-        fontSize: 14,
-        fontFamily: "AmericanTypewriterBold",
+        fontSize: 18,
+        fontFamily: fontsConstants.American_Typewriter_Regular,
         paddingLeft: 20,
+        letterSpacing: .5
     },
     icon: {
         width: 20,

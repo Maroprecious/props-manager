@@ -13,12 +13,16 @@ import layoutsConstants from "src/constants/layouts.constants";
 import colorsConstants from "src/constants/colors.constants";
 import { Image } from "react-native-elements";
 import ShareApp from "src/utils/ShareApp";
+import { useAppSelector } from "src/hooks/useReduxHooks";
 
 export default function InviteScreen({
   navigation,
   route
 }: RootStackScreenProps<"InviteScreen">) {
   const theme = useContext(AppThemeContext);
+
+  const user = useAppSelector((state) => state.auth.user)
+  console.log(user)
 
   return (
     <SafeAreaView
@@ -39,7 +43,7 @@ export default function InviteScreen({
       <TouchableOpacity
         activeOpacity={layoutsConstants.activeOpacity}
         onPress={async () => {
-          await ShareApp(`Fortune0038`)
+          await ShareApp(`${user?.referralCode}`)
         }}
         style={{
           backgroundColor: `rgba(182, 251, 0, 0.25)`,
@@ -57,7 +61,7 @@ export default function InviteScreen({
           fontSize: fontsConstants.h(25),
           color: colorsConstants[theme].screenLabel
         }}>
-          {`Fortune0038`}
+          {`${user?.referralCode}`}
         </Text>
         <View style={{
           alignItems: "center"

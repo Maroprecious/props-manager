@@ -97,10 +97,16 @@ export default function OTPScreen({
             message: `You have successfully verified your email ID.`,
             subMessage: `You can now proceed to dashboard to continue other in-app activities.`,
             buttonTitle: `Proceed`,
-            screen: 'LoginScreen'
-            // screen: user?.id === null || user?.id === undefined ? `LoginScreen` : `App`
+            // screen: 'LoginScreen'
+            screen: user?.firstName === null || user?.lastName === undefined ? `ReLoginScreen` :
+              user?.id === null ?
+             `LoginScreen` : `App`
           })
           alertRef?.current?.open();
+          break;
+        case "add-bank-account":
+          navigation.pop()
+          navigation.navigate('BankDetailsScreen')
           break;
         default:
           break;
@@ -121,12 +127,13 @@ export default function OTPScreen({
       }}>
         <ScreenTitle
           title={screenType === "reset-password" ? `Reset Password`
-            : screenType === "verify-email" ? `Email Verification PIN`
+            : screenType === "verify-email" || screenType === "add-bank-account" ? `Email Verification PIN`
             : `Verify`
           }
           intro={screenType === "reset-password" ? `Please enter the password reset PIN\nsent to your email ID`
             : screenType === "verify-email" ? `Please enter the email verification PIN sent to your email ID\n${route.params.email}`
-            : ``
+            : screenType === "add-bank-account" ? `We need to verify your email before you can continue.` 
+            :``
           }
         />
         <OtpInput
@@ -204,7 +211,14 @@ export default function OTPScreen({
             </Text>
           </>
         )}
-        onButtonPress={() => navigation.navigate(alertData.screen)}
+        onButtonPress={() => {
+          try {
+            navigation.navigate(alertData.screen)     
+          } catch (error) {
+            console.log(error)
+            navigation.navigate("ReLoginScreen")
+          }
+        }}
       />
     </SafeAreaView>
   );
