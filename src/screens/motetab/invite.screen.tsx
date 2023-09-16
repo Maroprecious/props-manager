@@ -42,7 +42,7 @@ export default function InviteScreen({
       <TouchableOpacity
         activeOpacity={layoutsConstants.activeOpacity}
         onPress={async () => {
-          await ShareApp(`${user?.referralCode}`)
+          await ShareApp(`${user?.referralCode || ""}`)
         }}
         style={{
           backgroundColor: `rgba(182, 251, 0, 0.25)`,
@@ -60,7 +60,7 @@ export default function InviteScreen({
           fontSize: fontsConstants.h(25),
           color: colorsConstants[theme].screenLabel
         }}>
-          {`${user?.referralCode}`}
+          {`${user?.referralCode || ""}`}
         </Text>
         <View style={{
           alignItems: "center"
