@@ -44,6 +44,7 @@ export default function CreateAccountScreen({
     lastName: '',
     password: '',
     phoneNumber: '',
+    referredBy: '',
     role: user?.roleType?.toUpperCase() || "",
   })
   const [accountType, setAccountType] = useState('-1');
@@ -138,6 +139,12 @@ export default function CreateAccountScreen({
           placeholder="Password"
           secureTextEntry
           onChangeText={(e) => handleData(e, 'password')}
+          containerStyle={styles.inputContainerStyle}
+        />
+        <DefaultInput
+          placeholder="Referred By"
+          
+          onChangeText={(e) => handleData(e, 'referredBy')}
           containerStyle={styles.inputContainerStyle}
         />
         {/* <DefaultSelectInput

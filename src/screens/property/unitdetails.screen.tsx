@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -28,6 +28,16 @@ export default function UnitDetailsScreen({
     const { loading, createProperty, created } = useProperty()
     const { property } = useProperties()
     const { oneUnit } = useUnit()
+
+    const doAddTenant = () => {
+        navigation.navigate("AddTenantScreen", {
+            data: {
+                unit: oneUnit
+            },
+            from: "unit-screen"
+        })
+    }
+
     return (
         <>
             <TouchableOpacity style={styles.goBack} onPress={() => {
@@ -142,13 +152,19 @@ export default function UnitDetailsScreen({
                             title={`Add Tenant`}
                             disabled={oneUnit.occupyingStatus === true}
                             onPress={() => {
-
-                                navigation.navigate("AddTenantScreen", {
-                                    data: {
-                                        unit: oneUnit
-                                    },
-                                    from: "unit-screen"
-                                })
+                                if (!user?.bankAvailable) {
+                                    Alert.alert(`Hold On!`, `You have not added your bank detail.\nWant to add it now?`, [{
+                                        text: `Not now`,
+                                        onPress: doAddTenant
+                                      }, {
+                                        text: `Yes, Proceed`,
+                                        onPress: () => navigation.navigate('OTPVerifyScreen', {
+                                            type: 'add-bank-account',
+                                            email: user.email
+                                          })
+                                      }])
+                                } else doAddTenant()
+                                
                             }}
                             containerStyle={{
                                 marginTop: 40
