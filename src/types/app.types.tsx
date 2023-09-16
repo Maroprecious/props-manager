@@ -37,6 +37,7 @@ export type AuthUserType = {
   roleType: roleTypes
   pushToken?: string
   referralCode?: string
+  bankAvailable?: boolean
 }
 
 export type PaymentData = {

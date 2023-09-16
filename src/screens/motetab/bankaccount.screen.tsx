@@ -10,10 +10,11 @@ import useColorScheme from 'src/hooks/useColorScheme';
 import { Select } from "src/components/select/select";
 import { DefaultInput, DefaultSelectInput } from "src/components/inputs/inputs.components";
 import { DefaultButton } from "src/components/buttons/buttons.components";
-import { useAppSelector } from "src/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "src/hooks/useReduxHooks";
 import useAuthenticate from "src/hooks/useAuthentication";
 import usePayments from "src/hooks/usePayments";
 import { showToast } from "src/components/Toast";
+import { updateUserProfileData } from "src/services/redux/slices/auth";
 
 
 const billers = [
@@ -45,6 +46,7 @@ export default function BankDetailsScreen({
 }: RootStackScreenProps<"BankDetailsScreen">) {
     const theme = useColorScheme()
     const user = useAppSelector((state) => state.auth.user)
+    const dispatch = useAppDispatch();
     const { loading, requestPasswordReset } = useAuthenticate();
     const { getBankList, getNameEnquiry, createBankDetails, loading: isLoading, getUserBankDetails, editBankDetails } = usePayments()
     const [bankList, setBankList] = useState<any>([])
@@ -90,21 +92,18 @@ export default function BankDetailsScreen({
 
     }
     const handleVerify = async () => {
+      let success = false;
+      let message = "";
       switch (actionType) {
         case 'edit':
-          console.log('edit', bankName)
             const req = await editBankDetails({
                 "userId": user.id,
                 "accountNumber": accountNumber,
                 "accountName": accountName,
                 "financialInstitution": bankName
             })
-            if (!req?.hasError)
-                showToast({
-                    title: "Add Account Details",
-                    type: "success",
-                    message: "Account added successfully"
-                })
+            if (!req?.hasError) success = true;
+            message = `${req?.message || req?.statusText || req?.error}`;
             break;
         case 'submit':
             const request = await createBankDetails({
@@ -113,15 +112,30 @@ export default function BankDetailsScreen({
                 "accountName": accountName,
                 "financialInstitution": bankName
             })
-            if (!request?.hasError)
-                showToast({
-                    title: "Add Account Details",
-                    type: "success",
-                    message: "Account added successfully"
-                })
-            navigation.goBack()
+            if (!request?.hasError) success = true;
+            message = `${request?.message || request?.statusText || request?.error}`;
+            // navigation.goBack()
             break
         default: null
+      }
+
+      if (success) {
+        showToast({
+          title: "Bank Account Details",
+          type: "success",
+          message: `Account ${actionType === "submit" ? 'added' : 'updated'} successfully`
+        })
+        dispatch(updateUserProfileData({
+          ...user,
+          bankAvailable: true,
+        }));  
+        navigation.goBack()
+      } else {
+        showToast({
+          title: "Bank Account Details",
+          message,
+          type: "error"
+        })
       }
 
     }
