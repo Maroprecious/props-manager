@@ -101,9 +101,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
   },
   AddTenancyDetails: undefined
   FaqScreen: undefined
-  BankDetailsScreen: {
-    isEmailVerified?: boolean
-  }
+  BankDetailsScreen: undefined
   HelpAndSupportScreen: undefined
   TermsAndConditionScreen: undefined
   SettingScreen: undefined

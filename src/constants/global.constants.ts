@@ -187,21 +187,21 @@ export const PaymentsMenuItems = [{
   label: "Pay\nRent",
   icon: require("src/assets/images/icons/buy-airtime.png"),
   screen: "PayRentScreen"
-}, {
-  id: 2,
-  label: "Pay\nBills",
-  icon: require("src/assets/images/icons/invoice.png"),
-  screen: "BillsPaymentScreen"
-}, {
-  id: 3,
-  label: "Airtime\nTopup",
-  icon: require("src/assets/images/icons/buy-airtime.png"),
-  screen: "AirtimeTopUpScreen"
-}, {
-  id: 4,
-  label: "Request\nPayment",
-  icon: require("src/assets/images/icons/recieve-payment.png"),
-  screen: "RequestPaymentScreen"
+// }, {
+//   id: 2,
+//   label: "Pay\nBills",
+//   icon: require("src/assets/images/icons/invoice.png"),
+//   screen: "BillsPaymentScreen"
+// }, {
+//   id: 3,
+//   label: "Airtime\nTopup",
+//   icon: require("src/assets/images/icons/buy-airtime.png"),
+//   screen: "AirtimeTopUpScreen"
+// }, {
+//   id: 4,
+//   label: "Request\nPayment",
+//   icon: require("src/assets/images/icons/recieve-payment.png"),
+//   screen: "RequestPaymentScreen"
 }, {
   id: 5,
   label: "Your\nFinancials",

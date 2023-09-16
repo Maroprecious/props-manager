@@ -11,6 +11,7 @@ import fontsConstants from "src/constants/fonts.constants";
 import { MenuItems } from "src/constants/global.constants";
 import layoutsConstants from "src/constants/layouts.constants";
 import AppThemeContext from "src/contexts/Theme.context";
+import useAuthenticate from "src/hooks/useAuthentication";
 import { useAppDispatch, useAppSelector } from "src/hooks/useReduxHooks";
 import { logout } from "src/services/redux/slices/auth";
 import { RootTabScreenProps } from "src/types/navigations.types";
@@ -23,13 +24,19 @@ export default function MoreTabScreen({
   const dispatch = useAppDispatch();
 
   const user = useAppSelector((state) => state.auth.user)
+  
+  const { requestPasswordReset } = useAuthenticate();
 
   const doLogout = () => {
     dispatch(logout());
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container}
+      contentContainerStyle={{
+        paddingBottom: fontsConstants.h(100)
+      }}
+    >
       <TabScreenTitle
         title={`More`}
       />
@@ -170,6 +177,15 @@ export default function MoreTabScreen({
                   onConfirm: doLogout
                 })
                 break;
+              case "bank account":
+                requestPasswordReset({
+                    email: user.email,
+                });
+                navigation.navigate('OTPVerifyScreen', {
+                  type: 'add-bank-account',
+                  email: user.email
+                })
+                break;
             
               default:
                 navigation.navigate(menu.screen)
@@ -219,7 +235,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: fontsConstants.w(20),
-    paddingBottom: layoutsConstants.tabBarHeight,
+    paddingBottom: layoutsConstants.tabBarHeight
   }, cardItemContainer: {
     flexDirection: "row",
     borderBottomWidth: fontsConstants.h(1),

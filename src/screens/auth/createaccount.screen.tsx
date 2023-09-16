@@ -186,7 +186,7 @@ export default function CreateAccountScreen({
           title={`Sign up`}
           onPress={doSignUp}
           loading={loading}
-          disabled={data.email && data.phoneNumber && data.firstName && data.lastName && data.password && data.role ? false : true}
+          disabled={data.email && data.phoneNumber && data.firstName && data.lastName && data.password ? false : true}
           containerStyle={{zIndex: -1}}
         />
         {user?.email === '' && 

@@ -92,17 +92,17 @@ export const NotificationItemCard = ({
             color: colorsConstants[theme].dateMonthColor,
             fontFamily: fontsConstants.Lora_Regular,
             fontSize: fontsConstants.h(14)
-          }}>{moment(date).format("MMM")}</Text>
+          }}>{typeof date === "string" ? moment(date).format("MMM") : date?.month}</Text>
           <Text style={{
             color: colorsConstants[theme].darkText,
             fontFamily: fontsConstants.Lora_Bold,
             fontSize: fontsConstants.h(24)
-          }}>{moment(date).format("DD")}</Text>
+          }}>{typeof date === "string" ? moment(date).format("DD") : date?.day}</Text>
           <Text style={{
             color: colorsConstants[theme].dateMonthColor,
             fontFamily: fontsConstants.Lora_Regular,
             fontSize: fontsConstants.h(13)
-          }}>{moment(date).format("YYYY")}</Text>
+          }}>{typeof date === "string" ? moment(date).format("YYYY") : date?.year}</Text>
         </View>
         <Line
           color="#0000001A"

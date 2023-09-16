@@ -8,7 +8,7 @@ import fontsConstants from 'src/constants/fonts.constants';
 import colorsConstants from 'src/constants/colors.constants';
 import useColorScheme from 'src/hooks/useColorScheme';
 import { Select } from "src/components/select/select";
-import { DefaultInput } from "src/components/inputs/inputs.components";
+import { DefaultInput, DefaultSelectInput } from "src/components/inputs/inputs.components";
 import { DefaultButton } from "src/components/buttons/buttons.components";
 import { useAppSelector } from "src/hooks/useReduxHooks";
 import useAuthenticate from "src/hooks/useAuthentication";
@@ -48,12 +48,10 @@ export default function BankDetailsScreen({
     const { loading, requestPasswordReset } = useAuthenticate();
     const { getBankList, getNameEnquiry, createBankDetails, loading: isLoading, getUserBankDetails, editBankDetails } = usePayments()
     const [bankList, setBankList] = useState<any>([])
-    const [selectedBank, setSelectedBank] = useState<{
-        label: string,
-        value: string
-    }>({ label: '', value: '' })
+    const [selectedBank, setSelectedBank] = useState<string>('')
     const [accountNumber, setAccountNumber] = useState<string>('')
     const [accountName, setAccountName] = useState<string>('')
+    const [bankName, setBankName] = useState('');
     const [actionType, setActionType] = useState<'edit' | 'submit'>('submit')
 
     const getBanks = async () => {
@@ -76,60 +74,67 @@ export default function BankDetailsScreen({
     const getAccountName = async () => {
         const names = await getNameEnquiry({
             accountNumber,
-            bankCode: selectedBank.value
+            bankCode: selectedBank
         })
         if (!names?.hasError) {
             const accountName = names.data?.data?.account_name
             setAccountName(accountName)
+        } else {
+          setAccountName("")
+          showToast({
+            type: "error",
+            message: "Unable to get account name",
+            title: "Account",
+          })
         }
 
     }
     const handleVerify = async () => {
-        if (route.params.isEmailVerified) {
-            switch (actionType) {
-                case 'edit':
-                    const req = await editBankDetails({
-                        "userId": user.id,
-                        "accountNumber": accountNumber,
-                        "accountName": accountName,
-                        "financialInstitution": selectedBank.label
-                    })
-                    if (!req?.hasError)
-                        showToast({
-                            title: "Add Account Details",
-                            type: "success",
-                            message: "Account added successfully"
-                        })
-                    break;
-                case 'submit':
-                    const request = await createBankDetails({
-                        "userId": user.id,
-                        "accountNumber": accountNumber,
-                        "accountName": accountName,
-                        "financialInstitution": selectedBank.label
-                    })
-                    if (!request?.hasError)
-                        showToast({
-                            title: "Add Account Details",
-                            type: "success",
-                            message: "Account added successfully"
-                        })
-                    navigation.goBack()
-                    break
-                default: null
-            }
-        } else {
-            const req = await requestPasswordReset({
-                email: user.email,
-            });
+      switch (actionType) {
+        case 'edit':
+          console.log('edit', bankName)
+            const req = await editBankDetails({
+                "userId": user.id,
+                "accountNumber": accountNumber,
+                "accountName": accountName,
+                "financialInstitution": bankName
+            })
             if (!req?.hasError)
-                navigation.navigate('OTPScreen', {
-                    type: 'add-bank-account',
-                    email: user.email
+                showToast({
+                    title: "Add Account Details",
+                    type: "success",
+                    message: "Account added successfully"
                 })
-        }
+            break;
+        case 'submit':
+            const request = await createBankDetails({
+                "userId": user.id,
+                "accountNumber": accountNumber,
+                "accountName": accountName,
+                "financialInstitution": bankName
+            })
+            if (!request?.hasError)
+                showToast({
+                    title: "Add Account Details",
+                    type: "success",
+                    message: "Account added successfully"
+                })
+            navigation.goBack()
+            break
+        default: null
+      }
 
     }
+
+    useEffect(() => {
+      for (const list of bankList) {
+        if(list?.value === selectedBank) {
+          setBankName(list?.label);
+          break;
+        }
+      }
+    }, [selectedBank])
+
     const getUserDetails = async (data: { label: '', value: '' }[]) => {
         const details = await getUserBankDetails({
             userId: user.id
@@ -142,10 +147,12 @@ export default function BankDetailsScreen({
             } = details.data.message || {}
             setAccountNumber(accountNumber)
             setAccountName(accountName)
-            const bank = data.find((elem: {
-                label: string
-            }) => elem.label === financialInstitution) || { label: '', value: '' }
-            setSelectedBank(bank)
+            for (const el of data) {
+              if (el.label === financialInstitution) {
+                setSelectedBank(el.value);
+                break;
+              }
+            }
             if (accountName && accountNumber) {
                 setActionType('edit')
             }
@@ -158,21 +165,35 @@ export default function BankDetailsScreen({
     }, [navigation])
 
     useEffect(() => {
-        if (accountNumber.length === 10 && selectedBank?.value) {
+        if (accountNumber.length === 10 && selectedBank) {
             getAccountName()
         }
     }, [accountNumber, selectedBank])
+
     return (
         <Layout goback={true} title='Account Details'>
             <RNView style={styles.container}>
-                <Select
+              <DefaultSelectInput
+                value={selectedBank}
+                setValue={setSelectedBank}
+                items={bankList}
+                listMode="MODAL"
+                placeholder="Bank Name"
+                searchPlaceholder="Search for bank name"
+                searchable
+                loading={isLoading}
+                containerStyle={[ {
+                  marginBottom: fontsConstants.h(12),
+                }]}
+              />
+                {/* <Select
                     options={bankList}
                     placeholder='Kindly select your bank'
                     onChange={(e) => setSelectedBank(e)}
                     textstyle={{ color: colorsConstants[theme].darkText3 }}
                     dynamicPlaceholder="Select bank"
                     defaultValue={selectedBank?.value || ''}
-                />
+                /> */}
                 <DefaultInput
                     placeholder="Account Number"
                     placeholderTextColor={colorsConstants[theme].success_message}
@@ -192,19 +213,14 @@ export default function BankDetailsScreen({
                 />
                 <RNView style={{ flex: 1, justifyContent: 'flex-end' }}>
                     <DefaultButton
-                        title={`${route.params.isEmailVerified ? actionType === 'submit' ? 'Submit' : 'Edit' : 'Verify OTP'}`}
-                        type="solid"
-                        loading={isLoading}
-                        onPress={() => handleVerify()}
-                        titleStyle={{
-                            color: colorsConstants[theme].background
-                        }}
-                        buttonStyle={{
-                            borderColor: colorsConstants.colorPrimary,
-                        }}
-                        containerStyle={{
-                            marginBottom: fontsConstants.h(30)
-                        }}
+                      title={`${actionType === "submit" ? 'Submit' : 'Update'}`}
+                      type="solid"
+                      loading={isLoading}
+                      disabled={accountName === "" || accountName.length < 10 || selectedBank === ""}
+                      onPress={() => handleVerify()}
+                      containerStyle={{
+                          marginBottom: fontsConstants.h(30)
+                      }}
                     />
                 </RNView>
             </RNView>

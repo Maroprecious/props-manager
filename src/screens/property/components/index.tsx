@@ -92,7 +92,7 @@ export const RenderPropertyDetails = ({
           fontSize: fontsConstants.h(12),
           color: colorsConstants[theme].darkText3,
         }}>
-          {item?.propertyName ? item?.propertyName : `Propery ID: ${item.id}`}
+          {`Propery ID: ${item.id}`}
         </Text>}
         <Text style={{
           fontFamily: fontsConstants.Lora_Regular,
@@ -276,7 +276,7 @@ export const PropertiesListView = ({
           }}>
             <RenderPropertyDetails
               item={viewItem}
-              itemHeaderText={`Property Details`}
+              itemHeaderText={`${viewItem?.propertyName}`}
               hasRightComponent={false}
               detailsMaxifierNumber={1.3}
               containerStyle={{

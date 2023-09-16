@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createBankDetailsEndpoint, getBankListEndpoint, getNameEnquiryEndpoint, getTnxHistoryEndpoint, getUserBankDetailsEndpoint, initiatePaymentEndpoint } from "src/constants/api.endpoints.constants";
+import { createBankDetailsEndpoint, editBankDetailsEndpoint, getBankListEndpoint, getNameEnquiryEndpoint, getTnxHistoryEndpoint, getUserBankDetailsEndpoint, initiatePaymentEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -82,7 +82,7 @@ const usePayments = () => {
   }, cb = () => { }): Promise<NetworkResponse> => {
     setLoading(true);
     const request = await makeApiRequest({
-      route: `${createBankDetailsEndpoint}`,
+      route: `${editBankDetailsEndpoint}`,
       type: 'PUT',
       data
     });
