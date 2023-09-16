@@ -517,6 +517,7 @@ export default function AddUnitsScreen({
         withHandle={false}
         modalStyle={{
           minHeight: '100%',
+          paddingTop: Platform.OS === "ios" ? fontsConstants.h(30) : undefined,
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
         }}

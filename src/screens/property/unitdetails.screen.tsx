@@ -16,6 +16,7 @@ import { useUnit } from "src/contexts/unit.context";
 import { formatCurrency } from "src/utils/FormatNumber";
 import { currencySymbol } from "src/constants/currencies.constants";
 import { AntDesign } from '@expo/vector-icons';
+import useAuthenticate from "src/hooks/useAuthentication";
 
 
 export default function UnitDetailsScreen({
@@ -28,6 +29,7 @@ export default function UnitDetailsScreen({
     const { loading, createProperty, created } = useProperty()
     const { property } = useProperties()
     const { oneUnit } = useUnit()
+    const { requestPasswordReset } = useAuthenticate();
 
     const doAddTenant = () => {
         navigation.navigate("AddTenantScreen", {
@@ -158,10 +160,15 @@ export default function UnitDetailsScreen({
                                         onPress: doAddTenant
                                       }, {
                                         text: `Yes, Proceed`,
-                                        onPress: () => navigation.navigate('OTPVerifyScreen', {
-                                            type: 'add-bank-account',
-                                            email: user.email
-                                          })
+                                        onPress: () => {
+                                            requestPasswordReset({
+                                                email: user.email,
+                                            });
+                                            navigation.navigate('OTPVerifyScreen', {
+                                                type: 'add-bank-account',
+                                                email: user.email
+                                            })
+                                        }
                                       }])
                                 } else doAddTenant()
                                 
