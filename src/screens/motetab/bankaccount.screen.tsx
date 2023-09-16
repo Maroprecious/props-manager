@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Text } from "src/components/Themed";
-import { StyleSheet, View as RNView, TouchableOpacity, } from "react-native";
+import { StyleSheet, View as RNView, TouchableOpacity, Platform, } from "react-native";
 import Layout from "src/components/layout/layout";
 import { RootStackScreenProps } from 'src/types/navigations.types';
 import fontsConstants from 'src/constants/fonts.constants';
@@ -197,7 +197,7 @@ export default function BankDetailsScreen({
                 <DefaultInput
                     placeholder="Account Number"
                     placeholderTextColor={colorsConstants[theme].success_message}
-                    keyboardType='number-pad'
+                    keyboardType={Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"}
                     onChangeText={(e) => setAccountNumber(e)}
                     value={accountNumber}
                     maxLength={10}
@@ -206,7 +206,6 @@ export default function BankDetailsScreen({
                 <DefaultInput
                     placeholder="Account Name"
                     placeholderTextColor={colorsConstants[theme].success_message}
-                    keyboardType='number-pad'
                     value={accountName}
                     editable={false}
                     containerStyle={{ borderColor: colorsConstants[theme].borderLine, borderWidth: .6, borderRadius: 10, marginTop: 1, paddingBottom: 13, }}
