@@ -37,3 +37,4 @@ export const getNameEnquiryEndpoint = `/accounts/banks/name-enquiry`
 export const getUserBankDetailsEndpoint = `/accounts/banks/fetch-user-bank-details`
 export const createBankDetailsEndpoint = `accounts/banks/create-bank-details`
 export const editBankDetailsEndpoint = `/accounts/banks/update-bank-details`
+export const getFinancialsEndpoint = `/transactions/get-financials`;

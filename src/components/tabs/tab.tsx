@@ -5,12 +5,34 @@ import colorsConstants from 'src/constants/colors.constants';
 import fontsConstants from 'src/constants/fonts.constants';
 import { Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
 import { FinancialsData } from "src/constants/global.constants";
-import { NotificationProps } from "src/types/app.types";
+import { NotificationProps, FinancialData } from "src/types/app.types";
 import { NotificationItemCard } from "src/components/cards";
+import { useProperties } from 'src/contexts/property.context';
+import { formatCurrency } from 'src/utils/FormatNumber';
+import { useEffect, useState } from 'react';
+import { formatTransaction } from 'src/utils/formatTransactions';
+
+type inflowType = Pick<FinancialData, 'inflowHistory' | 'totalInflow'>
+type outflowType = Pick<FinancialData, 'outflowHistory' | 'totalOutflow'>
 
 const FirstRoute = () => {
+    const { financials } = useProperties();
+    const [data, setData] = useState<inflowType>({
+        inflowHistory: [],
+        totalInflow: 0
+    })
+    useEffect(() => {
+        if (financials.inflowHistory.length) {
+            const inflowHistory = formatTransaction(financials.inflowHistory)
+            setData({
+                inflowHistory,
+                totalInflow: financials.totalInflow
+            })
+        }
+    }, [financials])
+
     return (
-        <View style={{marginBottom: 400}}>
+        <View style={{ marginBottom: 400 }}>
             <View style={styles.first}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                     <View style={{ alignItems: 'center' }}>
@@ -24,12 +46,12 @@ const FirstRoute = () => {
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.naira}>₦</Text>
-                    <Text style={styles.amount}>2,560,000 .00</Text>
+                    <Text style={styles.amount}>{formatCurrency(financials.totalInflow)}</Text>
                 </View>
 
             </View>
             <FlatList
-                data={FinancialsData}
+                data={data.inflowHistory}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item, index }) => {
                     return (
@@ -52,6 +74,9 @@ const FirstRoute = () => {
                 contentContainerStyle={{
                     paddingTop: fontsConstants.h(30),
                 }}
+                ListEmptyComponent={<View style={styles.texts}>
+                    <Text style={{ fontFamily: fontsConstants.Lora_Regular, fontSize: 18 }}>No Transaction</Text>
+                </View>}
             />
 
         </View>
@@ -62,8 +87,24 @@ const FirstRoute = () => {
 
 
 const SecondRoute = () => {
+    const { financials } = useProperties();
+    const [data, setData] = useState<outflowType>({
+        outflowHistory: [],
+        totalOutflow: 0
+    })
+
+    useEffect(() => {
+        if (financials.outflowHistory.length) {
+            const outflowHistory = formatTransaction(financials.outflowHistory)
+            setData({
+                outflowHistory,
+                totalOutflow: financials.totalOutflow
+            })
+        }
+    }, [financials])
+
     return (
-        <View style={{marginBottom: 400}}>
+        <View style={{ marginBottom: 400 }}>
             <View style={styles.first}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                     <View style={{ alignItems: 'center' }}>
@@ -77,14 +118,13 @@ const SecondRoute = () => {
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.naira}>₦</Text>
-                    <Text style={styles.amount}>2,559,000 .00</Text>
+                    <Text style={styles.amount}>{formatCurrency(financials.totalOutflow)}</Text>
                 </View>
 
             </View>
 
-
             <FlatList
-                data={FinancialsData}
+                data={data.outflowHistory}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item, index }) => {
                     return (
@@ -107,6 +147,9 @@ const SecondRoute = () => {
                 contentContainerStyle={{
                     paddingTop: fontsConstants.h(30),
                 }}
+                ListEmptyComponent={<View style={styles.texts}>
+                    <Text style={{ fontFamily: fontsConstants.Lora_Regular, fontSize: 18 }}>No Transaction</Text>
+                </View>}
             />
         </View>
 
@@ -151,7 +194,7 @@ export default function Tab() {
     );
     return (
         <TabView
-            style={{ height: Dimensions.get('window').height, paddingBottom: 0}}
+            style={{ height: Dimensions.get('window').height, paddingBottom: 0 }}
             animationEnabled={false}
             renderTabBar={renderTabBar}
             navigationState={{ index, routes }}
@@ -283,5 +326,9 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginLeft: 7,
         opacity: 0.78
+    },
+    texts: {
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

@@ -50,3 +50,12 @@ export type PaymentData = {
   paymentStatus: boolean
   invoiceCreationDate: string
 }
+
+export type FinancialData = {
+  inflowHistory: Array<any>,
+  outflowHistory: Array<any>,
+  totalInflow: number,
+  totalOutflow: number,
+  userId: string,
+  walletBalance: number
+}

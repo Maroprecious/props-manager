@@ -1,5 +1,7 @@
 import React, { ReactNode } from "react";
 import { useState, useContext, createContext, useMemo, Dispatch, SetStateAction } from "react";
+import { FinancialData } from "src/types/app.types";
+import { array } from "yup";
 
 type onePropertyType = {
     id: string,
@@ -12,6 +14,8 @@ type onePropertyType = {
 type propertytype = {
     property: onePropertyType,
     setProperty: Dispatch<SetStateAction<onePropertyType>>
+    financials: FinancialData,
+    setFinancials: Dispatch<SetStateAction<FinancialData>>
 }
 const initialPropertyState: onePropertyType = {
     id: '',
@@ -19,19 +23,33 @@ const initialPropertyState: onePropertyType = {
     propertyLocation: '',
     userId: '',
     occupationalStatus: '',
-    propertyState: ''
+    propertyState: '',
+
+}
+const initialFinancialState: FinancialData = {
+    userId: '',
+    walletBalance: 0,
+    totalInflow: 0,
+    totalOutflow: 0,
+    inflowHistory: [],
+    outflowHistory: []
 }
 const PropertyContext = createContext<propertytype>({
     property: initialPropertyState,
-    setProperty: () => null
+    setProperty: () => null,
+    financials: initialFinancialState,
+    setFinancials: () => null
 })
 
 export const PropertyProvider = ({ children }: { children: ReactNode }) => {
     const [property, setProperty] = useState<onePropertyType>(initialPropertyState)
+    const [financials, setFinancials] = useState<FinancialData>(initialFinancialState)
     const value = useMemo(() => ({
         property,
-        setProperty
-    }), [property, setProperty])
+        setProperty,
+        financials,
+        setFinancials
+    }), [property, setProperty, financials, setFinancials])
 
     return <PropertyContext.Provider value={value}>
         { children }
