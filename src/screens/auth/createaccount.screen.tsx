@@ -143,7 +143,6 @@ export default function CreateAccountScreen({
         />
         <DefaultInput
           placeholder="Referred By"
-          
           onChangeText={(e) => handleData(e, 'referredBy')}
           containerStyle={styles.inputContainerStyle}
         />
@@ -220,7 +219,7 @@ export default function CreateAccountScreen({
             </TouchableOpacity>
           </RNView>
         }
-        <Text style={{
+        {/* <Text style={{
           marginTop: fontsConstants.h(20),
           textAlign: "center",
           color: "#949496",
@@ -274,7 +273,7 @@ export default function CreateAccountScreen({
             }}
             raised
           />
-        </RNView>
+        </RNView> */}
       </View>
       <AlertModal
         modalRef={alertRef}

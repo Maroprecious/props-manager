@@ -46,13 +46,13 @@ export default function ConfirmRentPayment({
   });
 
   useEffect(() => {
-    SecureStoreManager.getInitiatedPaymentData().then((res) => {
-      const data: PaymentData = JSON.parse(res || `{}`);
-      if (data?.referenceId && data?.unitId === `${route?.params?.unit?.id}`)
-        setPaymentData(data)
-      else
-        preparePayment()
-    })
+    // SecureStoreManager.getInitiatedPaymentData().then((res) => {
+    //   const data: PaymentData = JSON.parse(res || `{}`);
+    //   if (data?.referenceId && data?.unitId === `${route?.params?.unit?.id}`)
+    //     setPaymentData(data)
+    //   else
+      preparePayment()
+    // })
   }, [route?.params?.unit?.id])
 
   const [paymentRefNumber, setPaymentRefNumber] = useState(`-1`);
@@ -93,7 +93,7 @@ export default function ConfirmRentPayment({
         ...req?.data?.message,
         unitId: `${route?.params?.unit?.id}`
       }
-      await SecureStoreManager.setInitiatedPaymentData(JSON.stringify(data))
+      // await SecureStoreManager.setInitiatedPaymentData(JSON.stringify(data))
     }
   }
 

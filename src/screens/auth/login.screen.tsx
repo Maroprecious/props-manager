@@ -151,7 +151,7 @@ export default function LoginScreen({
             </Text>
           </TouchableOpacity>
         </RNView>
-        <Text style={{
+        {/* <Text style={{
           marginTop: fontsConstants.h(20),
           textAlign: "center",
           color: "#949496",
@@ -205,7 +205,7 @@ export default function LoginScreen({
             }}
             raised
           />
-        </RNView>
+        </RNView> */}
       </View>
     </ScrollView>
   );
