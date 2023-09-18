@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
@@ -17,6 +17,8 @@ import { formatCurrency } from "src/utils/FormatNumber";
 import { currencySymbol } from "src/constants/currencies.constants";
 import { AntDesign } from '@expo/vector-icons';
 import useAuthenticate from "src/hooks/useAuthentication";
+import useTenant from "src/hooks/useTenant";
+import { showToast } from "src/components/Toast";
 
 
 export default function UnitDetailsScreen({
@@ -26,7 +28,18 @@ export default function UnitDetailsScreen({
     const theme = useContext(AppThemeContext);
 
     const user = useAppSelector((state) => state.auth.user)
+    const [tenantDetails, setTenantDetails] = useState({
+        "id": "",
+        'tenantId': "",
+        "unitId": "",
+        "tenantDuration": "",
+        "lastPaymentDate": "",
+        "moveInDate": ""
+    },
+    )
+    
     const { loading, createProperty, created } = useProperty()
+    const { endTenancy, getTenant } = useTenant()
     const { property } = useProperties()
     const { oneUnit } = useUnit()
     const { requestPasswordReset } = useAuthenticate();
@@ -39,11 +52,36 @@ export default function UnitDetailsScreen({
             from: "unit-screen"
         })
     }
+    const doRemoveTenant = async (tenancyIdToDelete: string) => {
+        const details = await endTenancy({
+            tenancyId: tenancyIdToDelete
+        });
+        if (!details?.hasError) {
+            showToast({
+                title: `Remove Tenant`,
+                type: details?.hasError ? `error` : `info`,
+                message: details?.data?.message || "Tenant removed successfully"
+            })
+        }
+    };
+    const getTenantDetails = async () => {
+        const detail = await getTenant({
+            unitId: oneUnit.id
+        })
+        if (!detail?.hasError) {
+            setTenantDetails(detail.data.message.tenant)
+        }
+    }
+    useEffect(() => {
+        getTenantDetails()
+    }, [oneUnit])
+
+    console.log(tenantDetails.id, 'dets')
 
     return (
         <>
             <TouchableOpacity style={styles.goBack} onPress={() => {
-                
+
                 navigation.navigate("ViewUnitsScreen")
             }}>
                 <AntDesign name="arrowleft" size={30} color="black" />
@@ -151,27 +189,32 @@ export default function UnitDetailsScreen({
                             ))}
                         </View>
                         <DefaultButton
-                            title={`Add Tenant`}
-                            disabled={oneUnit.occupyingStatus === true}
+                            title={oneUnit.occupyingStatus === true ? `Remove Tenant` : `Add Tenant`}
                             onPress={() => {
-                                if (!user?.bankAvailable) {
-                                    Alert.alert(`Hold On!`, `You have not added your bank detail.\nWant to add it now?`, [{
-                                        text: `Not now`,
-                                        onPress: doAddTenant
-                                      }, {
-                                        text: `Yes, Proceed`,
-                                        onPress: () => {
-                                            requestPasswordReset({
-                                                email: user.email,
-                                            });
-                                            navigation.navigate('OTPVerifyScreen', {
-                                                type: 'add-bank-account',
-                                                email: user.email
-                                            })
-                                        }
-                                      }])
-                                } else doAddTenant()
-                                
+                                if (oneUnit.occupyingStatus) {
+                                    doRemoveTenant(tenantDetails?.id)
+                                } else {
+                                    if (!user?.bankAvailable) {
+                                        Alert.alert(`Hold On!`, `You have not added your bank detail.\nWant to add it now?`, [{
+                                            text: `Not now`,
+                                            onPress: doAddTenant
+                                        }, {
+                                            text: `Yes, Proceed`,
+                                            onPress: () => {
+                                                requestPasswordReset({
+                                                    email: user.email,
+                                                });
+                                                navigation.navigate('OTPVerifyScreen', {
+                                                    type: 'add-bank-account',
+                                                    email: user.email
+                                                })
+                                            }
+                                        }])
+                                    } else {
+                                        doAddTenant()
+                                    }
+                                }
+
                             }}
                             containerStyle={{
                                 marginTop: 40
