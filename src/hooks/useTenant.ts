@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addTenantToPropertyEndpoint, endTenancyEndpoint, getOccupiedPropertiesEndpoint } from "src/constants/api.endpoints.constants";
+import { addTenantToPropertyEndpoint, endTenancyEndpoint, getOccupiedPropertiesEndpoint, getTenantInUnitEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -60,7 +60,22 @@ const useTenant = () => {
       hasError: request?.status !== 200
     }
   };
-  return { loading, addTenantToUnit, getOccupiedProperties, endTenancy };
+  const getTenant = async (data: {
+    unitId: string
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${getTenantInUnitEndpoint}/${data.unitId}`,
+      type: 'GET',
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  }
+  return { loading, addTenantToUnit, getOccupiedProperties, endTenancy, getTenant };
 };
 
 export default useTenant;
