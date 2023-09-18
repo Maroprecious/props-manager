@@ -127,7 +127,7 @@ export default function MoreTabScreen({
                   fontSize: fontsConstants.h(14),
                   color: colorsConstants[theme].text
                 }}>
-                  {`Tenant Account`}
+                  {`User Account`}
                 </Text>
                 <Text style={[styles.addressTextStyle, {
                   color: colorsConstants[theme].screenLabel,

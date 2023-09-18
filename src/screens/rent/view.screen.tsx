@@ -259,7 +259,7 @@ export default function ViewRentalScreen({
             })
           }}
         />
-        <DefaultButton
+        {/* <DefaultButton
           title={`End Tenancy`}
           onPress={doEndTenancy}
           loading={loading}
@@ -271,7 +271,7 @@ export default function ViewRentalScreen({
             borderColor: colorsConstants.criticalRed,
           }]}
           containerStyle={styles.btnContainerStyle}
-        />
+        /> */}
       </ImageBackground>
     </SafeAreaView>
   );
