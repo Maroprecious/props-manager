@@ -7,7 +7,8 @@ import {
     Image,
     Platform,
     ImageBackground,
-    FlatList
+    FlatList,
+    Alert
 } from "react-native";
 import { SafeAreaView, Text } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
@@ -25,6 +26,8 @@ import layoutsConstants from "src/constants/layouts.constants";
 import { TabScreenTitle } from "src/components/labels/screentitle.components";
 import { ScreenTitle } from "../auth/components/screentitle.component";
 import { RenderPropertyDetails } from "../property/components";
+import useAuthenticate from "src/hooks/useAuthentication";
+import { useAppSelector } from "src/hooks/useReduxHooks";
 
 export default function ViewTenancyScreen({
     navigation,
@@ -32,11 +35,12 @@ export default function ViewTenancyScreen({
 }: RootStackScreenProps<"ViewTenancyScreen">) {
     const theme = useContext(AppThemeContext);
     const selectedProperty = route.params?.data?.property;
-    
+    const user = useAppSelector((state) => state.auth.user)
     const { loading, getPropertyOccupants } = useProperties();
 
     const [selected, setSelected] = useState<any>({ id: -1 })
     const [tenants, setTenants] = useState<any>([]);
+    const { requestPasswordReset } = useAuthenticate();
 
     const fetchOccupants = async () => {
         const req = await getPropertyOccupants({
@@ -49,6 +53,20 @@ export default function ViewTenancyScreen({
         fetchOccupants()
     }, [selectedProperty?.id])
     
+    const doAddTenant = () => {
+        navigation.navigate("AddTenantScreen", {
+            data: {
+                unit: {
+                    id: null
+                },
+                property: {
+                    id: selectedProperty?.id
+                },
+            }, 
+            from: "tenancy-screen"
+        })
+    }
+
     return (
 
         // <Layout title="View Tenants" goback={true}>
@@ -252,16 +270,23 @@ export default function ViewTenancyScreen({
                     ListFooterComponent={
                         <DefaultButton
                             title={`Add New Tenant`}
-                            onPress={() => navigation.navigate("AddTenantScreen", {
-                            data: {
-                                unit: {
-                                id: null
-                                },
-                                property: {
-                                id: selectedProperty?.id
-                                },
-                            }, from: "tenancy-screen"
-                            })}
+                            onPress={() => {
+                                Alert.alert(`Hold On!`, `You have not added your bank detail.\nWant to add it now?`, [{
+                                    text: `Not now`,
+                                    onPress: doAddTenant
+                                }, {
+                                    text: `Yes, Proceed`,
+                                    onPress: () => {
+                                        requestPasswordReset({
+                                            email: user.email,
+                                        });
+                                        navigation.navigate('OTPVerifyScreen', {
+                                            type: 'add-bank-account',
+                                            email: user.email
+                                        })
+                                    }
+                                }])
+                            }}
                             containerStyle={{
                             marginTop: fontsConstants.h(20)
                             }}
