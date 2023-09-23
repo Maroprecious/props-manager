@@ -69,14 +69,14 @@ export default function UnitDetailsScreen({
             unitId: oneUnit.id
         })
         if (!detail?.hasError) {
-            setTenantDetails(detail.data.message.tenant)
+            setTenantDetails(detail.data.message.tenancy)
         }
     }
     useEffect(() => {
         getTenantDetails()
     }, [oneUnit])
 
-    console.log(tenantDetails.id, 'dets')
+    console.log(tenantDetails, 'dets')
 
     return (
         <>
