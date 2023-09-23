@@ -1,7 +1,5 @@
-import React, { ReactNode } from "react";
-import { useState, useContext, createContext, useMemo, Dispatch, SetStateAction } from "react";
+import React, { ReactNode, useState, useContext, createContext, useMemo, Dispatch, SetStateAction  } from "react";
 import { FinancialData } from "src/types/app.types";
-import { array } from "yup";
 
 type onePropertyType = {
     id: string,
