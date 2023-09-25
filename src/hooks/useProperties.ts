@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createPropertyEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint, editPropertyEndpoint, editeUnitEndpoint, getOnePropertyEndpoint, getPropertyOccupantsEndpoint } from "src/constants/api.endpoints.constants";
+import { createPropertyEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint, editPropertyEndpoint, editeUnitEndpoint, getOnePropertyEndpoint, getPropertyOccupantsEndpoint, getUnocuppiedUnitsEndpoint  } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -188,5 +188,20 @@ export const useUnits = () => {
       hasError: request?.status !== 200
     }
   };
-  return { loading, getTypes, createUnit, fetchingTypes, getUnits, editUnit };
+  const getUnocuppiedUnits = async (
+    id: string, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${getUnocuppiedUnitsEndpoint}/${id}`,
+      type: 'GET',
+
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+  return { loading, getTypes, createUnit, fetchingTypes, getUnits, editUnit, getUnocuppiedUnits };
 }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity, RefreshControl } from "react-native";
 import { Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
@@ -12,6 +12,7 @@ import { useUnits } from "src/hooks/useProperties";
 import { useProperties } from "src/contexts/property.context";
 import { FontAwesome } from '@expo/vector-icons';
 import { useUnit } from "src/contexts/unit.context";
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
@@ -31,9 +32,16 @@ export default function ViewUnitsScreen({
         const req = await getUnits(property.id)
         if (req?.hasError === false) setUnits(req?.data?.message)
     }
-    useEffect(() => {
-        fetchUnits()
-    }, [navigation])
+
+    // useEffect(() => {
+    //     fetchUnits()
+    // }, [navigation])
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchUnits()
+        }, [navigation])
+      );
 
     const Item = ({ item }: any) => {
         return (
