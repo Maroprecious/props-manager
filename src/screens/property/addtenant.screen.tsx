@@ -34,10 +34,10 @@ export default function AddTenantScreen({
 
   const [units, setUnits] = useState<any>([]);
 
-  const { loading: fetchingUnits, getUnits } = useUnits()
+  const { loading: fetchingUnits, getUnits, getUnocuppiedUnits } = useUnits()
 
-  const fetchUnits = async () => {
-    const req = await getUnits(`${route?.params?.data?.property?.id}` || '-1')
+  const getUnocuppiedUnit = async () => {
+    const req = await getUnocuppiedUnits(`${route?.params?.data?.property?.id}` || '-1')
     if (req?.hasError === false) {
       const _units = [];
       for (const _d of req?.data?.message || []) {
@@ -59,7 +59,7 @@ export default function AddTenantScreen({
 
   React.useEffect(() => {
     if (route.params.from === "tenancy-screen") {
-      fetchUnits()
+      getUnocuppiedUnit()
     }
   }, [])
   
@@ -82,6 +82,7 @@ export default function AddTenantScreen({
         type: "success",
         message: req?.message || "Tenant added successfully"
       })
+      navigation.navigate("ViewUnitsScreen")
     } else {
       showToast({
         title: "Tenant",

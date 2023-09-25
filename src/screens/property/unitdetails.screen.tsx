@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useContext, useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { Text } from "src/components/Themed";
+import { ScrollView, Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
 import { useAppSelector } from "src/hooks/useReduxHooks";
@@ -37,7 +37,7 @@ export default function UnitDetailsScreen({
         "moveInDate": ""
     },
     )
-    
+
     const { loading, createProperty, created } = useProperty()
     const { endTenancy, getTenant } = useTenant()
     const { property } = useProperties()
@@ -76,10 +76,9 @@ export default function UnitDetailsScreen({
         getTenantDetails()
     }, [oneUnit])
 
-    console.log(tenantDetails, 'dets')
 
     return (
-        <>
+        <ScrollView>
             <TouchableOpacity style={styles.goBack} onPress={() => {
 
                 navigation.navigate("ViewUnitsScreen")
@@ -222,7 +221,8 @@ export default function UnitDetailsScreen({
                         />
                     </View>
                 </View>
-            </Layout></>
+            </Layout>
+        </ScrollView>
     )
 }
 
