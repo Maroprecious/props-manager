@@ -271,21 +271,25 @@ export default function ViewTenancyScreen({
                         <DefaultButton
                             title={`Add New Tenant`}
                             onPress={() => {
-                                Alert.alert(`Hold On!`, `You have not added your bank detail.\nWant to add it now?`, [{
-                                    text: `Not now`,
-                                    onPress: doAddTenant
-                                }, {
-                                    text: `Yes, Proceed`,
-                                    onPress: () => {
-                                        requestPasswordReset({
-                                            email: user.email,
-                                        });
-                                        navigation.navigate('OTPVerifyScreen', {
-                                            type: 'add-bank-account',
-                                            email: user.email
-                                        })
-                                    }
-                                }])
+                                if (!user?.bankAvailable) {
+                                    Alert.alert(`Hold On!`, `You have not added your bank detail.\nWant to add it now?`, [{
+                                        text: `Not now`,
+                                        onPress: doAddTenant
+                                    }, {
+                                        text: `Yes, Proceed`,
+                                        onPress: () => {
+                                            requestPasswordReset({
+                                                email: user.email,
+                                            });
+                                            navigation.navigate('OTPVerifyScreen', {
+                                                type: 'add-bank-account',
+                                                email: user.email
+                                            })
+                                        }
+                                    }])
+                                } else {
+                                    doAddTenant()
+                                }
                             }}
                             containerStyle={{
                             marginTop: fontsConstants.h(20)
