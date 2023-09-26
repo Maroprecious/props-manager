@@ -42,7 +42,7 @@ const FirstRoute = () => {
                             <Fontisto name="database" size={11} color={colorsConstants.colorSuccess} style={{ marginLeft: 4 }} />
                         </View>
                     </View>
-                    <Text style={styles.total}>Total Inflow</Text>
+                    <Text style={styles.total}>Total Inflow to wallet</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.naira}>₦</Text>
@@ -114,7 +114,7 @@ const SecondRoute = () => {
                             <Fontisto name="database" size={11} color={colorsConstants.criticalRed} style={{ marginLeft: 4 }} />
                         </View>
                     </View>
-                    <Text style={styles.total}>Total Outflow</Text>
+                    <Text style={styles.total}>Total inflow to account</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.naira}>₦</Text>
@@ -168,8 +168,8 @@ export default function Tab() {
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
-        { key: 'first', title: 'Inflow \n (Last 60 days)' },
-        { key: 'second', title: 'Outflow \n (Last 60 days)' },
+        { key: 'first', title: 'Inflow to wallet\n (Last 60 days)' },
+        { key: 'second', title: 'Inflow to account \n (Last 60 days)' },
     ]);
     const renderTabBar = (props: any) => (
 
