@@ -303,7 +303,6 @@ export default function ConfirmRentPayment({
           }
           containerStyle={{
             marginTop: fontsConstants.h(50),
-            
           }}
           onPress={async () => {
             await SecureStoreManager.delInitiatedPaymentData();
