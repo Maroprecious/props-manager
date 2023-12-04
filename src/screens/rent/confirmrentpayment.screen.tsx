@@ -306,8 +306,7 @@ export default function ConfirmRentPayment({
           }}
           onPress={async () => {
             await SecureStoreManager.delInitiatedPaymentData();
-            console.log(paymentOptions.selectedOption, 'selectedOption')
-            if (paymentOptions.selectedOption.includes("Paystack")) {
+            if (paymentOptions.selectedOption.includes("PayStack")) {
               paystackWebViewRef?.current?.startTransaction();
             } else {
               handleSquadPaymentInitialization();
@@ -348,7 +347,6 @@ export default function ConfirmRentPayment({
                 }}
                 onNavigationStateChange={(navState) => {
                   const { url } = navState;
-                  console.log('url', url)
                   if (
                     url?.includes(paymentData.referenceId.toString()) &&
                     url.includes("?reference=")
