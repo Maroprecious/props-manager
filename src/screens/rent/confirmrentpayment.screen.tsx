@@ -45,6 +45,7 @@ import ViewShot from "react-native-view-shot";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SaveFileFromUri } from "src/utils/File";
 import { WebView } from "react-native-webview";
+import { makeUrlKeyValuePairs } from "src/services/request";
 
 export default function ConfirmRentPayment({
   navigation,
@@ -57,7 +58,7 @@ export default function ConfirmRentPayment({
     initiatePayment,
     getPaymentMethods,
     initiateSquadPayment,
-    verifySquadPayment
+    verifySquadPayment,
   } = usePayments();
   const [paymentOptions, setPaymentOptions] = useState<{
     options: { value: string; label: string }[];
@@ -77,7 +78,7 @@ export default function ConfirmRentPayment({
   });
   const [showSquadPayment, setShowSquad] = useState<boolean>(false);
   const [isWebViewLoading, setIsWebViewLoading] = useState<boolean>(false);
-
+  // https://mychattelmanager.com/?reference=5846260099
   useEffect(() => {
     // SecureStoreManager.getInitiatedPaymentData().then((res) => {
     //   const data: PaymentData = JSON.parse(res || `{}`);
@@ -132,14 +133,27 @@ export default function ConfirmRentPayment({
   };
 
   const handleVerifySquadPaymentStatus = async () => {
+    setShowSquad(false);
     const req = await verifySquadPayment({
       referenceId: paymentData.referenceId,
     });
-    console.log(req, 'req')
+    console.log(req, "req");
     if (req?.hasError === false) {
-
+      setPaymentRes({
+        transactionRef: {
+          trxref: paymentData.referenceId,
+        },
+        status: "success",
+      });
+      alertRef.current?.open();
+    } else {
+      showToast({
+        title: `Payment`,
+        message: `Payment Failed`,
+        type: `error`,
+      });
     }
-  }
+  };
 
   const preparePayment = async () => {
     const req = await initiatePayment({
@@ -292,7 +306,7 @@ export default function ConfirmRentPayment({
           }}
           onPress={async () => {
             await SecureStoreManager.delInitiatedPaymentData();
-            if (paymentOptions.selectedOption.includes("Paystack")) {
+            if (paymentOptions.selectedOption.includes("PayStack")) {
               paystackWebViewRef?.current?.startTransaction();
             } else {
               handleSquadPaymentInitialization();
@@ -330,6 +344,15 @@ export default function ConfirmRentPayment({
                 onLoadEnd={(syntheticEvent) => {
                   const { nativeEvent } = syntheticEvent;
                   setIsWebViewLoading(nativeEvent.loading);
+                }}
+                onNavigationStateChange={(navState) => {
+                  const { url } = navState;
+                  if (
+                    url?.includes(paymentData.referenceId.toString()) &&
+                    url.includes("?reference=")
+                  ) {
+                    handleVerifySquadPaymentStatus();
+                  }
                 }}
                 style={{ flex: 1 }}
               />
@@ -379,6 +402,7 @@ export default function ConfirmRentPayment({
                   message: `Payment Failed`,
                   type: `error`,
                 });
+            paymentRes?.transactionRef?.trxref;
           }}
           //@ts-ignore
           ref={paystackWebViewRef}
