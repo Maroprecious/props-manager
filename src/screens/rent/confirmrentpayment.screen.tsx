@@ -347,6 +347,7 @@ export default function ConfirmRentPayment({
                 }}
                 onNavigationStateChange={(navState) => {
                   const { url } = navState;
+                  console.log('url', url)
                   if (
                     url?.includes(paymentData.referenceId.toString()) &&
                     url.includes("?reference=")
