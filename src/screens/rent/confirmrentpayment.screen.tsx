@@ -292,6 +292,7 @@ export default function ConfirmRentPayment({
           }}
           onPress={async () => {
             await SecureStoreManager.delInitiatedPaymentData();
+            console.log(paymentOptions.selectedOption, 'selectedOption')
             if (paymentOptions.selectedOption.includes("Paystack")) {
               paystackWebViewRef?.current?.startTransaction();
             } else {
