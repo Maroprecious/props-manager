@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createBankDetailsEndpoint, editBankDetailsEndpoint, getBankListEndpoint, getNameEnquiryEndpoint, getTnxHistoryEndpoint, getUserBankDetailsEndpoint, initiatePaymentEndpoint, getFinancialsEndpoint } from "src/constants/api.endpoints.constants";
+import { createBankDetailsEndpoint, editBankDetailsEndpoint, getBankListEndpoint, getNameEnquiryEndpoint, getTnxHistoryEndpoint, getUserBankDetailsEndpoint, initiatePaymentEndpoint, getFinancialsEndpoint, getPaymentMethodsEndpoint, initiateSquadEndpoint, verifySquadPaymentEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -8,6 +8,7 @@ const usePayments = () => {
 
   const initiatePayment = async (pathParams: {
     unitId: string,
+    paymentMethod: string
   }, cb = () => { }): Promise<NetworkResponse> => {
     setLoading(true);
     const request = await makeApiRequest({
@@ -74,6 +75,57 @@ const usePayments = () => {
       hasError: request?.status !== 200
     }
   };
+
+  const getPaymentMethods = async (cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${getPaymentMethodsEndpoint}`,
+      type: 'GET',
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+
+  const initiateSquadPayment = async (pathParams: {
+    referenceId: string,
+    customer_email: string
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${initiateSquadEndpoint}`,
+      type: 'GET',
+      pathParams
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+
+  const verifySquadPayment = async (pathParams: {
+    referenceId: string,
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${verifySquadPaymentEndpoint}`,
+      type: 'GET',
+      pathParams
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+
+
   const editBankDetails = async (data: {
     userId: string | null,
     accountNumber: string,
@@ -124,9 +176,9 @@ const usePayments = () => {
       hasError: request?.status !== 200
     }
   };
-  
-  return { loading, initiatePayment, getBankList, getNameEnquiry, createBankDetails,editBankDetails, getUserBankDetails, getFinancials };
-  };
+
+  return { loading, initiatePayment, verifySquadPayment, initiateSquadPayment, getPaymentMethods, getBankList, getNameEnquiry, createBankDetails, editBankDetails, getUserBankDetails, getFinancials };
+};
 
 
 export default usePayments;

@@ -38,3 +38,6 @@ export const getUserBankDetailsEndpoint = `/accounts/banks/fetch-user-bank-detai
 export const createBankDetailsEndpoint = `accounts/banks/create-bank-details`
 export const editBankDetailsEndpoint = `/accounts/banks/update-bank-details`
 export const getFinancialsEndpoint = `/transactions/get-financials`;
+export const getPaymentMethodsEndpoint = '/transactions/get-payment-methods'
+export const initiateSquadEndpoint = '/transactions/squad/initiate-payment'
+export const verifySquadPaymentEndpoint = '/transactions/squad/verify-payment-status'
