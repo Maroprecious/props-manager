@@ -3,7 +3,9 @@ import * as Device from 'expo-device';
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
 import SecureStoreManager from "src/utils/SecureStoreManager";
-import { EXPO_APP_ID_TOKEN } from "@env";
+// import { EXPO_APP_ID_TOKEN } from "@env";
+
+const EXPO_APP_ID_TOKEN = process.env.EXPO_PUBLIC_EXPO_APP_ID_TOKEN as string;
 
 export default function useExpoPushToken() {
   const [pushToken, setPushToken] = React.useState<any>(null);

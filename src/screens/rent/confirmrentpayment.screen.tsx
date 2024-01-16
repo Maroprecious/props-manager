@@ -35,7 +35,7 @@ import { currencySymbol } from "src/constants/currencies.constants";
 import moment from "moment";
 import { Paystack, paystackProps } from "react-native-paystack-webview";
 import { useAppSelector } from "src/hooks/useReduxHooks";
-import { PAYSTACK_PUBLIC_KEY } from "@env";
+// import { PAYSTACK_PUBLIC_KEY } from "@env";
 import usePayments from "src/hooks/usePayments";
 import { showToast } from "src/components/Toast";
 import { PAYMENT_OPTIONS } from "src/constants";
@@ -46,6 +46,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { SaveFileFromUri } from "src/utils/File";
 import { WebView } from "react-native-webview";
 import { makeUrlKeyValuePairs } from "src/services/request";
+
+
+const PAYSTACK_PUBLIC_KEY = process.env.EXPO_PUBLIC_PAYSTACK_PUBLIC_KEY as string
 
 export default function ConfirmRentPayment({
   navigation,
@@ -137,7 +140,6 @@ export default function ConfirmRentPayment({
     const req = await verifySquadPayment({
       referenceId: paymentData.referenceId,
     });
-    console.log(req, "req");
     if (req?.hasError === false) {
       setPaymentRes({
         transactionRef: {
