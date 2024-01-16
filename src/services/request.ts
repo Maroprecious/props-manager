@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { API_BEARER_TOKEN } from "@env";
+// import { API_BEARER_TOKEN } from "@env";
 import { API_BASE_URL } from 'src/constants';
 
-
+const API_BEARER_TOKEN = process.env.EXPO_PUBLIC_API_BEARER_TOKEN;
 axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.headers.common['Authorization'] = `Bearer ${API_BEARER_TOKEN}`;
 axios.defaults.timeout = 60 * 1000; //60secs timeout

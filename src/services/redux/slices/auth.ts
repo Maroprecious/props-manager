@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { API_BEARER_TOKEN } from "@env";
+// import { API_BEARER_TOKEN } from "@env";
 import { produce } from 'immer';
 import { ReduxAuthState, roleTypes } from 'src/types/app.types';
 import SecureStoreManager from 'src/utils/SecureStoreManager';
+
+const API_BEARER_TOKEN = process.env.EXPO_PUBLIC_API_BEARER_TOKEN;
 
 const initialAuthState: ReduxAuthState = {
   token: API_BEARER_TOKEN,
