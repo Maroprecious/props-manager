@@ -1,10 +1,19 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useContext, useRef, useState } from "react";
-import { StyleSheet, ImageBackground, View as RNView, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  ImageBackground,
+  View as RNView,
+  TouchableOpacity,
+} from "react-native";
 import { View, Text, ScrollView } from "src/components/Themed";
-import { Image } from 'react-native-elements';
+import { Image } from "react-native-elements";
 import { DefaultButton } from "src/components/buttons/buttons.components";
-import { DefaultInput, DefaultPhoneInput, DefaultSelectInput } from "src/components/inputs/inputs.components";
+import {
+  DefaultInput,
+  DefaultPhoneInput,
+  DefaultSelectInput,
+} from "src/components/inputs/inputs.components";
 import fontsConstants from "src/constants/fonts.constants";
 import globalConstants, { AccountTypes } from "src/constants/global.constants";
 import { RootStackScreenProps } from "src/types/navigations.types";
@@ -22,32 +31,33 @@ import useExpoPushToken from "src/hooks/useExpoPushToken";
 
 export default function CreateAccountScreen({
   navigation,
-  route
+  route,
 }: RootStackScreenProps<"CreateAccountScreen">) {
-  const user = useAppSelector((state) => state.auth.user)
+  const user = useAppSelector((state) => state.auth.user);
 
   const theme = useContext(AppThemeContext);
   const alertRef = useRef<Modalize>(null);
-  const [registrationSuccessful, setRegistrationSuccessful] = useState<boolean>(true);
+  const [registrationSuccessful, setRegistrationSuccessful] =
+    useState<boolean>(true);
   const [alertData, setAlertData] = useState<any>({
     title: `Account Creation`,
     message: `Your account has been successfully Created.`,
     subMessage: `Kindly verify your email to access your MPM profile.`,
     buttonTitle: `Verify Email`,
-    type: `success`
-  })
+    type: `success`,
+  });
 
-  const { createAccount, loading } = useAuthenticate()
+  const { createAccount, loading } = useAuthenticate();
   const [data, setData] = useState<any>({
-    email: user?.email || '',
-    firstName: '',
-    lastName: '',
-    password: '',
-    phoneNumber: '',
-    referredBy: '',
+    email: user?.email || "",
+    firstName: "",
+    lastName: "",
+    password: "",
+    phoneNumber: "",
+    referredBy: "",
     role: user?.roleType?.toUpperCase() || "",
-  })
-  const [accountType, setAccountType] = useState('-1');
+  });
+  const [accountType, setAccountType] = useState("-1");
   const pushToken = useExpoPushToken() || "";
 
   const doSignUp = async () => {
@@ -55,95 +65,91 @@ export default function CreateAccountScreen({
       ...data,
       pushToken,
       userId: user.id,
-      isCompleteAccountReg: user?.email !== ''
-    })
+      isCompleteAccountReg: user?.email !== "",
+    });
     if (req.hasError && req.status !== 200)
       showToast({
         title: `Login`,
         message: `${req?.message || req?.statusText || req?.error}`,
-        type: `error`
-      })
+        type: `error`,
+      });
     else {
-      setRegistrationSuccessful(true)
-      await SecureStoreManager.storeExpoPushToken(pushToken)
-      SecureStoreManager.setInitialRouteName("LoginScreen")
-      alertRef.current?.open()    
+      setRegistrationSuccessful(true);
+      await SecureStoreManager.storeExpoPushToken(pushToken);
+      SecureStoreManager.setInitialRouteName("LoginScreen");
+      alertRef.current?.open();
     }
-  }
-  const handleData = (value: string, name: string):void => {
-    setData({...data, [name]: value})
-  }
+  };
+  const handleData = (value: string, name: string): void => {
+    setData({ ...data, [name]: value });
+  };
   return (
-    <ScrollView
-      style={styles.container}
-      showsVerticalScrollIndicator={false}
-    >
-      <StatusBar
-        translucent={true}
-      />
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <StatusBar translucent={true} />
       <ImageBackground
         source={require("src/assets/images/backgrounds/login-background-image.png")}
         style={{
           height: fontsConstants.h(446),
           marginTop: fontsConstants.h(-60),
           alignItems: "center",
-          paddingTop: fontsConstants.h(110)
+          paddingTop: fontsConstants.h(110),
+        }}
+      ></ImageBackground>
+      <View
+        style={{
+          marginTop: fontsConstants.h(-320),
+          paddingTop: fontsConstants.h(36),
+          paddingBottom: fontsConstants.h(20),
+          paddingHorizontal: globalConstants.mainViewHorizontalPadding,
+          borderTopLeftRadius: fontsConstants.h(40),
+          borderTopRightRadius: fontsConstants.h(40),
+          justifyContent: "flex-end",
         }}
       >
-      </ImageBackground> 
-      <View style={{
-        marginTop: fontsConstants.h(-320),
-        paddingTop: fontsConstants.h(36),
-        paddingBottom: fontsConstants.h(20),
-        paddingHorizontal: globalConstants.mainViewHorizontalPadding,
-        borderTopLeftRadius: fontsConstants.h(40),
-        borderTopRightRadius: fontsConstants.h(40),
-        justifyContent: "flex-end"
-      }}>
         <ScreenTitle
-          title={user?.email === '' ? `Sign Up` : `Complete Sign Up`}
+          title={user?.email === "" ? `Sign Up` : `Complete Sign Up`}
           intro={`Enter sign up details`}
           containerStyle={{
             marginTop: fontsConstants.h(-20),
-            marginBottom: fontsConstants.h(-30)
+            marginBottom: fontsConstants.h(-30),
           }}
         />
         <DefaultInput
           placeholder="Firstname"
           keyboardType="default"
-          onChangeText={(e) => handleData(e, 'firstName')}
+          onChangeText={(e) => handleData(e, "firstName")}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
           placeholder="Lastname"
           keyboardType="default"
-          onChangeText={(e) => handleData(e, 'lastName')}
+          onChangeText={(e) => handleData(e, "lastName")}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultPhoneInput
           placeholder="Mobile number"
           onChangeNumber={(number: string) => {
-            handleData(number, 'phoneNumber')
+            handleData(number, "phoneNumber");
           }}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
           placeholder="Email ID"
           keyboardType="email-address"
-          onChangeText={(e) => handleData(e, 'email')}
+          onChangeText={(e) => handleData(e, "email")}
           value={data?.email}
           containerStyle={styles.inputContainerStyle}
-          disabled={user?.email !== ''}
+          disabled={user?.email !== ""}
         />
         <DefaultInput
           placeholder="Password"
           secureTextEntry
-          onChangeText={(e) => handleData(e, 'password')}
+          onChangeText={(e) => handleData(e, "password")}
           containerStyle={styles.inputContainerStyle}
         />
         <DefaultInput
           placeholder="Referred By"
-          onChangeText={(e) => handleData(e, 'referredBy')}
+          onChangeText={(e) => handleData(e, "referredBy")}
           containerStyle={styles.inputContainerStyle}
         />
         {/* <DefaultSelectInput
@@ -157,32 +163,48 @@ export default function CreateAccountScreen({
           dropDownDirection="BOTTOM"    
           disabled={user?.email !== ''}  
         /> */}
-        <Text style={[styles.noteText, {
-          textAlign: "center",
-          marginTop: fontsConstants.h(-5),
-          zIndex: -1
-        }]}>
+        <Text
+          style={[
+            styles.noteText,
+            {
+              textAlign: "center",
+              marginTop: fontsConstants.h(-5),
+              zIndex: -1,
+            },
+          ]}
+        >
           {`By clicking `}
-          <Text style={{
-            textDecorationLine: "underline",
-            zIndex: -1
-          }}>Sign up</Text>
+          <Text
+            style={{
+              textDecorationLine: "underline",
+              zIndex: -1,
+            }}
+          >
+            Sign up
+          </Text>
           {` you agree to the following`}
         </Text>
-        <RNView style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: fontsConstants.h(10),
-          zIndex: -1
-        }}>
+        <RNView
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: fontsConstants.h(10),
+            zIndex: -1,
+          }}
+        >
           <TouchableOpacity
             activeOpacity={layoutsConstants.activeOpacity}
             onPress={() => navigation.navigate("TermsAndConditionScreen")}
           >
-            <Text style={[styles.noteText, {
-              textDecorationLine: "underline"
-            }]}>
+            <Text
+              style={[
+                styles.noteText,
+                {
+                  textDecorationLine: "underline",
+                },
+              ]}
+            >
               {`Terms and Conditions`}
             </Text>
           </TouchableOpacity>
@@ -192,33 +214,47 @@ export default function CreateAccountScreen({
           title={`Sign up`}
           onPress={doSignUp}
           loading={loading}
-          disabled={data.email && data.phoneNumber && data.firstName && data.lastName && data.password ? false : true}
-          containerStyle={{zIndex: -1}}
+          disabled={
+            data.email &&
+            data.phoneNumber &&
+            data.firstName &&
+            data.lastName &&
+            data.password
+              ? false
+              : true
+          }
+          containerStyle={{ zIndex: -1 }}
         />
-        {user?.email === '' && 
-          <RNView style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: fontsConstants.h(25)
-          }}>
-            <TouchableOpacity style={{
-
-            }} activeOpacity={globalConstants.activeOpacity}
+        {user?.email === "" && (
+          <RNView
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: fontsConstants.h(25),
+            }}
+          >
+            <TouchableOpacity
+              style={{}}
+              activeOpacity={globalConstants.activeOpacity}
               onPress={() => {
-                navigation.navigate("LoginScreen")
+                navigation.navigate("LoginScreen");
               }}
             >
-            <Text style={styles.linkTextStyle}>
+              <Text style={styles.linkTextStyle}>
                 {`Already have an account? `}
-                <Text style={{
-                  textDecorationLine: "underline",
-                  fontFamily: fontsConstants.American_Typewriter_Bold
-                }}>Sign In</Text>
+                <Text
+                  style={{
+                    textDecorationLine: "underline",
+                    fontFamily: fontsConstants.American_Typewriter_Bold,
+                  }}
+                >
+                  Sign In
+                </Text>
               </Text>
             </TouchableOpacity>
           </RNView>
-        }
+        )}
         {/* <Text style={{
           marginTop: fontsConstants.h(20),
           textAlign: "center",
@@ -280,39 +316,54 @@ export default function CreateAccountScreen({
         title={alertData.title}
         buttonTitle={alertData.buttonTitle}
         buttonContainerStyle={{
-          marginTop: fontsConstants.h(50)
+          marginTop: fontsConstants.h(50),
         }}
         type={alertData.type}
         onClosed={() => {
-          if(registrationSuccessful) navigation.navigate(user?.email !== '' ? "OTPVerifyScreen" : "OTPScreen", {
-            type: "verify-email",
-            email: data.email
-          })
+          if (registrationSuccessful)
+            navigation.navigate(
+              user?.email !== "" ? "OTPVerifyScreen" : "OTPScreen",
+              {
+                type: "verify-email",
+                email: data.email,
+              }
+            );
         }}
-        body={(
+        body={
           <>
-            <Text style={{
-              textAlign: "center",
-              fontFamily: fontsConstants.Raleway_Regular,
-              fontSize: fontsConstants.h(25),
-              color: colorsConstants[theme].screenLabel
-            }}>
-              {alertData.message}            
+            <Text
+              style={{
+                textAlign: "center",
+                fontFamily: fontsConstants.Raleway_Regular,
+                fontSize: fontsConstants.h(25),
+                color: colorsConstants[theme].screenLabel,
+              }}
+            >
+              {alertData.message}
             </Text>
-            <Text style={{
-              fontSize: fontsConstants.h(16),
-              fontFamily: fontsConstants.Raleway_Regular,
-              marginTop: fontsConstants.h(9),
-              textAlign: 'center'
-            }}>
+            <Text
+              style={{
+                fontSize: fontsConstants.h(16),
+                fontFamily: fontsConstants.Raleway_Regular,
+                marginTop: fontsConstants.h(9),
+                textAlign: "center",
+              }}
+            >
               {alertData.subMessage}
             </Text>
           </>
-        )}
-        onButtonPress={() => registrationSuccessful ? navigation.navigate(user?.email !== '' ? "OTPVerifyScreen" : "OTPScreen", {
-          type: "verify-email",
-          email: data.email
-        }) : alertRef?.current?.close()}
+        }
+        onButtonPress={() =>
+          registrationSuccessful
+            ? navigation.navigate(
+                user?.email !== "" ? "OTPVerifyScreen" : "OTPScreen",
+                {
+                  type: "verify-email",
+                  email: data.email,
+                }
+              )
+            : alertRef?.current?.close()
+        }
       />
     </ScrollView>
   );
@@ -323,30 +374,30 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inputContainerStyle: {
-    marginBottom: fontsConstants.h(20)
+    marginBottom: fontsConstants.h(20),
   },
   noteText: {
     fontFamily: fontsConstants.Lora_Regular,
     fontSize: fontsConstants.h(12),
-    marginBottom: fontsConstants.h(4)
+    marginBottom: fontsConstants.h(4),
   },
   linkTextStyle: {
     fontFamily: fontsConstants.American_Typewriter_Regular,
-    fontSize: fontsConstants.h(12)
+    fontSize: fontsConstants.h(12),
   },
   socialButtonContainerStyle: {
     width: fontsConstants.w(150),
     borderRadius: fontsConstants.h(10),
-    backgroundColor: "#F3F4F5" 
+    backgroundColor: "#F3F4F5",
   },
   socailButtonTitleStyle: {
     fontSize: fontsConstants.h(14),
     fontFamily: fontsConstants.SF_Pro_Rounded_Medium,
-    color: "#1A1A1A"
+    color: "#1A1A1A",
   },
   socialButtonIcon: {
     height: fontsConstants.h(15),
     width: fontsConstants.h(15),
-    marginRight: fontsConstants.w(5)
-  }
+    marginRight: fontsConstants.w(5),
+  },
 });
