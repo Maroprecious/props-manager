@@ -19,6 +19,9 @@ import { RenderProps, RootStackParamList } from "src/types/navigations.types";
 import AppRoutes from "src/constants/routes.constants";
 import { useAppSelector } from "src/hooks/useReduxHooks";
 import axios from "axios";
+import useSubscriptions from "src/hooks/useSubscriptions";
+import SecureStoreManager from "src/utils/SecureStoreManager";
+import usePayments from "src/hooks/usePayments";
 
 export default function Navigation({
   colorScheme,
@@ -62,9 +65,29 @@ export function renderScreen({
 }
 function RootNavigator({initialRouteName="WelcomeScreen"}: {initialRouteName?: keyof RootStackParamList}) {
   const { token, user } = useAppSelector((state) => state.auth);
+  const { useGetPlans } = useSubscriptions();
+  const { getPaymentMethods } = usePayments();
   axios.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${token}`;
+
+  React.useEffect(() => {
+    useGetPlans().then(async (res) => {
+      if (res.status === 200) {
+        const jsonArray = res?.data?.message || [];
+        const sortedArray = jsonArray.sort((a: any, b: any) => a.subscriptionPrice - b.subscriptionPrice);
+        SecureStoreManager.storeSubscriptionPlans(JSON.stringify(sortedArray))
+      }
+    }).catch((e) => {
+      console.log(e)
+    })
+    getPaymentMethods().then(async (res) => {
+      if (res.status === 200) 
+        SecureStoreManager.storeAppPaymentOptions(JSON.stringify(res?.data?.message))
+    }).catch((e) => {
+      console.log(e)
+    })
+  }, [])
   return (
     <Stack.Navigator
       initialRouteName={initialRouteName}

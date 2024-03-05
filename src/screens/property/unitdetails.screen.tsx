@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext, useState, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { ScrollView, Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -9,7 +9,7 @@ import { DefaultButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
 import colorsConstants from "src/constants/colors.constants";
 import { LocationIcon } from "../rent/components";
-import useProperty from "src/hooks/useProperties";
+import useProperty, { useUnits } from "src/hooks/useProperties";
 import Layout from "src/components/layout/layout";
 import { useProperties } from "src/contexts/property.context";
 import { useUnit } from "src/contexts/unit.context";
@@ -19,6 +19,9 @@ import { AntDesign } from '@expo/vector-icons';
 import useAuthenticate from "src/hooks/useAuthentication";
 import useTenant from "src/hooks/useTenant";
 import { showToast } from "src/components/Toast";
+import layoutsConstants from "src/constants/layouts.constants";
+import { Icon } from "react-native-elements";
+import { showConfirm } from "src/components/modals/confirm.modals";
 
 
 export default function UnitDetailsScreen({
@@ -38,7 +41,7 @@ export default function UnitDetailsScreen({
     },
     )
 
-    const { loading, createProperty, created } = useProperty()
+    const { loading: deleting, deleteOneUnit } = useUnits()
     const { endTenancy, getTenant } = useTenant()
     const { property } = useProperties()
     const { oneUnit } = useUnit()
@@ -76,16 +79,51 @@ export default function UnitDetailsScreen({
         getTenantDetails()
     }, [oneUnit])
 
+    const doDeleteUnit = () => {
+        showConfirm({
+            message: `Are you sure you want to delete unit - ${oneUnit.unitName}`,
+            title: `Delete Unit`,
+            type: `delete`,
+            onConfirm: async () => {
+                deleteOneUnit({
+                    unitId: oneUnit.id
+                }).then((res) => {
+                    console.log(res)
+                    showToast({
+                        message: res.data?.hasError === false ? `Unit deleted successfully` : res?.data?.message || res?.message || res?.error || `Unknown error occured deleting unit`,
+                        title: `Delete Unit`,
+                        type: res.data?.hasError === false ? `success` : `error`,
+                    })
+                    if (!res?.hasError) {
+                        navigation?.navigate("ViewUnitsScreen")
+                    }
+                }).catch((e) => {
+                    console.log(e)
+                })
+            }
+        })
+    }
 
     return (
         <ScrollView>
-            <TouchableOpacity style={styles.goBack} onPress={() => {
-
-                navigation.navigate("ViewUnitsScreen")
-            }}>
-                <AntDesign name="arrowleft" size={30} color="black" />
-            </TouchableOpacity>
-            <Layout title="Unit Details" goback={false} textstyle={{ marginTop: 95 }}>
+            <Layout 
+                title="Unit Details" 
+                goback={true} 
+                onBackPressed={() => navigation.navigate("ViewUnitsScreen")}
+                // textstyle={{ marginTop: 95 }}
+                rightComponent={deleting ? <ActivityIndicator color={colorsConstants.colorDanger} /> :
+                    <TouchableOpacity
+                        activeOpacity={layoutsConstants.activeOpacity}
+                        onPress={doDeleteUnit}
+                    >
+                        <Icon
+                            name="trash"
+                            type="ionicon"
+                            color={colorsConstants.colorDanger}
+                        />
+                    </TouchableOpacity>
+                }
+            >
 
                 <View style={styles.container}>
                     <View style={styles.location}>
@@ -189,6 +227,8 @@ export default function UnitDetailsScreen({
                         </View>
                         <DefaultButton
                             title={oneUnit.occupyingStatus === true ? `Remove Tenant` : `Add Tenant`}
+                            disabled={deleting}
+                            loading={deleting}
                             onPress={() => {
                                 if (oneUnit.occupyingStatus) {
                                     doRemoveTenant(tenantDetails?.id)
