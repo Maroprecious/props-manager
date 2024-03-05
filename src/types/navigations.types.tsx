@@ -138,6 +138,7 @@ export type RootStackParamList = LaunchStackParamList & AuthStackParamList & Roo
     from: "unit-screen" | "tenancy-screen"
   }, 
   CompleteAccountCreationScreen: undefined 
+  SubScriptionScreen: undefined
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

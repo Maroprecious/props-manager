@@ -19,6 +19,7 @@ import { showToast } from "src/components/Toast";
 import { useUnit } from "src/contexts/unit.context";
 import { useProperties } from "src/contexts/property.context";
 import { Icon } from "react-native-elements";
+import { showConfirm } from "src/components/modals/confirm.modals";
 
 export default function AddUnitsScreen({
   navigation,
@@ -177,6 +178,15 @@ export default function AddUnitsScreen({
         message: req?.message || req?.data?.message?.message || "Unknown error occured"
       })
     }
+    if (req?.errorType === "subscription" || req?.data?.errorType === "subscription")
+      showConfirm({
+        message: `Your current plan is not sufficient to create additional units\nWould you like to upgrade your current plan now?`,
+        title: `Oops!`,
+        onConfirm: () => navigation.navigate("SubScriptionScreen"),
+        type: `info`,
+        cancelText: `No`,
+        confirmText: `Yes`
+      })
   }
   const doEditUnit = async () => {
     const req: any = await editUnit({

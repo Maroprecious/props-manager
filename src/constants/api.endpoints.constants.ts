@@ -6,6 +6,7 @@ export const verifyOTPEndpoint = `/auth/token/verify-otp`;
 export const resetPasswordEndpoint = `/accounts/forgot-password`;
 export const updateProfileEndpoint = `/accounts/update-account`;
 export const updatePasswordEndpoint = `/accounts/change-password`;
+export const getProfileEndpoint = `/accounts/get-details-internally`;
 
 
 //properties
@@ -20,6 +21,8 @@ export const getUnitsEndpoint = `/properties/get-property-units`;
 export const getOnePropertyEndpoint = `/properties/get-property-details`;
 export const getPropertyOccupantsEndpoint = `/properties/get-tenant-in-a-property`;
 export const getUnocuppiedUnitsEndpoint = `/properties/get-unoccupied-unit`
+export const deletePropertyEndpoint = `/properties/delete-property`
+export const deleteUnitEndpoint = `/properties/delete-unit`
 
 
 //tenant
@@ -41,3 +44,8 @@ export const getFinancialsEndpoint = `/transactions/get-financials`;
 export const getPaymentMethodsEndpoint = '/transactions/get-payment-methods'
 export const initiateSquadEndpoint = '/transactions/squad/initiate-payment'
 export const verifySquadPaymentEndpoint = '/transactions/squad/verify-payment-status'
+
+
+//subscriptions
+export const getSubscriptionPlansEndpoint = `/accounts/subscription/get-subscription-methods`
+export const initiateSubscriptionPaymentEndpoint = `/transactions/initiate-subscription-payment`

@@ -4,9 +4,6 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
-  Alert,
-  ActionSheetIOS,
-  Platform,
 } from "react-native";
 import { SafeAreaView, Text } from "src/components/Themed";
 import {
@@ -30,7 +27,7 @@ import {
 } from "src/components/inputs/inputs.components";
 import { AlertModal } from "src/components/modals/alert.modals";
 import { Modalize } from "react-native-modalize";
-import { Icon, Image } from "react-native-elements";
+import { Icon } from "react-native-elements";
 import { currencySymbol } from "src/constants/currencies.constants";
 import moment from "moment";
 import { Paystack, paystackProps } from "react-native-paystack-webview";
@@ -40,12 +37,9 @@ import usePayments from "src/hooks/usePayments";
 import { showToast } from "src/components/Toast";
 import { PAYMENT_OPTIONS } from "src/constants";
 import SecureStoreManager from "src/utils/SecureStoreManager";
-import { PaymentData } from "src/types/app.types";
 import ViewShot from "react-native-view-shot";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { SaveFileFromUri } from "src/utils/File";
 import { WebView } from "react-native-webview";
-import { makeUrlKeyValuePairs } from "src/services/request";
 
 export default function ConfirmRentPayment({
   navigation,
