@@ -77,7 +77,9 @@ export default function App() {
                   loading={null}
                   persistor={persistor}
                 >
-                  <StatusBar />
+                  <StatusBar
+                    style={`dark`}
+                  />
                   <Navigation
                     colorScheme={appTheme || colorScheme}
                     initialRouteName={initialRouteName}

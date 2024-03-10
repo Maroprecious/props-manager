@@ -49,6 +49,7 @@ import ViewUnitsScreen from "src/screens/property/viewunits.screen";
 import UnitDetailsScreen from "src/screens/property/unitdetails.screen";
 import AddTenantScreen from "src/screens/property/addtenant.screen";
 import BankDetailsScreen from "src/screens/motetab/bankaccount.screen";
+import SubScriptionScreen from "src/screens/motetab/subscription.screen";
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -379,6 +380,13 @@ export const UserAppRoutes = [
   }, {
     name: "BankDetailsScreen",
     component: BankDetailsScreen,
+    options: {
+      headerShown: false,
+    },
+    initialParams: {},
+  }, {
+    name: "SubScriptionScreen",
+    component: SubScriptionScreen,
     options: {
       headerShown: false,
     },

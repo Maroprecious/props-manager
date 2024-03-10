@@ -11,7 +11,7 @@ import { DefaultButton } from "../buttons/buttons.components"
 import { APP_CONFIRM } from "src/constants/global.constants"
 import { useAppTheme } from "src/hooks/useColorScheme"
 
-type modalTypes = "delete" | "cancel" | "info"
+type modalTypes = "delete" | "cancel" | "info" | "success"
 
 type ConfirmProps = {
   title: string,
@@ -20,6 +20,8 @@ type ConfirmProps = {
   modalProps?: ModalProps,
   onCancel?: any,
   onConfirm?: any,
+  confirmText?: string,
+  cancelText?: string,
 }
 
 const defaultConfirmOptions: ConfirmProps = {
@@ -28,7 +30,9 @@ const defaultConfirmOptions: ConfirmProps = {
   message: "Kindly confirm your tenancy\nremoval request.",
   modalProps: {},
   onCancel: () => null,
-  onConfirm: () => null
+  onConfirm: () => null,
+  confirmText: `Confirm`,
+  cancelText: `Cancel`
 }
 
 export const ConfirmModal = () => {
@@ -38,6 +42,8 @@ export const ConfirmModal = () => {
   const [message, setMessage] = useState(defaultConfirmOptions.message);
   const [type, setType] = useState<modalTypes>(defaultConfirmOptions.type);
   const [modalProps, setModalProps] = useState({});
+  const [confirmText, setConfirmText] = useState(defaultConfirmOptions?.confirmText)
+  const [cancelText, setCancelText] = useState(defaultConfirmOptions?.cancelText)
   const onCancel = useRef(defaultConfirmOptions.onCancel);
   const onConfirm = useRef(defaultConfirmOptions.onConfirm);
   const theme = useContext(AppThemeContext);
@@ -48,6 +54,8 @@ export const ConfirmModal = () => {
     setTitle(opt?.title || "Confirm")
     setType(opt?.type || "delete")
     setModalProps(opt?.modalProps || {})
+    setConfirmText(opt?.confirmText || `Confirm`)
+    setCancelText(opt?.cancelText || `Cancel`)
     if (opt?.onCancel)
       onCancel.current = opt?.onCancel
     if (opt?.onConfirm)
@@ -111,7 +119,15 @@ export const ConfirmModal = () => {
             textAlign: "center"
           }}>{title}</Text>
           <Icon
-            name={type === "delete" ? "trash-outline" : type === "info" ? "information-circle-outline" : "close"} 
+            name={
+              type === "delete" 
+                ? "trash-outline" 
+                : type === "info" 
+                ? "information-circle-outline" 
+                : type === "success"
+                ? "checkmark-outline"
+                : "close"
+            } 
             type="ionicon"
             color={colorsConstants.criticalRed}
             size={fontsConstants.h(100)}
@@ -133,7 +149,7 @@ export const ConfirmModal = () => {
             marginTop: fontsConstants.h(50)
           }}>
             <DefaultButton
-              title={`Cancel`}
+              title={cancelText}
               onPress={cancel}
               type="clear"
               buttonHeight={buttonStyle.buttonHeight}
@@ -147,7 +163,7 @@ export const ConfirmModal = () => {
               }}
             />
             <DefaultButton
-              title={`Confirm`}
+              title={confirmText}
               onPress={confirm}
               buttonHeight={buttonStyle.buttonHeight}
               borderRadius={buttonStyle.radius}

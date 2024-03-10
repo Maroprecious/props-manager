@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateProfileEndpoint } from "src/constants/api.endpoints.constants";
+import { getProfileEndpoint, updateProfileEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -27,7 +27,20 @@ const useUser = () => {
       hasError: request?.status !== 200
     }
   };
-  return { loading, updateProfile };
+  const useGetProfile = async (userId: string, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${getProfileEndpoint}/${userId}`,
+      type: 'GET'
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+  return { loading, updateProfile, useGetProfile };
 };
 
 export default useUser;

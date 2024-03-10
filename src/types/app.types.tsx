@@ -38,6 +38,17 @@ export type AuthUserType = {
   pushToken?: string
   referralCode?: string
   bankAvailable?: boolean
+  currentSubscriptionMethodDetails?: {
+    id: number
+    subscriptionMethodName?: string
+    subscriptionPrice?: number
+    lowerBound?: number
+    upperBound?: number
+    creationDate?: Date | null
+  }
+  subscribed?: boolean
+  subscriptionExpired?: boolean
+  nextSubscriptionDueDate?: Date | null
 }
 
 export type PaymentData = {

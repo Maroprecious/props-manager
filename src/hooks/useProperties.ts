@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createPropertyEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint, editPropertyEndpoint, editeUnitEndpoint, getOnePropertyEndpoint, getPropertyOccupantsEndpoint, getUnocuppiedUnitsEndpoint  } from "src/constants/api.endpoints.constants";
+import { createPropertyEndpoint, createUnitEndpoint, getPropertiesEndpoint, getUnitsTypesEndpoint, getUnitsEndpoint, editPropertyEndpoint, editeUnitEndpoint, getOnePropertyEndpoint, getPropertyOccupantsEndpoint, getUnocuppiedUnitsEndpoint, deleteUnitEndpoint, deletePropertyEndpoint  } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -103,7 +103,24 @@ const useProperty = () => {
       hasError: request?.status !== 200
     }
   };
-  return { loading, createProperty, created, getProperties, editProperty, getOneProperty, getPropertyOccupants };
+
+  const deleteOneProperty = async (pathParams: {
+    propertId: string
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${deletePropertyEndpoint}`,
+      type: 'DELETE',
+      pathParams
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+  return { loading, deleteOneProperty, createProperty, created, getProperties, editProperty, getOneProperty, getPropertyOccupants };
 };
 
 export default useProperty;
@@ -203,5 +220,22 @@ export const useUnits = () => {
       hasError: request?.status !== 200
     }
   };
-  return { loading, getTypes, createUnit, fetchingTypes, getUnits, editUnit, getUnocuppiedUnits };
+
+  const deleteOneUnit = async (pathParams: {
+    unitId: string
+  }, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${deleteUnitEndpoint}`,
+      type: 'DELETE',
+      pathParams
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+  return { loading, deleteOneUnit, getTypes, createUnit, fetchingTypes, getUnits, editUnit, getUnocuppiedUnits };
 }

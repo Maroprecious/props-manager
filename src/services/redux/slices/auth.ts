@@ -20,7 +20,15 @@ const initialAuthState: ReduxAuthState = {
     verified: false,
     phoneNumber: "",
     roleType: null,
-    pushToken: ""
+    pushToken: "",
+    currentSubscriptionMethodDetails: {
+      id: -1,
+      creationDate: new Date(),
+      subscriptionMethodName: "Basic",
+      subscriptionPrice: 0.0,
+      lowerBound: 1,
+      upperBound: 4,
+    }
   }
 }
 

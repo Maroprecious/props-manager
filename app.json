@@ -39,7 +39,11 @@
       "eas": {
         "projectId": "a8d351da-1fdf-449d-af30-6a16bdf11ff5"
       }
-    }
+    },
+    "plugins": [
+      "expo-font",
+      "expo-secure-store"
+    ]
   },
   "android": {
     "googleServicesFile": "./google-services.json"

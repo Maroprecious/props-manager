@@ -7,6 +7,8 @@ export const APP_TOKEN = `${APP_NAME}-APP-TOKEN`;
 export const APP_INITIAL_ROUTE = `${APP_NAME}-APP-INITIAL-ROUTE`;
 export const APP_INITIATED_PAYMENT = `${APP_NAME}-APP-INITIATED-PAYMENT`;
 export const APP_EXPO_PUSH_TOKEN = `${APP_NAME}-APP-EXPO-PUSH-TOKEN`;
+export const APP_SUBSCRIPTIONS_PLANS = `${APP_NAME}-APP-SUBSCRIPTION-PLANS`;
+export const APP_PAYMENT_OPTIONS = `${APP_NAME}-APP-PAYMENT-OPTIONS`;
 
 export const SliderData = [
   {
@@ -31,6 +33,11 @@ export const MenuItems = [{
   label: 'Settings',
   icon: require("src/assets/images/icons/gear.png"),
   screen: 'SettingScreen'
+}, {
+  id: 8,
+  label: 'Subscriptions',
+  icon: require("src/assets/images/icons/subscription.png"),
+  screen: 'SubScriptionScreen'
 }, {
   id: 2,
   label: 'Bank Account',

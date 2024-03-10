@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ColorSchemeName } from 'react-native';
-import { APP_EXPO_PUSH_TOKEN, APP_INITIAL_ROUTE, APP_INITIATED_PAYMENT, APP_THEME, APP_TOKEN } from 'src/constants/global.constants';
+import { APP_EXPO_PUSH_TOKEN, APP_INITIAL_ROUTE, APP_INITIATED_PAYMENT, APP_PAYMENT_OPTIONS, APP_SUBSCRIPTIONS_PLANS, APP_THEME, APP_TOKEN } from 'src/constants/global.constants';
 import * as SecureStore from 'expo-secure-store';
 import { RootStackParamList } from 'src/types/navigations.types';
 
@@ -93,6 +93,34 @@ const SecureStoreManager = {
   deleteExpoPushToken: () => {
     try {
       SecureStore.deleteItemAsync(APP_EXPO_PUSH_TOKEN);
+    } catch (error) {
+      console.log('Store read error', error);
+    }
+  },
+  storeSubscriptionPlans: async (plans: string) => {
+    try {
+      return await SecureStore.setItemAsync(APP_SUBSCRIPTIONS_PLANS, plans);
+    } catch (error) {
+      console.log('Store save error', error);
+    }
+  },
+  getSubscriptionPlans: async () => {
+    try {
+      return await SecureStore.getItemAsync(APP_SUBSCRIPTIONS_PLANS);
+    } catch (error) {
+      console.log('Store read error', error);
+    }
+  },
+  storeAppPaymentOptions: async (plans: string) => {
+    try {
+      return await SecureStore.setItemAsync(APP_PAYMENT_OPTIONS, plans);
+    } catch (error) {
+      console.log('Store save error', error);
+    }
+  },
+  getAppPaymentOptions: async () => {
+    try {
+      return await SecureStore.getItemAsync(APP_PAYMENT_OPTIONS);
     } catch (error) {
       console.log('Store read error', error);
     }

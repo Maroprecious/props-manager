@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -13,6 +13,10 @@ import useProperty from "src/hooks/useProperties";
 import Layout from "src/components/layout/layout";
 import { useProperties } from "src/contexts/property.context";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import layoutsConstants from "src/constants/layouts.constants";
+import { Icon } from "react-native-elements";
+import { showConfirm } from "src/components/modals/confirm.modals";
+import { showToast } from "src/components/Toast";
 
 export default function PropertyDetailsScreen({
     navigation,
@@ -21,10 +25,51 @@ export default function PropertyDetailsScreen({
     const theme = useContext(AppThemeContext);
 
     const user = useAppSelector((state) => state.auth.user)
-    const { loading, createProperty, created } = useProperty()
+    const { loading: deleting, deleteOneProperty } = useProperty()
     const { property } = useProperties()
+
+    const doDeleteProperty = async () => {
+        showConfirm({
+            message: `Are you sure you want to delete propert at - ${property.propertyLocation}`,
+            title: `Delete Property`,
+            type: `delete`,
+            onConfirm: async () => {
+                deleteOneProperty({
+                    propertId: property.id
+                }).then((res) => {
+                    console.log(res)
+                    showToast({
+                        message: res.data?.hasError === false ? `Property deleted successfully` : res?.data?.message || res?.message || `Unknown error occured deleting unit`,
+                        title: `Delete Property`,
+                        type: res.data?.hasError === false ? `success` : `error`,
+                    })
+                    if (!res?.hasError) {
+                        navigation?.navigate("PropertiesScreen")
+                    }
+                }).catch((e) => {
+                    console.log(e)
+                })
+            }
+        })
+    }
+
     return (
-        <Layout title="Property Details" goback={true}>
+        <Layout 
+            title="Property Details" 
+            goback={true}
+            rightComponent={deleting ? <ActivityIndicator color={colorsConstants.colorDanger} /> :
+                <TouchableOpacity
+                    activeOpacity={layoutsConstants.activeOpacity}
+                    onPress={doDeleteProperty}
+                >
+                    <Icon
+                        name="trash"
+                        type="ionicon"
+                        color={colorsConstants.colorDanger}
+                    />
+                </TouchableOpacity>
+            }
+        >
             <View style={styles.container}>
                 <View style={styles.location}>
                     <LocationIcon
@@ -105,6 +150,8 @@ export default function PropertyDetailsScreen({
                     </TouchableOpacity>
                     <DefaultButton
                         title={`View Units`}
+                        disabled={deleting}
+                        loading={deleting}
                         onPress={() => {
 
                             navigation.navigate("ViewUnitsScreen")
