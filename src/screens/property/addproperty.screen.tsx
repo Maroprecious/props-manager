@@ -18,6 +18,7 @@ import useProperty from "src/hooks/useProperties";
 import { showToast } from "src/components/Toast";
 import { useProperties } from "src/contexts/property.context";
 import { MPM_PROPERTY_CREATED } from "src/constants/events.constants";
+import { showConfirm } from "src/components/modals/confirm.modals";
 
 export default function AddPropertyScreen({
   navigation,
@@ -91,6 +92,15 @@ export default function AddPropertyScreen({
       title: "Add Property",
       message: req?.message || req?.statusText || "Unknown error has occred"
     })
+    if (req?.errorType === "subscription" || req?.data?.errorType === "subscription")
+      showConfirm({
+        message: `Your current plan is not sufficient to create additional properties\nWould you like to upgrade your current plan now?`,
+        title: `Oops!`,
+        onConfirm: () => navigation.navigate("SubScriptionScreen"),
+        type: `info`,
+        cancelText: `No`,
+        confirmText: `Yes`
+      })
   }
   const doEditProperty = async () => {
     const req = await editProperty({

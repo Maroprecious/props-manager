@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, ImageBackground, StyleSheet } from "react-native";
 import { View, Text, SafeAreaView } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
@@ -10,12 +10,28 @@ import { HeaderBackButton } from "src/components/buttons/buttons.components";
 import layoutsConstants from "src/constants/layouts.constants";
 import { NotificationsData } from "src/constants/global.constants";
 import { NotificationProps } from "src/types/app.types";
+import useUser from "src/hooks/useUser";
+import { useAppSelector } from "src/hooks/useReduxHooks";
 
 export default function NotificationsScreen({
   navigation,
   route
 }: RootStackScreenProps<"NotificationsScreen">) {
   const theme = useContext(AppThemeContext);
+  const user = useAppSelector((state) => state.auth.user)
+
+  const { loading, useGetNotifications } = useUser();
+  const [ notifications, setNotifications ] = useState<any[]>([]);
+
+  const doGetNotifications = async () => {
+    const req = await useGetNotifications(`${user.id}`)
+    setNotifications(req?.data || [])
+    console.log(req, ">>>")
+  }
+
+  useEffect(() => {
+    doGetNotifications()
+  }, [])
 
   return (
     <SafeAreaView
@@ -37,13 +53,23 @@ export default function NotificationsScreen({
           title={`Notifications`}
         />
         <FlatList
-          data={NotificationsData}
+          data={notifications}
+          onRefresh={doGetNotifications}
+          refreshing={loading}
           renderItem={({ item, index }) => {
             return (
               <NotificationItemCard
                 key={index.toString()}
-                date={item.date}
-                items={item.items}
+                showMenuButton={false}
+                date={item.createdAt}
+                items={[{
+                  id: item?.id,
+                  text: item?.description,
+                  title: item?.title,
+                  type: item?.code === `01` || item?.code === `03` ? `bill`
+                    : item?.code === `08` ? `location`
+                    : `settings`
+                }]}
                 onMenuPress={() => {
                   console.log("Menu Pressed")
                 }}

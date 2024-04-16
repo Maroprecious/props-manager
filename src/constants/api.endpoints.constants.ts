@@ -1,3 +1,4 @@
+//user/profile
 export const loginEndpoint = `/auth/login`;
 export const signUpEndpoint = `/accounts/create-user`;
 export const completeSignUpEndpoint = `/accounts/complete-profile`;
@@ -49,3 +50,6 @@ export const verifySquadPaymentEndpoint = '/transactions/squad/verify-payment-st
 //subscriptions
 export const getSubscriptionPlansEndpoint = `/accounts/subscription/get-subscription-methods`
 export const initiateSubscriptionPaymentEndpoint = `/transactions/initiate-subscription-payment`
+
+//notifications
+export const getNotificationsEndpoint = `/activities/get-activities`;

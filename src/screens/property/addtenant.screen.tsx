@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext, useState } from "react";
-import { ImageBackground, StyleSheet } from "react-native";
+import { ImageBackground, Platform, StyleSheet } from "react-native";
 import { SafeAreaView } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -71,6 +71,7 @@ export default function AddTenantScreen({
       moveInDate: `${moment(moveInDate).format("YYYY-MM-DD")}`,
       lastPaymentDate: `${moment(lastPaymentDate).format("YYYY-MM-DD")}`
     })
+    console.log(req)
     if (req?.data?.hasError === false) {
       setOneUnit({
         ...oneUnit,
@@ -98,7 +99,7 @@ export default function AddTenantScreen({
         source={screenBG}
         style={{
           flex: 1,
-          paddingTop: fontsConstants.h(40),
+          paddingTop: Platform.OS === "ios" ? fontsConstants.h(70) : fontsConstants.h(40),
           paddingHorizontal: globalConstants.mainViewHorizontalPadding / 2,
           paddingBottom: layoutsConstants.tabBarHeight / 2
         }}

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext, useState } from "react";
-import { FlatList, ImageBackground, StyleSheet, TouchableOpacity } from "react-native";
+import { FlatList, ImageBackground, Platform, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -16,6 +16,7 @@ import { RenderPropertyDetails } from "./components";
 import { Icon } from "react-native-elements";
 import colorsConstants from "src/constants/colors.constants";
 import { useProperties } from "src/contexts/property.context";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function PropertiesScreen({
   navigation,
@@ -36,17 +37,24 @@ export default function PropertiesScreen({
     if (req?.hasError === false) setProperties(req?.data?.message)
   } 
 
-  React.useEffect(() => {
-    fetchProperties()
-  }, [navigation])
-// console.log(properties, 'propssss')
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchProperties()
+    }, [navigation])
+  )
+
+//   React.useEffect(() => {
+//     fetchProperties()
+//   }, [navigation])
+// // console.log(properties, 'propssss')
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
         source={screenBG}
         style={{
           flex: 1,
-          paddingTop: fontsConstants.h(40),
+          paddingTop: Platform.OS === "ios" ? fontsConstants.h(70) : fontsConstants.h(40),
           paddingHorizontal: globalConstants.mainViewHorizontalPadding / 2,
           paddingBottom: layoutsConstants.tabBarHeight / 2
         }}
