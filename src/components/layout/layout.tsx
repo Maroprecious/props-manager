@@ -27,7 +27,7 @@ const Layout = ({ children, goback, title, textstyle, rightComponent, onBackPres
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginTop: Platform.OS === 'android' ? 50 : 60,
+                marginTop: Platform.OS === 'android' ? 50 : 40,
                 marginHorizontal: 16,
             }}>
                 {

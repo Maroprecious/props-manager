@@ -375,26 +375,30 @@ export const NetworkServiceProviders = [{
 }]
 
 export const Socials = [
-  {
-    icon: require('src/assets/images/Whatsapp-icon.png'),
-    text: 'Chat Us on WhatsApp',
-    contact: '+234 9056378091'
-  },
-  {
-    icon: require('src/assets/images/icons/Call-us.png'),
-    text: 'Please Call Us',
-    contact: '+234 9056378091'
-  },
+  // {
+  //   icon: require('src/assets/images/Whatsapp-icon.png'),
+  //   text: 'Chat Us on WhatsApp',
+  //   contact: '(+234) 9056378091',
+  //   type: "whatsapp-social"
+  // },
+  // {
+  //   icon: require('src/assets/images/icons/Call-us.png'),
+  //   text: 'Please Call Us',
+  //   contact: '(+234) 9056378091',
+  //   type: "call"
+  // },
   {
     icon: require('src/assets/images/icons/Email-Us.png'),
     text: 'Email Us',
-    contact: 'info@Supersofttechnology.com'
+    contact: 'info@supersoft.com.ng',
+    type: "mail"
   },
-  {
-    icon: require('src/assets/images/icons/World-wide-web-icon.png'),
-    text: 'Visit Our Website',
-    contact: 'Www.Supersofttechnology.com'
-  },
+  // {
+  //   icon: require('src/assets/images/icons/World-wide-web-icon.png'),
+  //   text: 'Visit Our Website',
+  //   contact: 'https://supersoft.com.ng',
+  //   type: "uri"
+  // },
 ]
 export const Faqs = [
   {
@@ -422,6 +426,70 @@ export const Faqs = [
     answer: 'You can add your tenancy details using the Add Tenancy Details page Or by clicking the add tenancy details button on the home page. This functionality allows the user add their tenancy details, including rent amount, due date, landlord information and tenancy location.'
   },
 ]
+
+export const FAQs_Landlord = [{
+  question: `How do I register a new property on the app?`,
+  answer: `Log into the app, go to the "Portfolio" section, click on "Properties" and then select "Add Property". Enter the required property details like address, name, location etc. and click "Create" to add the new property listing.`
+}, {
+  question: `What details are needed to add a tenant to a unit?`,
+  answer: `To add a tenant, you'll need their email address, the move-in date, last payment date, and payment duration (monthly, quarterly etc.). Provide these details in the "Add Tenant" section of the unit.`
+}, {
+  question: `How do I track rent payments for each tenant?`,
+  answer: `Once you add a tenant's details to a unit, the app automatically tracks their rent payments. It will send notifications for upcoming due dates based on the payment duration.`
+}, {
+  question: `Can I set up automatic rent payment reminders for tenants?`,
+  answer: `Yes, the app sets up automated reminders that get sent to tenants for their rent due dates based on the payment duration you've specified.`
+}, {
+  question: `Is there a feature to generate financial reports for my properties? `,
+  answer: `Yes, under the "Payments" section, there is a "Financials" tab that allows you to generate reports showing all transactions for your properties.`
+}, {
+  question: `Are there any notification settings for lease expiration dates?`,
+  answer: `Yes, the "Notifications" page within the app will show you upcoming lease expiration dates for your tenants.`
+}, {
+  question: `Is there a way to manage maintenance requests through the app?`,
+  answer: `No, based on the provided information, there does not seem to be a dedicated feature for managing maintenance requests from tenants through this app.`
+}, {
+  question: `Can I access the app from multiple devices?`,
+  answer: `Yes, you can access and use the property management app from multiple devices like phones, tablets etc.`
+}]
+
+export const FAQs_Tenants = [{
+  question: `How do I pay my rent using the app?`,
+  answer: `To pay your rent using the app, you can choose between USSD and card payment methods. Follow the on-screen instructions to complete your payment.`
+}, {
+  question: `What are the payment methods accepted in the app?`,
+  answer: `The app currently supports USSD and card payment options for rent payments.`
+}, {
+  question: `Can I set up automatic rent payments through the app?`,
+  answer: `Unfortunately, the app does not offer automatic rent payment features at this time.`
+}, {
+  question: `How can I view my rent payment history within the app?`,
+  answer: `You can view your rent payment history in the app's notification tab, where all your past transactions will be displayed.`
+}, {
+  question: `Is there a grace period for late rent payments in the app?`,
+  answer: `The grace period for late rent payments depends on your landlord's decision, and you should consult with them for more information.`
+}, {
+  question: `How does the app handle partial rent payments?`,
+  answer: `The app allows for partial rent payments, but it's essential to have your landlord's agreement before proceeding with such payments.`
+}, {
+  question: `Can I submit maintenance requests through the app?`,
+  answer: `At this time, the app does not have a feature for submitting maintenance requests. You may need to contact your landlord through other means for maintenance-related issues.`
+}, {
+  question: `How long does it take for the landlord to respond to maintenance requests?`,
+  answer: `This depends on your landlord's availability and response time. You may want to discuss their typical response time with them directly.`
+}, {
+  question: `How can I update my personal information, such as my address or contact details, within the app?`,
+  answer: `To update your personal information, you can provide the necessary details to your landlord, who will then input the email and address in the app. You will be responsible for filling in the rest of your information.`
+}, {
+  question: `Is there a communication feature within the app to contact my landlord directly?`,
+  answer: `Currently, the app does not have a direct communication feature with your landlord. You may need to contact them through other means, such as phone or email.`
+}, {
+  question: `Can I receive notifications for upcoming rent due dates?`,
+  answer: `Yes, the app allows you to receive notifications for upcoming rent due dates, ensuring you stay informed and can make payments on time.`
+}, {
+  question: `Are there any additional features within the app for managing utilities or community events?`,
+  answer: `At this time, the app does not offer features for managing utilities or community events.`
+}];
 export const TenantInfo = [
   {
     id: 1,

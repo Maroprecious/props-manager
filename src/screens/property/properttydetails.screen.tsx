@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useContext } from "react";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, ActivityIndicator, DeviceEventEmitter } from "react-native";
 import { Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -17,6 +17,7 @@ import layoutsConstants from "src/constants/layouts.constants";
 import { Icon } from "react-native-elements";
 import { showConfirm } from "src/components/modals/confirm.modals";
 import { showToast } from "src/components/Toast";
+import { MPM_PROPERTY_CREATED } from "src/constants/events.constants";
 
 export default function PropertyDetailsScreen({
     navigation,
@@ -28,22 +29,44 @@ export default function PropertyDetailsScreen({
     const { loading: deleting, deleteOneProperty } = useProperty()
     const { property } = useProperties()
 
+    const { loading: loadingData, getOneProperty } = useProperty()
+
+    const [selectedDetails, setSelectedDetails] = useState<any>({
+
+    })
+
+  useEffect(() => {
+    getOneProperty({
+        propertId: property?.id || "-1"
+    }).then((res) => {
+        if (res?.hasError === false) {
+          setSelectedDetails({
+            ...res?.data?.message,
+            ...res?.data?.additionalDetail
+          })
+        }
+    })
+  }, [property])
+
     const doDeleteProperty = async () => {
+        console.log(property, selectedDetails)
+        const totalTenancts = selectedDetails?.numberOfTenants || 0;
+        const totalUnits = (selectedDetails?.numberOfUnoccupiedUnits || 0) + (selectedDetails?.numberOfOccupiedUnits || 0);
         showConfirm({
-            message: `Are you sure you want to delete propert at - ${property.propertyLocation}`,
+            message: `This property has ${totalTenancts > 0 ? `${totalTenancts} occupant(s)` : ``}${totalUnits > 0 ? `${totalTenancts <= 0 ? '' : ` and `}${totalUnits} unit(s)`: ``} \nAre you sure you want to delete`,
             title: `Delete Property`,
             type: `delete`,
             onConfirm: async () => {
                 deleteOneProperty({
                     propertId: property.id
                 }).then((res) => {
-                    console.log(res)
                     showToast({
                         message: res.data?.hasError === false ? `Property deleted successfully` : res?.data?.message || res?.message || `Unknown error occured deleting unit`,
                         title: `Delete Property`,
                         type: res.data?.hasError === false ? `success` : `error`,
                     })
                     if (!res?.hasError) {
+                        DeviceEventEmitter.emit(MPM_PROPERTY_CREATED, {})
                         navigation?.navigate("PropertiesScreen")
                     }
                 }).catch((e) => {
@@ -61,6 +84,7 @@ export default function PropertyDetailsScreen({
                 <TouchableOpacity
                     activeOpacity={layoutsConstants.activeOpacity}
                     onPress={doDeleteProperty}
+                    disabled={loadingData || deleting}
                 >
                     <Icon
                         name="trash"

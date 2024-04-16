@@ -56,12 +56,12 @@ export default function SettingScreen({
                         </RNView>
                     </TouchableOpacity>
                     <RNView style={{ borderBottomColor: colorsConstants[theme].borderLine, width: '100%', borderBottomWidth: 0.3 }}></RNView>
-                    <TouchableOpacity onPress={() => navigation.navigate('Setup2faScreen')}>
+                    {/* <TouchableOpacity onPress={() => navigation.navigate('Setup2faScreen')}>
                         <RNView style={styles.text_container}>
                             <Text style={[styles.text, { color: colorsConstants[theme].socialText }]}>Setup 2 FA</Text>
                             <AntDesign name="right" size={16} color={colorsConstants[theme].borderLine} />
                         </RNView>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <RNView style={{ borderBottomColor: colorsConstants[theme].borderLine, width: '100%', borderBottomWidth: 0.3 }}></RNView>
                     <RNView style={styles.text_container}>
                         <Text style={[styles.text, { color: colorsConstants[theme].socialText }]}>Allow Push Notifications</Text>

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext, useState, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, Image } from "react-native";
 import { ScrollView, Text } from "src/components/Themed";
 import { RootStackScreenProps } from "src/types/navigations.types";
 import AppThemeContext from "src/contexts/Theme.context";
@@ -22,6 +22,7 @@ import { showToast } from "src/components/Toast";
 import layoutsConstants from "src/constants/layouts.constants";
 import { Icon } from "react-native-elements";
 import { showConfirm } from "src/components/modals/confirm.modals";
+import * as Linking from "expo-linking"
 
 
 export default function UnitDetailsScreen({
@@ -42,10 +43,11 @@ export default function UnitDetailsScreen({
     )
 
     const { loading: deleting, deleteOneUnit } = useUnits()
-    const { endTenancy, getTenant } = useTenant()
+    const { endTenancy, getTenant, loading } = useTenant()
     const { property } = useProperties()
     const { oneUnit } = useUnit()
     const { requestPasswordReset } = useAuthenticate();
+    const [tenantData, setTenantData] = useState<any>({})
 
     const doAddTenant = () => {
         navigation.navigate("AddTenantScreen", {
@@ -59,18 +61,20 @@ export default function UnitDetailsScreen({
         const details = await endTenancy({
             tenancyId: tenancyIdToDelete
         });
-        if (!details?.hasError) {
-            showToast({
-                title: `Remove Tenant`,
-                type: details?.hasError ? `error` : `info`,
-                message: details?.data?.message || "Tenant removed successfully"
-            })
-        }
+        // if (!details?.hasError) {
+        showToast({
+            title: `Remove Tenant`,
+            type: details?.hasError ? `error` : `info`,
+            message: details?.data?.message || "Tenant removed successfully"
+        })
+        getTenantDetails()
+        // }
     };
     const getTenantDetails = async () => {
         const detail = await getTenant({
             unitId: oneUnit.id
         })
+        setTenantData(detail?.data?.message?.tenant)
         if (!detail?.hasError) {
             setTenantDetails(detail.data.message.tenancy)
         }
@@ -81,14 +85,13 @@ export default function UnitDetailsScreen({
 
     const doDeleteUnit = () => {
         showConfirm({
-            message: `Are you sure you want to delete unit - ${oneUnit.unitName}`,
+            message: oneUnit.occupyingStatus ? `This unit is occupied, are you sure you want to delete?` : `Are you sure you want to delete unit - ${oneUnit.unitName}`,
             title: `Delete Unit`,
             type: `delete`,
             onConfirm: async () => {
                 deleteOneUnit({
                     unitId: oneUnit.id
                 }).then((res) => {
-                    console.log(res)
                     showToast({
                         message: res.data?.hasError === false ? `Unit deleted successfully` : res?.data?.message || res?.message || res?.error || `Unknown error occured deleting unit`,
                         title: `Delete Unit`,
@@ -115,6 +118,7 @@ export default function UnitDetailsScreen({
                     <TouchableOpacity
                         activeOpacity={layoutsConstants.activeOpacity}
                         onPress={doDeleteUnit}
+                        disabled={loading || deleting}
                     >
                         <Icon
                             name="trash"
@@ -132,7 +136,9 @@ export default function UnitDetailsScreen({
                                 height: fontsConstants.w(50),
                                 width: fontsConstants.w(50)
                             }} />
-                        <View style={styles.details}>
+                        <View style={[styles.details, {
+                            flex: 1
+                        }]}>
                             <Text style={styles.title}>{oneUnit.unitName}</Text>
                             <Text style={styles.address}>{oneUnit.unitType.description}</Text>
                         </View>
@@ -225,13 +231,57 @@ export default function UnitDetailsScreen({
                                 </View>
                             ))}
                         </View>
+                        {tenantData?.email && (
+                            <View style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                marginTop: fontsConstants.h(20)
+                            }}>
+                                <Image source={require("src/assets/images/icons/human-icon.png")} style={{
+                                     width: 20,
+                                     height: 20,
+                                }} />
+                                <View style={{
+                                    flex: 1,
+                                    marginLeft: fontsConstants.w(20)
+                                }}>
+                                    <Text style={{
+                                        fontFamily: fontsConstants.Lora_Medium,
+                                        fontSize: fontsConstants.h(14),
+                                        marginBottom: fontsConstants.h(5)
+                                    }}>
+                                        {`${tenantData?.firstName} ${tenantData?.lastName}`}
+                                    </Text>
+                                    {tenantData?.phoneNumber && 
+                                        <TouchableOpacity
+                                            activeOpacity={layoutsConstants.activeOpacity}
+                                            onPress={() => Linking.openURL(`tel:${tenantData?.phoneNumber}`)}
+                                        >
+                                            <Text style={{
+                                                color: colorsConstants.colorPrimary,
+                                                textDecorationLine: "underline"
+                                            }}>
+                                                {tenantData?.phoneNumber}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    }
+                                </View>
+                            </View>
+                        )}
                         <DefaultButton
                             title={oneUnit.occupyingStatus === true ? `Remove Tenant` : `Add Tenant`}
-                            disabled={deleting}
-                            loading={deleting}
+                            disabled={deleting || loading}
+                            loading={deleting || loading}
                             onPress={() => {
                                 if (oneUnit.occupyingStatus) {
-                                    doRemoveTenant(tenantDetails?.id)
+                                    Alert.alert(`Hold On!`, `Are you sure you want to remove this tenant from unit?\nAction is permanent`, [{
+                                        text: `Cancel`,
+                                    }, {
+                                        text: `Yes, Proceed`,
+                                        onPress: () => {
+                                            doRemoveTenant(tenantDetails?.id)
+                                        }
+                                    }])
                                 } else {
                                     if (!user?.bankAvailable) {
                                         Alert.alert(`Hold On!`, `You have not added your bank detail.\nWant to add it now?`, [{

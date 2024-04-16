@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getProfileEndpoint, updateProfileEndpoint } from "src/constants/api.endpoints.constants";
+import { getNotificationsEndpoint, getProfileEndpoint, updateProfileEndpoint } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
 
@@ -27,6 +27,7 @@ const useUser = () => {
       hasError: request?.status !== 200
     }
   };
+
   const useGetProfile = async (userId: string, cb = () => { }): Promise<NetworkResponse> => {
     setLoading(true);
     const request = await makeApiRequest({
@@ -40,7 +41,22 @@ const useUser = () => {
       hasError: request?.status !== 200
     }
   };
-  return { loading, updateProfile, useGetProfile };
+  
+  const useGetNotifications = async (userId: string, cb = () => { }): Promise<NetworkResponse> => {
+    setLoading(true);
+    const request = await makeApiRequest({
+      route: `${getNotificationsEndpoint}/${userId}`,
+      type: 'GET'
+    });
+    setLoading(false);
+    cb();
+    return {
+      ...request,
+      hasError: request?.status !== 200
+    }
+  };
+
+  return { loading, updateProfile, useGetProfile, useGetNotifications };
 };
 
 export default useUser;

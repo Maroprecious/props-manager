@@ -29,7 +29,7 @@ const useSubscriptions = () => {
     const request = await makeApiRequest({
       route: `${initiateSubscriptionPaymentEndpoint}/${pathParams.userId}/${pathParams.subscriptionMethodId}/${pathParams.paymentMethod}`,
       type: 'GET',
-      isDefaultAuth: true
+      // isDefaultAuth: true
     });
     setLoading(false);
     cb();

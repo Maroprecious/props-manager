@@ -1,12 +1,14 @@
 import * as React from 'react';
 import Layout from "src/components/layout/layout";
-import { StyleSheet, View as RNView, Image, Platform } from 'react-native';
+import { StyleSheet, View as RNView, Image, Platform, TouchableOpacity } from 'react-native';
 import { Text } from 'src/components/Themed';
 import { Socials } from 'src/constants/global.constants';
 import { RootStackScreenProps } from 'src/types/navigations.types';
 import colorsConstants from 'src/constants/colors.constants';
 import useColorScheme from 'src/hooks/useColorScheme';
 import fontsConstants from 'src/constants/fonts.constants';
+import * as Linking from 'expo-linking';
+import layoutsConstants from 'src/constants/layouts.constants';
 
 export default function HelpAndSupportScreen({
     navigation,
@@ -28,7 +30,29 @@ export default function HelpAndSupportScreen({
                                 <Image source={elem.icon} style={styles.icon} />
                                 <RNView style={styles.info}>
                                     <Text style={[styles.text, { color: colorsConstants[theme].modalBg }]}>{elem.text}</Text>
-                                    <Text style={[styles.contact, {color: colorsConstants[theme].socialText}]}>{elem.contact}</Text>
+                                    <TouchableOpacity
+                                        activeOpacity={layoutsConstants.activeOpacity}
+                                        onPress={() => {
+                                            switch (elem?.type) {
+                                                case "call":
+                                                    Linking.openURL(`tel:${elem.contact}`)
+                                                    break;
+                                                case "mail":
+                                                    Linking.openURL(`mailto:${elem.contact}`)
+                                                    break;
+                                                case "uri":
+                                                    Linking.openURL(`${elem.contact}`)
+                                                    break;
+                                                case "whatsapp-social":
+                                                    Linking.openURL(`https://wa.me/${elem.contact}`)
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }}
+                                    >
+                                        <Text style={[styles.contact, {color: colorsConstants[theme].socialText}]}>{elem.contact}</Text>
+                                    </TouchableOpacity>
                                 </RNView>
                             </RNView>
                             <RNView style={{ borderBottomColor: colorsConstants[theme].borderLine, width: '100%', borderBottomWidth: 0.5, paddingTop: 0.8 }}></RNView>

@@ -30,7 +30,6 @@ export default function RentalsScreen({
     const req = await getOccupiedProperties({
       tenantId: `${user.id}`
     });
-    console.log(req.data?.message)
     if (req?.hasError === false) setProperties(req?.data?.message || [])
     else setProperties([]) 
   }

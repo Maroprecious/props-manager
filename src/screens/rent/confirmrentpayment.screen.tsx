@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import { SafeAreaView, Text } from "src/components/Themed";
 import {
@@ -79,11 +80,11 @@ export default function ConfirmRentPayment({
     //   if (data?.referenceId && data?.unitId === `${route?.params?.unit?.id}`)
     //     setPaymentData(data)
     //   else
-    if (route.params?.unit?.id && paymentOptions.selectedOption) {
+    if (route.params?.unit?.id && paymentOptions) {
       preparePayment();
     }
     // })
-  }, [route?.params?.unit?.id, paymentOptions.selectedOption]);
+  }, [route?.params?.unit?.id, paymentOptions]);
 
   useEffect(() => {
     (async () => {
@@ -95,7 +96,7 @@ export default function ConfirmRentPayment({
             value: element.paymentType,
           })
         );
-        setPaymentOptions({ ...paymentOptions, options: arr });
+        setPaymentOptions({ ...paymentOptions, options: arr, selectedOption: "Paystack" });
       }
     })();
   }, []);
@@ -152,7 +153,7 @@ export default function ConfirmRentPayment({
   const preparePayment = async () => {
     const req = await initiatePayment({
       unitId: `${route?.params?.unit?.id}`,
-      paymentMethod: paymentOptions.selectedOption.split("_")[1],
+      paymentMethod: paymentOptions.selectedOption.split("_")[1] || paymentOptions?.options[0]?.label,
     });
     if (req?.hasError === false) {
       setPaymentData(req?.data?.message || {});
@@ -180,6 +181,7 @@ export default function ConfirmRentPayment({
         setPaymentOptions({
           ...paymentOptions,
           paymentUrl: req.data?.message?.checkoutUrl,
+          selectedOption: "Squad"
         });
       }
     } else {
@@ -198,7 +200,7 @@ export default function ConfirmRentPayment({
         source={require("src/assets/images/backgrounds/background.png")}
         style={{
           flex: 1,
-          paddingTop: fontsConstants.h(40),
+          paddingTop: Platform.OS === "ios" ? fontsConstants.h(70) : fontsConstants.h(40),
           paddingHorizontal: globalConstants.mainViewHorizontalPadding,
           paddingBottom: layoutsConstants.tabBarHeight / 2,
         }}
@@ -271,7 +273,7 @@ export default function ConfirmRentPayment({
           editable={false}
           containerStyle={styles.inputContainerStyle}
         />
-        <DefaultSelectInput
+        {paymentOptions?.options?.length > 1 && <DefaultSelectInput
           items={paymentOptions.options}
           value={
             Array.isArray(paymentOptions.selectedOption.split("_"))
@@ -286,21 +288,21 @@ export default function ConfirmRentPayment({
               selectedOption: `${option.value}_${option.label}`,
             })
           }
-        />
+        />}
 
         <DefaultButton
           title={`Pay Now`}
           loading={inititating}
           disabled={
             paymentData?.amountExpected === undefined ||
-            paymentData?.amountExpected === 0
+            paymentData?.amountExpected === 0 || inititating
           }
           containerStyle={{
             marginTop: fontsConstants.h(50),
           }}
           onPress={async () => {
             await SecureStoreManager.delInitiatedPaymentData();
-            if (paymentOptions.selectedOption.includes("PayStack")) {
+            if (paymentOptions.selectedOption?.toLowerCase().includes("paystack")) {
               paystackWebViewRef?.current?.startTransaction();
             } else {
               handleSquadPaymentInitialization();
