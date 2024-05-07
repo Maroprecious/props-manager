@@ -213,7 +213,7 @@ export const useUnits = () => {
   };
 
   const createUnit = async (
-    data: {
+    propertyUnits: {
       unitTypeId: string;
       unitName: string;
       unitRent: number;
@@ -229,7 +229,7 @@ export const useUnits = () => {
     const request = await makeApiRequest({
       route: `${createUnitEndpoint}`,
       type: "POST",
-      data,
+      data: propertyUnits,
     });
     setLoading(false);
     cb();
