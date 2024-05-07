@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit'
-import axios from 'axios';
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 // import { API_BEARER_TOKEN } from "@env";
-import { produce } from 'immer';
-import { ReduxAuthState, roleTypes } from 'src/types/app.types';
-import SecureStoreManager from 'src/utils/SecureStoreManager';
+import { produce } from "immer";
+import { ReduxAuthState, roleTypes } from "src/types/app.types";
+import SecureStoreManager from "src/utils/SecureStoreManager";
 
 const API_BEARER_TOKEN = process.env.EXPO_PUBLIC_API_BEARER_TOKEN;
 
@@ -21,6 +21,8 @@ const initialAuthState: ReduxAuthState = {
     phoneNumber: "",
     roleType: null,
     pushToken: "",
+    is_verified: 0,
+    isCompleted: 0,
     currentSubscriptionMethodDetails: {
       id: -1,
       creationDate: new Date(),
@@ -28,53 +30,56 @@ const initialAuthState: ReduxAuthState = {
       subscriptionPrice: 0.0,
       lowerBound: 1,
       upperBound: 4,
-    }
-  }
-}
+    },
+  },
+};
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: initialAuthState,
   reducers: {
     populateUserData: (state, action) => {
-      const user = action?.payload?.user
-      if (!user?.completed) SecureStoreManager.setInitialRouteName("CompleteAccountCreationScreen")
-      else if (!user?.verified) SecureStoreManager.setInitialRouteName("VerifyEmailScreen")
-      
-      const roleType: roleTypes = user.roles.length === 1 && user.roles[0] === "ROLE_TENANT" 
-        ? "tenant"
-        : user.roles.length === 1 && user.roles[0] === "ROLE_LANDLORD"
-        ? "landlord"
-        : "property-manager"
-      
-      user['roleType'] = roleType
+      const user = action?.payload?.user;
+      if (!user?.isCompleted)
+        SecureStoreManager.setInitialRouteName("CompleteAccountCreationScreen");
+      else if (!user?.is_verified)
+        SecureStoreManager.setInitialRouteName("VerifyEmailScreen");
+
+      // const roleType: roleTypes = user.roles.length === 1 && user.roles[0] === "ROLE_TENANT"
+      //   ? "tenant"
+      //   : user.roles.length === 1 && user.roles[0] === "ROLE_LANDLORD"
+      //   ? "landlord"
+      //   : "property-manager"
+
+      // user['roleType'] = roleType
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${action.payload?.token}`;
-      state = produce(state, draft => {
-        draft.token = action?.payload?.token || state.token
-        draft.user = user || state.user
-      })
+      state = produce(state, (draft) => {
+        draft.token = action?.payload?.token || state.token;
+        draft.user = user || state.user;
+      });
       return state;
     },
-    updateUserProfileData: (state, action) => {   
-      state = produce(state, draft => {
-        draft.user = action?.payload || state.user
-      })   
+    updateUserProfileData: (state, action) => {
+      state = produce(state, (draft) => {
+        draft.user = action?.payload || state.user;
+      });
       return state;
     },
     logout: (state) => {
-      state = produce(state, draft => {
-        draft.token = null,
-        draft.user.id = null,
-        draft.user.email = ''
-      })
+      state = produce(state, (draft) => {
+        (draft.token = null),
+          // draft.user.id = null,
+          (draft.user.email = "");
+      });
       return state;
-    }
+    },
   },
-})
+});
 
 // Action creators are generated for each case reducer function
-export const { populateUserData, logout, updateUserProfileData } = authSlice.actions
+export const { populateUserData, logout, updateUserProfileData } =
+  authSlice.actions;
 
-export default authSlice.reducer
+export default authSlice.reducer;

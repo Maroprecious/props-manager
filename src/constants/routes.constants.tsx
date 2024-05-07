@@ -445,7 +445,7 @@ const WelcomeAppRputes = [
 ];
 
 const AppRoutes = (user: AuthUserType) => {
-  const routes = user?.id === null || user?.id === undefined ? WelcomeAppRputes : UserAppRoutes;
+  const routes = user?.email === null || user?.email === undefined ? WelcomeAppRputes : UserAppRoutes;
   return routes;
 };
 

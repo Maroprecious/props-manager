@@ -28,6 +28,7 @@ import { ScreenTitle } from "../auth/components/screentitle.component";
 import { RenderPropertyDetails } from "../property/components";
 import useAuthenticate from "src/hooks/useAuthentication";
 import { useAppSelector } from "src/hooks/useReduxHooks";
+import * as Linking from 'expo-linking';
 
 export default function ViewTenancyScreen({
     navigation,
@@ -46,6 +47,7 @@ export default function ViewTenancyScreen({
         const req = await getPropertyOccupants({
             propertyId: selectedProperty.id
         });
+        console.log(req?.data?.message)
         if (req.hasError === false) setTenants(req?.data?.message || [])
     }
 
@@ -177,7 +179,7 @@ export default function ViewTenancyScreen({
                 source={require("src/assets/images/backgrounds/background.png")}
                 style={{
                 flex: 1,
-                paddingTop: fontsConstants.h(40),
+                paddingTop: Platform.OS === "ios" ? fontsConstants.h(70) : fontsConstants.h(40),
                 paddingHorizontal: fontsConstants.w(20),
                 }}
             >
@@ -255,7 +257,20 @@ export default function ViewTenancyScreen({
                         </View>
                         <View style={styles.content}>
                             <Text style={[styles.label, { color: colorsConstants[theme].modalBg }]}>{item?.unit?.unitName || ""}</Text>
-                            <Text style={[styles.occupant, { color: colorsConstants[theme].modalBg }]}>Occupant: {`${item?.tenant?.firstName || "NIL"} ${item?.tenant?.lastName || "NIL"}`} - {item?.tenant?.phoneNumber !== null ? item?.tenant?.phoneNumber : 'Phone'}</Text>
+                            <Text style={[styles.occupant, { color: colorsConstants[theme].modalBg }]}>Occupant: {`${item?.tenant?.firstName || "NIL"} ${item?.tenant?.lastName || "NIL"}`}</Text>
+                            {item?.tenant?.phoneNumber && 
+                                <TouchableOpacity
+                                    activeOpacity={layoutsConstants.activeOpacity}
+                                    onPress={() => Linking.openURL(`tel:${item?.tenant?.phoneNumber}`)}
+                                >
+                                    <Text style={{
+                                        color: colorsConstants.colorPrimary,
+                                        textDecorationLine: "underline"
+                                    }}>
+                                        {item?.tenant?.phoneNumber}
+                                    </Text>
+                                </TouchableOpacity>
+                            }
                             {/* <Text style={[styles.occupant, { color: colorsConstants[theme].modalBg }]}>Rent Status: {elem.amount} - <Text style={{ color: elem.rent_status === 'Unpaid' ? colorsConstants.criticalRed : colorsConstants.colorSuccess, fontFamily: fontsConstants.Lora_Regular, fontSize: 12 }}>{elem.rent_status}</Text></Text> */}
                         </View>
                         <View>
@@ -337,7 +352,7 @@ const styles = StyleSheet.create({
         fontFamily: fontsConstants.Lora_Bold
     },
     occupant: {
-        fontFamily: fontsConstants.Lora_Regular,
-        fontSize: Platform.OS === 'android' ? 11 : 13
+        fontFamily: fontsConstants.Lora_Medium,
+        fontSize: fontsConstants.h(14),
     }
 });

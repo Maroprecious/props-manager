@@ -74,7 +74,8 @@ export default function OTPScreen({
 
   const doConfirmOTP = async () => {
     const req = await verifyOTP({
-      otp
+      otp,
+      username: user?.email
     });
     if (req?.hasError)
       showToast({

@@ -3,7 +3,7 @@
     "name": "MPM Mobile",
     "slug": "mypropsmanager-mobile",
     "owner": "supersoft-technology-limited",
-    "version": "2.0.0",
+    "version": "2.0.5",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "scheme": "mypropsmanager-mobile",
@@ -29,7 +29,8 @@
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.supersoft.mypropsmanagermobile"
+      "package": "com.supersoft.mypropsmanagermobile",
+      "versionCode": 7
     },
     "web": {
       "bundler": "metro",

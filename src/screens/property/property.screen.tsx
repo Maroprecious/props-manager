@@ -24,7 +24,7 @@ export default function PropertyScreen({
   const theme = useContext(AppThemeContext);
 
   const user = useAppSelector((state) => state.auth.user)
-  const { loading, createProperty, created } = useProperty()
+  const { loading, createProperty, newCreateProperty, created } = useProperty()
 
   const [propertyAddress, setProperyAddress] = useState("")
   const [propertyName, setPropertyName] = useState("")
@@ -60,12 +60,12 @@ export default function PropertyScreen({
   }, [showAddNewBtn]);
   
   const doCreateProperty = async () => {
-    const req = await createProperty({
-      occupationalStatus: `${user.roleType}`,
+    const req = await newCreateProperty({
+      occupationalStatus: '',
       propertyLocation: propertyAddress,
       propertyName,
       propertyState,
-      userId: `${user.id}`
+      email: `${user.email}`
     })
     if (req?.hasError === false) {
       showToast({
@@ -74,10 +74,12 @@ export default function PropertyScreen({
         message: req?.data?.message?.message || "Property created successfully"
       })
       setPropertyId(req?.data?.message?.propertyId || "")
+  console.log(propertyId, 'idd')
+
     } else showToast({
       type: "error",
       title: "Add Property",
-      message: req?.message || req?.statusText || "Unknown error has occred"
+      message: req?.message || req?.statusText || "Unknown error has occured"
     })
   }
 

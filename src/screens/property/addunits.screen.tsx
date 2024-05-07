@@ -30,7 +30,7 @@ export default function AddUnitsScreen({
   const { property } = useProperties()
 
   const user = useAppSelector((state) => state.auth.user)
-  const { loading, getTypes, createUnit, fetchingTypes, editUnit } = useUnits()
+  const { loading, getTypes, createUnit, newCreateUnit, fetchingTypes, editUnit } = useUnits()
 
   const [hasPendingItem, setHasPendingItem] = useState(false);
   const [units, setUnits] = useState<any>([])
@@ -304,7 +304,7 @@ export default function AddUnitsScreen({
         }}
       >
         <HeaderBackButton 
-          onPress={backAction}
+          // onPress={backAction}
         />
         <ScreenTitle
           title={`${route.params.actionType === 'edit' ? 'Edit' : 'Add'} Units`}

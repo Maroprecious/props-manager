@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Avatar, Icon, Image } from "react-native-elements";
 import { ScrollView, Text } from "src/components/Themed";
@@ -13,13 +13,13 @@ import layoutsConstants from "src/constants/layouts.constants";
 import AppThemeContext from "src/contexts/Theme.context";
 import useAuthenticate from "src/hooks/useAuthentication";
 import { useAppDispatch, useAppSelector } from "src/hooks/useReduxHooks";
-import { logout } from "src/services/redux/slices/auth";
-import { RootTabScreenProps } from "src/types/navigations.types";
+import { logout, populateUserData } from "src/services/redux/slices/auth";
+import { RootTabScreenProps, RootStackScreenProps } from "src/types/navigations.types";
 
 export default function MoreTabScreen({
   navigation,
   route
-}: RootTabScreenProps<"MoreTabNavigator">) {
+}: RootStackScreenProps<"MoreTabNavigator">) {
   const theme = useContext(AppThemeContext);
   const dispatch = useAppDispatch();
 
@@ -28,8 +28,18 @@ export default function MoreTabScreen({
   const { requestPasswordReset } = useAuthenticate();
 
   const doLogout = () => {
-    dispatch(logout());
+    return(
+      dispatch(
+        populateUserData({
+          // token,
+          user: {},
+        })
+  
+  
+      )
+    )
   }
+
 
   return (
     <ScrollView style={styles.container}

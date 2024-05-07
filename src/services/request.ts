@@ -1,11 +1,13 @@
 import axios from 'axios';
 // import { API_BEARER_TOKEN } from "@env";
 import { API_BASE_URL } from 'src/constants';
-
+import SecureStoreManager from 'src/utils/SecureStoreManager';
 const API_BEARER_TOKEN = process.env.EXPO_PUBLIC_API_BEARER_TOKEN;
-axios.defaults.baseURL = API_BASE_URL;
-axios.defaults.headers.common['Authorization'] = `Bearer ${API_BEARER_TOKEN}`;
+// axios.defaults.baseURL = API_BASE_URL;
+// axios.defaults.headers.common['Authorization'] = `Bearer ${API_BEARER_TOKEN}`;
 axios.defaults.timeout = 60 * 1000; //60secs timeout
+console.log(API_BASE_URL, 'API')
+
 
 export const buildHeader = async (isDefaultAuth?: boolean): Promise<any> => {
   const headers = {
@@ -13,10 +15,12 @@ export const buildHeader = async (isDefaultAuth?: boolean): Promise<any> => {
     'Cache-Control': 'no-cache',
     // 'Accept': '*/*',
   };
-
+const User =  await SecureStoreManager.getAuthEmail()
+const token = await SecureStoreManager.getAuthToken()
   if (isDefaultAuth) {
     Object.assign(headers, {
-      Authorization: `Bearer ${API_BEARER_TOKEN}`,
+      Authorization: `${token}`,
+      User
     });
   }
   return headers;
@@ -77,7 +81,7 @@ export async function makeApiRequest({
 }: RequestObject): Promise<any> {
   
   // Handle get request with params
-  let routePlusParams = route;
+  let routePlusParams = `${API_BASE_URL}${route}`;
 
   if (pathParams) {
     routePlusParams += makeUrlKeyValuePaths(pathParams);
@@ -95,11 +99,12 @@ export async function makeApiRequest({
 
   console.log('✅ Making axios request', data, type, queryParams, pathParams, route, routePlusParams, isDefaultAuth);
   let reqStatus;
+  console.log(routePlusParams, data, 'route')
   try {
     const response = await axios({
       url: routePlusParams.trim(),
       method: type,
-      data,
+     data,
       headers,
       onUploadProgress(progressEvent) {
         uploadCb(progressEvent)

@@ -31,7 +31,9 @@ export type AuthUserType = {
   firstName: string
   lastName: string
   roles: string[]
-  completed: boolean
+  completed: boolean,
+  isCompleted: number,
+  is_verified: number,
   verified: boolean
   phoneNumber?: string
   roleType: roleTypes

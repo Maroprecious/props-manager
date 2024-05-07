@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, View as RNView, ScrollView, ImageBackground } from "react-native";
+import { StyleSheet, View as RNView, ScrollView, ImageBackground, Platform } from "react-native";
 import { SafeAreaView, Text, View } from "src/components/Themed";
 import { DefaultButton, HeaderBackButton } from "src/components/buttons/buttons.components";
 import fontsConstants from "src/constants/fonts.constants";
@@ -77,7 +77,7 @@ export default function TenancyScreen({
         source={require("src/assets/images/backgrounds/background.png")}
           style={{
           flex: 1,
-          paddingTop: fontsConstants.h(40),
+          paddingTop: Platform.OS === "ios" ? fontsConstants.h(70) : fontsConstants.h(40),
           paddingHorizontal: fontsConstants.w(20),
         }}
       >

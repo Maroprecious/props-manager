@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ColorSchemeName } from 'react-native';
-import { APP_EXPO_PUSH_TOKEN, APP_INITIAL_ROUTE, APP_INITIATED_PAYMENT, APP_PAYMENT_OPTIONS, APP_SUBSCRIPTIONS_PLANS, APP_THEME, APP_TOKEN } from 'src/constants/global.constants';
+import { APP_EMAIL, APP_EXPO_PUSH_TOKEN, APP_INITIAL_ROUTE, APP_INITIATED_PAYMENT, APP_PAYMENT_OPTIONS, APP_SUBSCRIPTIONS_PLANS, APP_THEME, APP_TOKEN } from 'src/constants/global.constants';
 import * as SecureStore from 'expo-secure-store';
 import { RootStackParamList } from 'src/types/navigations.types';
 
@@ -49,6 +49,20 @@ const SecureStoreManager = {
   setAuthToken: async (token: string) => {
     try {
       await SecureStore.setItemAsync(`${APP_TOKEN}`, token);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  setAuthEmail: async (token: string) => {
+    try {
+      await SecureStore.setItemAsync(`${APP_EMAIL}`, token);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  getAuthEmail: async () => {
+    try {
+     return await SecureStore.getItemAsync(`${APP_EMAIL}`);
     } catch (error) {
       console.log(error);
     }

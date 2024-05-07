@@ -243,7 +243,8 @@ export default function HomeTabScreen({
             titleStyle={{
               color: colorsConstants[theme].screenLabel,
               fontFamily: fontsConstants.Lora_Regular,
-              fontSize: fontsConstants.h(28)
+              fontSize: fontsConstants.h(28),
+              textTransform: 'lowercase'
             }}
             containerStyle={{
               borderWidth: fontsConstants.h(1),
@@ -265,9 +266,9 @@ export default function HomeTabScreen({
               color: colorsConstants[theme].screenLabel,
               marginBottom: fontsConstants.h(4),
             }}>{`${user?.firstName || 'John'} ${user?.lastName || 'Doe'}`}</Text>
-            <Text style={[styles.textName, {
+            {/* <Text style={[styles.textName, {
               color: colorsConstants[theme].screenLabel,
-            }]}>User ID: {user.id}</Text>
+            }]}>User ID: {user.id}</Text> */}
             <Text style={[styles.textName, {
               color: colorsConstants[theme].screenLabel,
             }]}>{user.email}</Text>

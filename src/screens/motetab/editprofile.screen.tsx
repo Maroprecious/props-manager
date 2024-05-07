@@ -24,7 +24,7 @@ export default function EditProfileScreen({
 
   const user = useAppSelector((state) => state.auth.user)
   const dispatch = useAppDispatch();
-  const { loading, updateProfile } = useUser();
+  const { loading, updateProfile, newUpdateProfile } = useUser();
 
   const [firstName, setFirstName] = useState(user.firstName)
   const [lastName, setLastName] = useState(user.lastName)
@@ -32,19 +32,20 @@ export default function EditProfileScreen({
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber || "")
   
   const doUpdateProfile = async () => {
-    const req = await updateProfile({
-      userId: user?.id || "",
+    const req = await newUpdateProfile({
+      // userId: user?.id || "",
       firstName,
       lastName,
       aliasName,
-      phoneNumber
+      phoneNumber,
+       email: user.email
     })
     showToast({
       title: `Profile Update`,
       type: req?.hasError ? `error` : `info`,
       message: req?.data?.message || req?.error || req?.statusText || "Unknown error occured"
     })
-    if (req?.status === 200) {
+    if (!req?.hasError) {
       dispatch(updateUserProfileData({
         ...user,
         firstName,

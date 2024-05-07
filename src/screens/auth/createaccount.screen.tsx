@@ -46,7 +46,7 @@ export default function CreateAccountScreen({
     buttonTitle: `Verify Email`,
     type: `success`,
   });
-
+console.log(user, 'maro')
   const { createAccount, loading } = useAuthenticate();
   const [data, setData] = useState<any>({
     email: user?.email || "",
@@ -65,9 +65,9 @@ export default function CreateAccountScreen({
       ...data,
       pushToken,
       userId: user.id,
-      isCompleteAccountReg: user?.email !== "",
+      isCompleteAccountReg: (user ?? {}).hasOwnProperty('email'),
     });
-    if (req.hasError && req.status !== 200)
+    if (req.hasError)
       showToast({
         title: `Login`,
         message: `${req?.message || req?.statusText || req?.error}`,
@@ -107,7 +107,7 @@ export default function CreateAccountScreen({
         }}
       >
         <ScreenTitle
-          title={user?.email === "" ? `Sign Up` : `Complete Sign Up`}
+          title={!(user ?? {}).hasOwnProperty('email') ? `Sign Up` : `Complete Sign Up`}
           intro={`Enter sign up details`}
           containerStyle={{
             marginTop: fontsConstants.h(-20),
@@ -139,7 +139,7 @@ export default function CreateAccountScreen({
           onChangeText={(e) => handleData(e, "email")}
           value={data?.email}
           containerStyle={styles.inputContainerStyle}
-          disabled={user?.email !== ""}
+          disabled={(user ?? {}).hasOwnProperty('email')}
         />
         <DefaultInput
           placeholder="Password"
@@ -322,7 +322,7 @@ export default function CreateAccountScreen({
         onClosed={() => {
           if (registrationSuccessful)
             navigation.navigate(
-              user?.email !== "" ? "OTPVerifyScreen" : "OTPScreen",
+              !(user ?? {}).hasOwnProperty('email') ? "OTPVerifyScreen" : "OTPScreen",
               {
                 type: "verify-email",
                 email: data.email,
@@ -356,7 +356,7 @@ export default function CreateAccountScreen({
         onButtonPress={() =>
           registrationSuccessful
             ? navigation.navigate(
-                user?.email !== "" ? "OTPVerifyScreen" : "OTPScreen",
+              (user ?? {}).hasOwnProperty('email')? "OTPVerifyScreen" : "OTPScreen",
                 {
                   type: "verify-email",
                   email: data.email,

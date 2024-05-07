@@ -82,7 +82,7 @@ export const NotificationItemCard = ({
       <View style={{
         flexDirection: "row",
         alignItems: "center",
-        minHeight: fontsConstants.h(128),
+        minHeight: fontsConstants.h(100),
         paddingHorizontal: fontsConstants.w(15),
       }}>
         <View style={{
@@ -91,17 +91,17 @@ export const NotificationItemCard = ({
           <Text style={{
             color: colorsConstants[theme].dateMonthColor,
             fontFamily: fontsConstants.Lora_Regular,
-            fontSize: fontsConstants.h(14)
+            fontSize: fontsConstants.h(12)
           }}>{typeof date === "string" ? moment(date).format("MMM") : date?.month}</Text>
           <Text style={{
             color: colorsConstants[theme].darkText,
             fontFamily: fontsConstants.Lora_Bold,
-            fontSize: fontsConstants.h(24)
+            fontSize: fontsConstants.h(18)
           }}>{typeof date === "string" ? moment(date).format("DD") : date?.day}</Text>
           <Text style={{
             color: colorsConstants[theme].dateMonthColor,
             fontFamily: fontsConstants.Lora_Regular,
-            fontSize: fontsConstants.h(13)
+            fontSize: fontsConstants.h(10)
           }}>{typeof date === "string" ? moment(date).format("YYYY") : date?.year}</Text>
         </View>
         <Line
@@ -116,17 +116,17 @@ export const NotificationItemCard = ({
           flex: 1,
           flexDirection: "row",
           // paddingLeft: fontsConstants.w(5),
-          paddingTop: fontsConstants.h(20)
+          paddingTop: fontsConstants.h(0),
         }}>
           <View style={{
             flex: 1,
-            marginRight: fontsConstants.w(30)
+            marginRight: showMenuButton ? fontsConstants.w(30) : fontsConstants.w(40),
           }}>
             {items.map((item, index) => (
               <TouchableOpacity style={{
                 flexDirection: "row",
                 alignItems: "center",
-                marginBottom: fontsConstants.h(20)
+                marginBottom: fontsConstants.h(0)
               }} key={index.toString()}
                 activeOpacity={layoutsConstants.activeOpacity}
                 onPress={() => onNotificationItemPress(item)}
@@ -140,10 +140,12 @@ export const NotificationItemCard = ({
                   }}
                 >
                   <Text
+                    numberOfLines={2}
                     style={{
                       color: theme === "light" ? "#212524" : colorsConstants[theme].screenLabel,
                       fontFamily: fontsConstants.Lora_Bold,
-                      fontSize: fontsConstants.h(12)
+                      fontSize: fontsConstants.h(12),
+                      marginRight: fontsConstants.w(10)
                     }}
                   >{item.title}</Text>
                   <Text

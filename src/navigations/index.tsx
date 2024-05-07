@@ -70,7 +70,7 @@ function RootNavigator({initialRouteName="WelcomeScreen"}: {initialRouteName?: k
   axios.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${token}`;
-
+console.log(user, 'user')
   React.useEffect(() => {
     useGetPlans().then(async (res) => {
       if (res.status === 200) {
