@@ -2,12 +2,13 @@ import React, { ReactNode, useState, useContext, createContext, useMemo, Dispatc
 import { FinancialData } from "src/types/app.types";
 
 type onePropertyType = {
-    id: string,
+    // id: string,
     propertyName: string,
     propertyLocation: string,
     propertyState: string,
     userId: string,
     occupationalStatus: string
+    propertyId: string
 }
 type propertytype = {
     property: onePropertyType,
@@ -16,12 +17,13 @@ type propertytype = {
     setFinancials: Dispatch<SetStateAction<FinancialData>>
 }
 const initialPropertyState: onePropertyType = {
-    id: '',
+    // id: '',
     propertyName: '',
     propertyLocation: '',
     userId: '',
     occupationalStatus: '',
     propertyState: '',
+    propertyId: ''
 
 }
 const initialFinancialState: FinancialData = {

@@ -37,7 +37,7 @@ export default function PropertyDetailsScreen({
 
   useEffect(() => {
     getOneProperty({
-        propertId: property?.id || "-1"
+        propertId: property?.propertyId || "-1"
     }).then((res) => {
         if (res?.hasError === false) {
           setSelectedDetails({
@@ -58,7 +58,7 @@ export default function PropertyDetailsScreen({
             type: `delete`,
             onConfirm: async () => {
                 deleteOneProperty({
-                    propertId: property.id
+                    propertId: property.propertyId
                 }).then((res) => {
                     showToast({
                         message: res.data?.hasError === false ? `Property deleted successfully` : res?.data?.message || res?.message || `Unknown error occured deleting unit`,
@@ -124,7 +124,7 @@ export default function PropertyDetailsScreen({
                         {[{
                             id: 1,
                             label: 'Property ID:',
-                            value: property.id,
+                            value: property.propertyId,
                             valueTextOpacity: 0.3
                         }, {
                             id: 2,
@@ -168,7 +168,7 @@ export default function PropertyDetailsScreen({
                         ))}
                     </View>
                     <TouchableOpacity style={{marginTop: 10}} onPress={() => navigation.navigate('AddUnitsScreen', {
-                        propertyId: property.id
+                        propertyId: property.propertyId
                     })}>
                         <Text style={styles.edit}>Add Units</Text>
                     </TouchableOpacity>

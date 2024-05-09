@@ -112,7 +112,8 @@ export default function AddPropertyScreen({
       propertyState,
       email: `${user.email}`,
     });
-    if (req?.hasError) {
+    console.log(req, 'req')
+    if (!req?.hasError) {
       DeviceEventEmitter.emit(MPM_PROPERTY_CREATED, {});
       showToast({
         title: "Add Property",
@@ -141,21 +142,22 @@ export default function AddPropertyScreen({
   };
   const doEditProperty = async () => {
     const req = await editProperty({
-      occupationalStatus: `${user.roleType}`,
+      occupationalStatus: '',
       propertyLocation: propertyAddress,
       propertyName,
       propertyState,
-      propertyId: `${property.id}`,
+      propertyId: `${property.propertyId}`,
+      email: user?.email
     });
-    if (req?.hasError) {
+    if (!req?.hasError) {
       showToast({
         title: "Edit Property",
         type: "success",
         message: req?.data?.message?.message || "Property edited successfully",
       });
-      setPropertyId(req?.data?.message?.propertyId || "");
+      setPropertyId(req?.data?.propertyId || "");
       setProperty({
-        id: property.id,
+        propertyId: property.propertyId,
         propertyName,
         propertyLocation: propertyAddress,
         userId: property.userId,
