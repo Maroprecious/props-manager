@@ -17,20 +17,16 @@
       "**/*"
     ],
     "ios": {
-      "config": {
-        "usesNonExemptEncryption": false
-      },
       "supportsTablet": true,
       "bundleIdentifier": "com.supersoft.mypropsmanagermobile"
     },
     "android": {
-      "versionCode": 2,
+      "versionCode": 7,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.supersoft.mypropsmanagermobile",
-      "versionCode": 7
+      "package": "com.supersoft.mypropsmanagermobile"
     },
     "web": {
       "bundler": "metro",
@@ -44,7 +40,13 @@
     "plugins": [
       "expo-font",
       "expo-secure-store"
-    ]
+    ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a8d351da-1fdf-449d-af30-6a16bdf11ff5"
+    }
   },
   "android": {
     "googleServicesFile": "./google-services.json"
