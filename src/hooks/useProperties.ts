@@ -13,6 +13,7 @@ import {
   deleteUnitEndpoint,
   deletePropertyEndpoint,
   newGetAllProperties,
+  newGetAllUnitTypes,
 } from "src/constants/api.endpoints.constants";
 import { makeApiRequest } from "src/services/request";
 import { NetworkResponse } from "src/types/api.response.types";
@@ -141,6 +142,7 @@ const useProperty = () => {
       occupationalStatus: string;
       propertyState: string;
       propertyId: string;
+      email: string
     },
     cb = () => {}
   ): Promise<NetworkResponse> => {
@@ -150,6 +152,7 @@ const useProperty = () => {
       route: `${editPropertyEndpoint}`,
       type: "POST",
       data,
+      isDefaultAuth: true
     });
     setLoading(false);
     cb();
@@ -201,8 +204,9 @@ export const useUnits = () => {
   const getTypes = async (cb = () => {}): Promise<NetworkResponse> => {
     setFetchingTypes(true);
     const request = await makeApiRequest({
-      route: `${getUnitsTypesEndpoint}`,
+      route: `${newGetAllUnitTypes}`,
       type: "GET",
+      isDefaultAuth: true
     });
     setFetchingTypes(false);
     cb();
@@ -239,7 +243,7 @@ export const useUnits = () => {
     };
   };
   const newCreateUnit = async (
-    data: {
+    propertyUnits: {
       unitTypeId: string;
       unitName: string;
       unitRent: number;
@@ -252,10 +256,14 @@ export const useUnits = () => {
     cb = () => {}
   ): Promise<NetworkResponse> => {
     setLoading(true);
+    console.log(propertyUnits, 'propertyUnits')
     const request = await makeApiRequest({
       route: `${createUnitEndpoint}`,
       type: "POST",
-      data,
+      data: {
+        propertyUnits
+      },
+      isDefaultAuth: true
     });
     setLoading(false);
     cb();
@@ -272,6 +280,7 @@ export const useUnits = () => {
     const request = await makeApiRequest({
       route: `${getUnitsEndpoint}/${id}`,
       type: "GET",
+      isDefaultAuth: true
     });
     setLoading(false);
     cb();

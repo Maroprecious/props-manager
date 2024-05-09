@@ -48,7 +48,7 @@ export default function UnitDetailsScreen({
     const { oneUnit } = useUnit()
     const { requestPasswordReset } = useAuthenticate();
     const [tenantData, setTenantData] = useState<any>({})
-
+// console.log(oneUnit, 'ine')
     const doAddTenant = () => {
         navigation.navigate("AddTenantScreen", {
             data: {
@@ -72,7 +72,7 @@ export default function UnitDetailsScreen({
     };
     const getTenantDetails = async () => {
         const detail = await getTenant({
-            unitId: oneUnit.id
+            unitId: oneUnit.unitId
         })
         setTenantData(detail?.data?.message?.tenant)
         if (!detail?.hasError) {
@@ -90,7 +90,7 @@ export default function UnitDetailsScreen({
             type: `delete`,
             onConfirm: async () => {
                 deleteOneUnit({
-                    unitId: oneUnit.id
+                    unitId: oneUnit.unitId
                 }).then((res) => {
                     showToast({
                         message: res.data?.hasError === false ? `Unit deleted successfully` : res?.data?.message || res?.message || res?.error || `Unknown error occured deleting unit`,
@@ -140,12 +140,12 @@ export default function UnitDetailsScreen({
                             flex: 1
                         }]}>
                             <Text style={styles.title}>{oneUnit.unitName}</Text>
-                            <Text style={styles.address}>{oneUnit.unitType.description}</Text>
+                            {/* <Text style={styles.address}>{oneUnit.unitType.description}</Text> */}
                         </View>
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate('AddUnitsScreen', {
                         actionType: 'edit',
-                        propertyId: property.id
+                        propertyId: property.propertyId
                     })}>
                         <Text style={styles.edit}>Edit Unit</Text>
                     </TouchableOpacity>

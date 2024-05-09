@@ -56,19 +56,21 @@ export default function AddUnitsScreen({
 
   React.useEffect(() => {
     getTypes().then((res) => {
-      if (res?.hasError === false) {
+      console.log(res.data.unitTypes)
+
+      if (!res?.hasError) {
         const data = [];
-        for (const type of res?.data || []) {
+        for (const type of res?.data.unitTypes || []) {
           data.push({
             label: type?.description,
             value: type?.id
           })
         }
         setUnitTypes(data)
+
       }
     })
   }, [])
-
   const getErrors = () => {
     if (unitName === "")
       setFieldErrors({...fieldErros, unitName: "Enter Unit Title"})
@@ -90,7 +92,7 @@ export default function AddUnitsScreen({
       unitRent: "",
     })
   }, [unitName, unitRent, unitTypeId])
-
+  console.log(route?.params?.propertyId, 'route params')
   const doAddUnit = () => {
     if (!getErrors()){
       try {
@@ -144,7 +146,7 @@ export default function AddUnitsScreen({
     const reqUnits = [];
     for (const unit of units) {
       if (unit?.saved === false) {
-        const totalReps = Number(unit?.totalReps || '1')
+        const totalReps = Number('1')
         for (let i = 0; i < totalReps; i++) {
           reqUnits.push({
             ...unit
@@ -152,9 +154,9 @@ export default function AddUnitsScreen({
         }
       }
     }
-    const req: any = await createUnit(reqUnits)
+    const req: any = await newCreateUnit(reqUnits)
     modalRef?.current?.close()
-    if (req?.data?.hasError === false) {
+    if (!req?.hasError) {
       setHasPendingItem(false)
       showToast({
         title: "Units",
@@ -197,10 +199,10 @@ export default function AddUnitsScreen({
       unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
       unitLegalFee: Number(currencyToString(unitLegalFee)),
       unitOtherCharges: Number(currencyToString(unitOtherCharges)),
-      propertyId: property.id,
+      propertyId: property.propertyId,
       unitTypeId: unitTypeId.toString()
-    }, oneUnit.id)
-    if (req?.data?.hasError === false) {
+    }, oneUnit.unitId)
+    if (!req?.hasError) {
      setOneUnit({
       unitName,
       unitRent: Number(currencyToString(unitRent)),
@@ -209,7 +211,7 @@ export default function AddUnitsScreen({
       unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
       unitLegalFee: Number(currencyToString(unitLegalFee)),
       unitOtherCharges: Number(currencyToString(unitOtherCharges)),
-      id: oneUnit.id,
+      unitId: oneUnit.unitId,
       unitType: {
         id: unitTypeId, 
       },
@@ -230,7 +232,7 @@ export default function AddUnitsScreen({
       })
     }
   }
-
+console.log(oneUnit, 'one unit')
   const removeUnit = (index: number) => {
     try {
       const _units = units.filter(function(item: any, i: number) {

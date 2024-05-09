@@ -173,7 +173,7 @@ const useAuthenticate = () => {
       route: `${resetPasswordEndpoint}`,
       type: "POST",
       data,
-      isDefaultAuth: true,
+      // isDefaultAuth: true,
     });
     setLoading(false);
     cb();

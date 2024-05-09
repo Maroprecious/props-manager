@@ -29,8 +29,9 @@ export default function ViewUnitsScreen({
     const { property } = useProperties()
 
     const fetchUnits = async () => {
-        const req = await getUnits(property.id)
-        if (req?.hasError === false) setUnits(req?.data?.message)
+        const req = await getUnits(property.propertyId)
+        console.log(req.data?.propertyUnits, 'rew')
+        if (!req?.hasError) setUnits(req.data?.propertyUnits)
     }
 
     // useEffect(() => {
@@ -52,7 +53,7 @@ export default function ViewUnitsScreen({
                 <View style={styles.details}>
                     <View>
                         <Text style={[styles.title, { color: colorsConstants[theme].darkText }]}>{item.unitName}</Text>
-                        <Text style={[styles.label, { color: colorsConstants[theme].grey3 }]}>{item.unitType.description}</Text>
+                        {/* <Text style={[styles.label, { color: colorsConstants[theme].grey3 }]}>{item.unitType.description}</Text> */}
                     </View>
                     <FontAwesome name="angle-right" size={20} color="black" />
                 </View>
@@ -72,7 +73,7 @@ export default function ViewUnitsScreen({
                         <View style={styles.center}>
                             <Text style={{ fontFamily: fontsConstants.Lora_Regular, fontSize: 15 }}>No Units,</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('AddUnitsScreen', {
-                                propertyId: property.id
+                                propertyId: property.propertyId
                             })}>
                                 <Text style={styles.link}> Add Units</Text>
                             </TouchableOpacity>

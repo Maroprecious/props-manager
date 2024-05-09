@@ -31,6 +31,7 @@ export default function ForgotPasswordScreen({
     const req = await requestPasswordReset({
       email: email.toLocaleLowerCase()
     });
+    console.log(req, 'reww')
     if (req?.hasError)
       showToast({
         type:`error`,

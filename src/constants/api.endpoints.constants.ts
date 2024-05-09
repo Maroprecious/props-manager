@@ -60,4 +60,5 @@ export const newUpdatePasswordEndpoint = `/accounts/change-password`;
 export const generateOtp = `/accounts/auth/token/generate-otp`;
 export const newVerifyOtp = `/accounts/auth/token/verify-otp`;
 export const newGetAllProperties = `/properties/get-property-by-userid`;
+export const newGetAllUnitTypes = `/properties/get-all-unit-types`;
 
