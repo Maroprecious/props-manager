@@ -7,8 +7,6 @@ const API_BEARER_TOKEN = process.env.EXPO_PUBLIC_API_BEARER_TOKEN;
 // axios.defaults.headers.common['Authorization'] = `Bearer ${API_BEARER_TOKEN}`;
 axios.defaults.timeout = 60 * 1000; //60secs timeout
 console.log(API_BASE_URL, 'API')
-
-
 export const buildHeader = async (isDefaultAuth?: boolean): Promise<any> => {
   const headers = {
     'Content-Type': 'application/json',
