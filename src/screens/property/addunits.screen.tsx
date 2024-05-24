@@ -40,6 +40,7 @@ export default function AddUnitsScreen({
   const [unitRent, setUnitRent] = useState('0.00')
   const [unitServiceCharge, setUnitServiceCharge] = useState('0.00')
   const [unitLegalFee, setUnitLegalFee] = useState('0.00')
+  const [unitLegalCharge, setUnitLegalCharge] = useState('0.00')
   const [unitAgreementCharge, setUnitAgreementCharge] = useState('0.00')
   const [unitCommissionCharge, setUnitCommissionCharge] = useState('0.00')
   const [unitOtherCharges, setUnitOtherCharges] = useState('0.00')
@@ -103,7 +104,7 @@ export default function AddUnitsScreen({
             unitName,
             unitRent: Number(currencyToString(unitRent)),
             unitServiceCharge: Number(currencyToString(unitServiceCharge)),
-            unitLegalFee: Number(currencyToString(unitLegalFee)),
+            unitLegalCharge: Number(currencyToString(unitLegalCharge)),
             unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
             unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
             unitOtherCharges: Number(currencyToString(unitOtherCharges)),
@@ -197,7 +198,7 @@ export default function AddUnitsScreen({
       unitServiceCharge: Number(currencyToString(unitServiceCharge)),
       unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
       unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
-      unitLegalFee: Number(currencyToString(unitLegalFee)),
+      unitLegalCharge: Number(currencyToString(unitLegalCharge)),
       unitOtherCharges: Number(currencyToString(unitOtherCharges)),
       propertyId: property.propertyId,
       unitTypeId: unitTypeId.toString()
@@ -209,6 +210,7 @@ export default function AddUnitsScreen({
       unitServiceCharge: Number(currencyToString(unitServiceCharge)),
       unitAgreementCharge: Number(currencyToString(unitAgreementCharge)),
       unitCommissionCharge: Number(currencyToString(unitCommissionCharge)),
+      unitLegalCharge: Number(currencyToString(unitLegalCharge)),
       unitLegalFee: Number(currencyToString(unitLegalFee)),
       unitOtherCharges: Number(currencyToString(unitOtherCharges)),
       unitId: oneUnit.unitId,
@@ -266,7 +268,7 @@ console.log(oneUnit, 'one unit')
       setUnitServiceCharge(Object.is(oneUnit.unitServiceCharge, null) ? '0.00': oneUnit.unitServiceCharge.toString())
       setUnitAgreementCharge(Object.is(oneUnit.unitAgreementCharge, null) ? '0.00' : oneUnit.unitAgreementCharge?.toString() as string)
       setUnitCommissionCharge(Object.is(oneUnit.unitCommissionCharge, null) ? '0.00':  oneUnit.unitCommissionCharge?.toString() as string)
-      setUnitLegalFee(Object.is(oneUnit.unitLegalFee, null) ? '0.00' : oneUnit.unitLegalFee?.toString() as string)
+      setUnitLegalFee(Object.is(oneUnit.unitLegalCharge, null) ? '0.00' : oneUnit.unitLegalCharge?.toString() as string)
     }
   }, [oneUnit, route])
 
@@ -379,8 +381,8 @@ console.log(oneUnit, 'one unit')
             setValue: setUnitServiceCharge,
             label: `Service Charge`
           }, {
-            value: unitLegalFee,
-            setValue: setUnitLegalFee,
+            value: unitLegalCharge,
+            setValue: setUnitLegalCharge,
             label: `legal Charge`
           }].map((item, index) => (
             <DefaultInput
@@ -600,7 +602,7 @@ console.log(oneUnit, 'one unit')
                       {`Service Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitServiceCharge)}</Text>
                     </Text>
                     <Text style={styles.unitDetailTextStyle2}>
-                      {`Legal Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitLegalFee)}</Text>
+                      {`Legal Charge\n`}<Text style={styles.unitDetailTextStyle}>₦{formatCurrency(item?.unitLegalCharge)}</Text>
                     </Text>
                   </View>
                   <View style={styles.listViewRows}>

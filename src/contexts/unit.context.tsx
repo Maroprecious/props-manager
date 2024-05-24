@@ -15,6 +15,7 @@ type oneUnitType = {
   unitAgreementCharge: null | number | string;
   unitCommissionCharge: null | number | string;
   unitLegalFee: null | number | string;
+  unitLegalCharge: null | number | string
   unitName: string;
   unitRent: number | string;
   unitServiceCharge: number | string;
@@ -36,6 +37,7 @@ const initialUnitState: oneUnitType = {
   unitAgreementCharge: null || 0,
   unitCommissionCharge: null || 0,
   unitLegalFee: null || 0,
+  unitLegalCharge: null || 0,
   unitName: "",
   unitRent: 0,
   unitServiceCharge: 0,

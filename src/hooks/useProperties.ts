@@ -248,7 +248,7 @@ export const useUnits = () => {
       unitName: string;
       unitRent: number;
       unitServiceCharge: number;
-      unitLegalFee: number;
+      unitLegalCharge: number;
       unitAgreementCharge: number;
       unitCommissionCharge: number;
       propertyId: string;
@@ -295,7 +295,7 @@ export const useUnits = () => {
       unitName: string;
       unitRent: number;
       unitServiceCharge: number;
-      unitLegalFee: number;
+      unitLegalCharge: number;
       unitAgreementCharge: number;
       unitCommissionCharge: number;
       propertyId: string;
